@@ -1,6 +1,7 @@
 HELP.md
 target/
 !.mvn/wrapper/maven-wrapper.jar
+/backend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
 
@@ -37,3 +38,44 @@ build/
 !**/src/test/**/.vscode/
 node_modules/
 /frontend/node_modules/
+
+# Compiled output
+/frontend/dist
+/frontend/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/frontend/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+backend/.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.history/*
+
+# Miscellaneous
+/frontend/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+
+# System files
+.DS_Store
+Thumbs.db
