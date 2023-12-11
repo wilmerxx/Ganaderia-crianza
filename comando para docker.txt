@@ -1,0 +1,20 @@
+comando para docker
+Para crear una imagen 
+- docker build . -t nombreImagen
+Para correr el docker compose 
+- docker-compose up //esto es si se quiere ver los log 
+- docker-compose up -d //se ejecuta en segundo plano sin mostrar los log
+Para ver las imagnes creadas 
+- docker images
+Para eliminar una imagen 
+primero se para el contenedor 
+- docker stop nombreContenedor/id
+se elimina el contenendor 
+- docker rm nombreContenedor/id
+se elimina la imagen
+- docker rmi nombreImagen
+
+
+
+Nota: para poder crear la imagen se debe estar en la ruta raiz del proyecto es decir donde esta el dockerfile
+y para correr el docker-compose.yml debe estar en esa ruta 
