@@ -36,3 +36,4 @@ build/
 !**/src/main/**/.vscode/
 !**/src/test/**/.vscode/
 node_modules/
+/frontend/node_modules/
