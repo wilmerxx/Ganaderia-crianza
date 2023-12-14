@@ -1,6 +1,6 @@
 .git
 .firebase
-.gitignore
+../.gitignore
 .editorconfig
 .gitattributes
 /.vscode

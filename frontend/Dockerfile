@@ -2,13 +2,13 @@ FROM node:17-alpine as base
 
 WORKDIR /app
 
-COPY package.json /app
+COPY ../package.json /app
 
 RUN npm install
 
 FROM base as dev
 
-ONBUILD COPY . /app
+ONBUILD COPY .. /app
 
 ONBUILD RUN npm run build --prod
 
