@@ -41,197 +41,197 @@ El proyecto consiste en un sistema de crianza de ganado, el cual permite llevar 
  <img src="diagrama-clases.jpg" alt="Diagrama de clases" width="100%" height="100%"> 
 
 ## Diagrama de secuencia
- <img src="diagrama-secuencia.jpg" alt="Diagrama de clases" width="100%" height="100%">
+ <img src="diagrama-secuencia.jpg" alt="Diagrama de secuencia" width="100%" height="100%">
 
 ## Comandos para ejecutar docker
 ### Crear imagen
-```mermaid
+```
 docker build -t ganaderia .
 ```
 ### Crear contenedor
-```mermaid
+```
 docker run -d -p 8080:8080 ganaderia
 ```
 ### Ver contenedores
-```mermaid
+```
 docker ps
 ```
 ### Eliminar contenedor
-```mermaid
+```
 docker rm -f <id_contenedor>
 ```
 ### Eliminar imagen
-```mermaid
+```
 docker rmi -f <id_imagen>
 ```
 ### Ver logs
-```mermaid
+```
 docker logs <id_contenedor>
 ```
 ### Ver imagenes
-```mermaid
+```
 docker images
 ```
 ### Ver contenedores
-```mermaid
+```
 docker ps
 ```
 ### Ver contenedores detenidos
-```mermaid
+```
 docker ps -a
 ```
 ###  Para correr el docker compose
-```mermaid
+```
 docker-compose up
 ```
 ### Para correr el docker compose en segundo plano
-```mermaid
+```
 docker-compose up -d
 ```
 ### Para parar el docker compose
-```mermaid
+```
 docker-compose down
 ```
 ### Para parar el docker compose y eliminar los contenedores
-```mermaid
+```
 docker-compose down --rmi all
 ```
 ### Para parar el docker compose y eliminar los contenedores y las imagenes
-```mermaid
+```
 docker-compose down --rmi all --volumes
 ```
 ### Para parar el docker compose y eliminar los contenedores y las imagenes y las redes
-```mermaid
+```
 docker-compose down --rmi all --volumes --remove-orphans
 ```
 ### Para parar el docker compose y eliminar los contenedores y las imagenes y las redes y los volumenes
-```mermaid
+```
 docker-compose down --rmi all --volumes --remove-orphans --volumes
 ```
 ### Para parar el docker compose y eliminar los contenedores y las imagenes y las redes y los volumenes y los orfanos
-```mermaid
+```
 docker-compose down --rmi all --volumes --remove-orphans --volumes --remove-orphans
 ```
 ### Para parar el docker compose y eliminar los contenedores y las imagenes y las redes y los volumenes todos los orfanos
-```mermaid
+```
 docker-compose down --rmi all --volumes --remove-orphans --volumes --remove-orphans --rmi all
 ```
 ## Comandos para ejecutar angular
 ### Para instalar angular
-```mermaid
+```
 npm install -g @angular/cli
 ```
 ### Para crear un proyecto de angular
-```mermaid
+```
 ng new <nombre_proyecto>
 ```
 ### Para crear un proyecto de angular sin repositorio de git
-```mermaid
+```
 ng new <nombre_proyecto> --skip-git
 ```
 ### Crear un componente
-```mermaid
+```
 ng generate component <nombre_componente>
 ```
 ### Crear un servicio
-```mermaid
+```
 ng generate service <nombre_servicio>
 ```
 ### Crear un modulo
-```mermaid
+```
 ng generate module <nombre_modulo>
 ```
 ### Crear un modulo de rutas
-```mermaid
+```
 ng generate module app-routing --flat --module=app
 ```
 ### Crear un modulo de rutas con un prefijo
-```mermaid
+```
 ng generate module app-routing --flat --module=app --routingPrefix=app
 ```
 ### Para correr el proyecto de angular y se abra en el navegador
-```mermaid
+```
 ng serve -o
 ```
 ### Para correr el proyecto de angular en un puerto especifico
-```mermaid
+```
 ng serve --port <numero_puerto>
 ```
 ### Para correr el proyecto de angular en un puerto especifico y se abra en el navegador
-```mermaid
+```
 ng serve --port <numero_puerto> -o
 ```
 ## Comandos de git
 ### Para inicializar un repositorio de git
-```mermaid
+```
 git init
 ```
 ### Para agregar todos los archivos al repositorio de git
-```mermaid
+```
 git add .
 ```
 ### Realizar un commit con un mensaje
-```mermaid
+```
 git commit -m "mensaje"
 ```
 ### Crear la rama master
-```mermaid
+```
 git branch -M master
 ```
 ### Iniciar sesion en git
-```mermaid
+```
 git config --global user.email "email"
 git config --global user.name "nombre"
 ```
 ### Para ver los repositorios remotos
-```mermaid
+```
 git remote -v
 ```
 ### Para agregar un repositorio remoto
-```mermaid
+```
 git remote add origin <url_repositorio>
 ```
 ### Para subir los cambios al repositorio remoto
-```mermaid
+```
 git push -u origin master
 ```
 ### Para clonar un repositorio
-```mermaid
+```
 git clone <url_repositorio>
 ```
 ### Para clonar un rama especifica de un repositorio
-```mermaid
+```
 git clone -b <nombre_rama> <url_repositorio>
 ```
 ### Para ver el estado de los archivos
-```mermaid
+```
 git status
 ```
 ### Para ver el historial de los commits
-```mermaid
+```
 git log
 ```
 ### Para ver el historial de los commits de una forma mas resumida
-```mermaid
+```
 git log --oneline
 ```
 ### Enviar cambios al repositorio remoto
-```mermaid
+```
 git push
 ```
 ### Para ver las ramas
-```mermaid
+```
 git branch
 ```
 ### Para crear una rama
-```mermaid
+```
 git branch <nombre_rama>
 ```
 ### Para cambiar de rama
-```mermaid
+```
 git checkout <nombre_rama>
 ```
 ### Para crear una rama y cambiar a esa rama
-```mermaid
+```
 git checkout -b <nombre_rama>
 ```
