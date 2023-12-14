@@ -32,7 +32,7 @@ build/
 
 ### VS Code ###
 .vscode/
-comando para docker.txt
+/comando para docker.txt
 /.vscode/
 !**/src/main/**/.vscode/
 !**/src/test/**/.vscode/
