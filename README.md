@@ -3,7 +3,7 @@
 Integrantes
 - Wilmer Shagñay
 - Mercy Arrobo
-- Johanna Margoth
+- Johanna Salazar
 <p>
 El proyecto consiste en un sistema de crianza de ganado, el cual permite llevar un control de los animales, medicinas, alimentacion, reproduccion, control de enfermedades y el area de crianza.
 </p>
