@@ -8,10 +8,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Vaca extends Animal {
-    private String fechaParto;
-    public Vaca(String fechaParto, int id, String sexo, String fechaNacimiento, String raza, String estado, String fechaVenta, int idMadre, int idPadre) {
-        super();
-        this.fechaParto = fechaParto;
-    }
+    private int idMadre;
+    private int idPadre;
 
 }

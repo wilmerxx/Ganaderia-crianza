@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Toro extends Animal{
-    private String fechaVenta;
     private int idMadre;
     private int idPadre;
 }
+

@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Ternero extends Animal{
     private String fechaDestete;
-    private String fechaVenta;
     private int idMadre;
     private int idPadre;
 }
+ 

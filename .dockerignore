@@ -1,0 +1,13 @@
+.git
+.firebase
+.gitignore
+.editorconfig
+.gitattributes
+/.vscode
+/node_modules
+/e2e
+/docs
+*.log
+*.zip
+*.rar
+*.md

@@ -12,10 +12,8 @@ public class Animal {
     private String nombre;
     private String raza;
     private String sexo;
+    private double peso;
     private String fechaNacimiento;
-    private String fechaIngreso;
-    private String fechaSalida;
-    private String estado;
     private String tipo;
     private String observaciones;
     private int idLote;
