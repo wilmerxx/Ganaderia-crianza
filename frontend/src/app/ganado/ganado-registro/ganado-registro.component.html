@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <h1>Ganados</h1>
+
+  <table class="table">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nombre</th>
+      <th>Raza</th>
+      <th>Sexo</th>
+      <th>Peso</th>
+      <th>observaciones</th>
+      <th>tipo</th>
+      <th>fechaNacimiento</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let ganado of ganados">
+      <td>{{ ganado.id }}</td>
+      <td>{{ ganado.nombre }}</td>
+      <td>{{ ganado.raza }}</td>
+      <td>{{ ganado.sexo }}</td>
+      <td>{{ ganado.peso }}</td>
+      <td>{{ ganado.observaciones }}</td>
+      <td>{{ ganado.tipo }}</td>
+      <td>{{ ganado.fechaNacimiento }}</td>
+      <td>
+        <button type="button" class="btn btn-primary">Editar</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+
+</div>
