@@ -1,5 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
-import com.grupo1.ganaderiagrupo1.Modelos.animal.Animal;
+import com.grupo1.ganaderiagrupo1.Modelos.Animal;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +13,9 @@ import java.util.List;
 public class AnimalControlador {
     List<Animal> animales = new ArrayList<>(
             List.of(
-                    new Animal(2, "Toro", "Macho", "Ho", "dskfj", "sdf", "sdf", "sdf", "sdf", "sdf", 3),
-                    new Animal(2, "Toro", "Macho", "Ho", "dskfj", "sdf", "sdf", "sdf", "sdf", "sdf", 3),
-                    new Animal(3, "Vaca", "Hembra", "Ho", "dskfj", "sdf", "sdf", "sdf", "sdf", "sdf", 3)
+                    new Animal(1, "torivio", "rose", "macho",278.3,"13/9/2023", "vaca", "esta en buen estado",3),
+                    new Animal(1, "martita", "rose", "hembra",28.3,"18/9/2021", "vaca", "esta con garapatas",2),
+                    new Animal(1, "josefa", "rose", "hembra",78.3,"13/9/2020", "vaca", "esta en enferma",3)
             )
     );
 

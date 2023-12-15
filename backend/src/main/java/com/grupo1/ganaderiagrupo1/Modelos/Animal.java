@@ -1,4 +1,4 @@
-package com.grupo1.ganaderiagrupo1.Modelos.animal;
+package com.grupo1.ganaderiagrupo1.Modelos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
