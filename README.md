@@ -161,6 +161,7 @@ ng serve --port <numero_puerto>
 ```
 ng serve --port <numero_puerto> -o
 ```
+
 ## Comandos de git
 ### Para inicializar un repositorio de git
 ```
