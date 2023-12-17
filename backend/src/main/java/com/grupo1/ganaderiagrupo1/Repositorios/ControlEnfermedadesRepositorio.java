@@ -2,13 +2,13 @@ package com.grupo1.ganaderiagrupo1.Repositorios;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@ResponseBody
+@Repository
 public class ControlEnfermedadesRepositorio  implements InterfazRepositorio{
 
     private final List<ControlEnfermedades> controlEnfermedadesList = Ganado.getControlEnfermedades();
@@ -16,7 +16,6 @@ public class ControlEnfermedadesRepositorio  implements InterfazRepositorio{
     @Override
     public void guardar(Object o) {
         controlEnfermedadesList.add((ControlEnfermedades) o);
-
     }
 
     @Override
@@ -46,9 +45,9 @@ public class ControlEnfermedadesRepositorio  implements InterfazRepositorio{
         return null;
     }
 
-    @Override
-    public List<Object> buscarTodos() {
+
+    public List<ControlEnfermedades> buscarTodos() {
         //buscar todos los controles de enfermedades
-        return Collections.singletonList(controlEnfermedadesList);
+        return controlEnfermedadesList;
     }
 }

@@ -1,12 +1,22 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
 
-import java.util.List;
+import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public class GanadoServicio implements InterfazServicio {
 
+    @Autowired
+    private GanadoRepositorio ganadoRepositorio;
+
+    public List<?> buscarTodos() {
+        return ganadoRepositorio.buscarTodos();
+    }
     @Override
     public void guardar(Object o) {
-
+        ganadoRepositorio.guardar(o);
     }
 
     @Override
@@ -20,13 +30,8 @@ public class GanadoServicio implements InterfazServicio {
     }
 
     @Override
-    public Object buscarPorId(Long id) {
-        return null;
-    }
-
-    @Override
-    public List<Object> buscarTodos() {
-        return null;
+    public Object buscarPorId(String id) {
+        return ganadoRepositorio.buscarPorId(id);
     }
 
 }

@@ -15,16 +15,17 @@ public class Ganado {
     private String raza;
     private double peso;
     private String sexo;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date fechaNacimiento;
     private String tipo;
     private Ganado madre;
     private Ganado padre;
+    // estado = muerto, vivo, enfermo, sano
     private String estado;
     @Setter
     @Getter
     public static List<ControlEnfermedades> controlEnfermedades;
-
+    public static List<Object> medicinaList;
     public Ganado() {
     }
 
@@ -76,5 +77,32 @@ public class Ganado {
         this.tipo = tipo;
         this.madre = madre;
         this.padre = padre;
+    }
+
+    /**
+     * @param ganado_id
+     * @param codigo
+     * @param nombre_ganado
+     * @param raza
+     * @param peso
+     * @param sexo
+     * @param fechaNacimiento
+     * @param tipo
+     * @param madre
+     * @param padre
+     * @param controlEnfermedades
+     */
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, Ganado madre, Ganado padre, List<ControlEnfermedades> controlEnfermedades) {
+        this.ganado_id = ganado_id;
+        this.codigo = codigo;
+        this.nombre_ganado = nombre_ganado;
+        this.raza = raza;
+        this.peso = peso;
+        this.sexo = sexo;
+        this.fechaNacimiento = fechaNacimiento;
+        this.tipo = tipo;
+        this.madre = madre;
+        this.padre = padre;
+        this.controlEnfermedades = controlEnfermedades;
     }
 }

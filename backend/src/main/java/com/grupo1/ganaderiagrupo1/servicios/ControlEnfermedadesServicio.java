@@ -1,7 +1,9 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
 
-import java.util.List;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+@Service
 public class ControlEnfermedadesServicio implements InterfazServicio {
 
     @Override
@@ -20,12 +22,8 @@ public class ControlEnfermedadesServicio implements InterfazServicio {
     }
 
     @Override
-    public Object buscarPorId(Long id) {
+    public Object buscarPorId(String id) {
         return null;
     }
 
-    @Override
-    public List<Object> buscarTodos() {
-        return null;
-    }
 }
