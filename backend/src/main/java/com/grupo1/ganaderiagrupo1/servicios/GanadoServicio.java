@@ -28,4 +28,5 @@ public class GanadoServicio implements InterfazServicio {
     public List<Object> buscarTodos() {
         return null;
     }
+
 }
