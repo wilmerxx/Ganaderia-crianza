@@ -2,7 +2,7 @@ package com.grupo1.ganaderiagrupo1.Servicios;
 
 import java.util.List;
 
-public class GanadoServicio implements InterfazServicio {
+public class ControlEnfermedadesServicio implements InterfazServicio {
 
     @Override
     public void guardar(Object o) {
