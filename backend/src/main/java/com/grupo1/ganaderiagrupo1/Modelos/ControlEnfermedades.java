@@ -5,15 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ControlEnfermedades {
         private String control_id;
         private String tipo_control;
-        private String pesoActual;
+        private double pesoActual;
         @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-        private String fechaControl;
+        private Date fechaControl;
         private String observaciones;
         private String ganado_id;
         private String estado;

@@ -1,33 +1,36 @@
 package com.grupo1.ganaderiagrupo1.Repositorios;
-
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 
 @Repository
-public class GanadoRepositorio implements InterfazRepositorio {
-    Date fecha = new GregorianCalendar(2021, Calendar.JANUARY, 1).getTime();
+public class GanadoRepositorio {
     List<Ganado> ganadoList = new ArrayList<>();
 
-
-    @Override
     public void guardar(Object o) {
         ganadoList.add((Ganado) o);
     }
 
-    @Override
-    public void cambioEstado(Object o, String estado) {
+    public void cambioEstado(Ganado o, String estado) {
+        Ganado ganado = buscarPorId(o.getGanado_id());
+        ganado.setEstado(estado);
 
     }
 
-    @Override
-    public void actualizar(Object o) {
-
+    public void actualizar(Ganado o) {
+        Ganado ganado = buscarPorId(o.getGanado_id());
+        ganado.setEstado(o.getEstado());
+        ganado.setFechaNacimiento(o.getFechaNacimiento());
+        ganado.setPeso(o.getPeso());
+        ganado.setRaza(o.getRaza());
+        ganado.setSexo(o.getSexo());
+        ganado.setTipo(o.getTipo());
+        ganado.setNombre_ganado(o.getNombre_ganado());
+        ganado.setCodigo(o.getCodigo());
     }
 
-    @Override
-    public Object buscarPorId(String id) {
+    public Ganado buscarPorId(String id) {
         for (Ganado ganado: ganadoList) {
             if (ganado.getGanado_id().equals(id)){
                 return ganado;
@@ -39,4 +42,6 @@ public class GanadoRepositorio implements InterfazRepositorio {
     public List<Ganado> buscarTodos() {
        return ganadoList;
     }
+
+
 }

@@ -1,29 +1,25 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
 
+import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
+import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ControlEnfermedadesServicio implements InterfazServicio {
+public class ControlEnfermedadesServicio {
+    @Autowired
+    private ControlEnfermedadesRepositorio controlEnfermedadesRepositorio;
 
-    @Override
-    public void guardar(Object o) {
+   public List<ControlEnfermedades> buscarTodos() {
+            return controlEnfermedadesRepositorio.buscarTodos();
+   }
 
-    }
-
-    @Override
-    public void eliminar(Object o) {
-
-    }
-
-    @Override
-    public void actualizar(Object o) {
+    public void cambioEstado(String id, String estado) {
 
     }
 
-    @Override
     public Object buscarPorId(String id) {
         return null;
     }
-
 }
