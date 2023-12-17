@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 public class GanadoControlador {
+
     List<Ganado> animales = new ArrayList<>(
             List.of(
                     new Ganado(1, "torivio", "rose", "macho",278.3,"13/9/2023", "vaca", "esta en buen estado",3),
@@ -19,8 +20,10 @@ public class GanadoControlador {
             )
     );
 
-    @GetMapping("/animal")
-    public ResponseEntity<?> getAnimal(){
-        return ResponseEntity.ok(animales);
+
+    @GetMapping("/ganados")
+    public ResponseEntity<?> getGanado(){
+        return ResponseEntity.ok("");
+
     }
 }

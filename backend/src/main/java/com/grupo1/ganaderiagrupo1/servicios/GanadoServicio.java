@@ -1,4 +1,32 @@
-package com.grupo1.ganaderiagrupo1.servicios;
+package com.grupo1.ganaderiagrupo1.Servicios;
 
-public class GanadoServicio {
+import java.util.List;
+
+public class GanadoServicio implements InterfazServicio {
+
+    @Override
+    public void guardar(Object o) {
+
+    }
+
+    @Override
+    public void eliminar(Object o) {
+
+    }
+
+    @Override
+    public void actualizar(Object o) {
+
+    }
+
+    @Override
+    public Object buscarPorId(Long id) {
+        return null;
+    }
+
+    @Override
+    public List<Object> buscarTodos() {
+        return null;
+    }
+
 }

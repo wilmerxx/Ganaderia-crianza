@@ -8,14 +8,12 @@ import {Observable} from "rxjs";
 })
 export class ServicioService {
 
-
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:8080/api/animal';
 
   public getGanados(){
     return this.http.get(this.url);
   }
-
 
   deleteGanado(id: number | undefined): Observable<void> {
     return this.http.delete<void>('/ganados/' + id);

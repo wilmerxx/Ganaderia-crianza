@@ -1,9 +1,8 @@
-package com.grupo1.ganaderiagrupo1.Repositorios;
+package com.grupo1.ganaderiagrupo1.Servicios;
 
 import java.util.List;
 
-public class GanadoRepositorio implements InterfazRepositorio {
-
+public class ControlEnfermedadesServicio implements InterfazServicio {
 
     @Override
     public void guardar(Object o) {
@@ -11,7 +10,7 @@ public class GanadoRepositorio implements InterfazRepositorio {
     }
 
     @Override
-    public void cambioEstado(Object o, String estado) {
+    public void eliminar(Object o) {
 
     }
 
@@ -21,7 +20,7 @@ public class GanadoRepositorio implements InterfazRepositorio {
     }
 
     @Override
-    public Object buscarPorId(String id) {
+    public Object buscarPorId(Long id) {
         return null;
     }
 
