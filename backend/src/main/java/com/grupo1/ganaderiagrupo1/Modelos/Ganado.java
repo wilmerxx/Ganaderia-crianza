@@ -22,10 +22,11 @@ public class Ganado {
     private Ganado padre;
     // estado = muerto, vivo, enfermo, sano
     private String estado;
+    private String control_id;
     @Setter
     @Getter
-    public static List<ControlEnfermedades> controlEnfermedades;
-    public static List<Object> medicinaList;
+    public List<ControlEnfermedades> controlEnfermedades;
+
     public Ganado() {
     }
 
@@ -40,7 +41,7 @@ public class Ganado {
      * @param tipo
      * TODO: Agregar vaca o toro
      */
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo) {
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String estado, String control_id) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
@@ -51,6 +52,8 @@ public class Ganado {
         this.tipo = tipo;
         this.madre = null;
         this.padre = null;
+        this.estado = estado;
+        this.control_id = control_id;
     }
 
     /**
