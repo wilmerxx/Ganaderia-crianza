@@ -4,21 +4,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { GanadoRegistroComponent } from './ganado/ganado-registro/ganado-registro.component';
-import {FormsModule} from "@angular/forms";
+import { RouterModule } from '@angular/router';
+import { GanadoModule } from './ganado/ganado.module';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    GanadoRegistroComponent
-  ],
+    ],
   imports: [
     BrowserModule,
+    RouterModule,
     AppRoutingModule,
     NgbModule,
-    FormsModule,
-    HttpClientModule
+    GanadoModule
   ],
   providers: [],
   bootstrap: [AppComponent]
