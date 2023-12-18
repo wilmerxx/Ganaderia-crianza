@@ -6,6 +6,7 @@ import java.util.*;
 
 @Repository
 public class GanadoRepositorio {
+
     Date date = new Date();
 
     List<Ganado> ganadoList = new ArrayList<>();
