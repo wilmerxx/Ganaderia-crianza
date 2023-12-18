@@ -29,7 +29,6 @@ public class Ganado {
     @Getter
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
 
-
     public Ganado() {
     }
 

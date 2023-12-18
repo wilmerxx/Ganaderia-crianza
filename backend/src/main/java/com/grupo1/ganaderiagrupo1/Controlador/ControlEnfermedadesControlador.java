@@ -1,7 +1,6 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
-
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +20,6 @@ public class ControlEnfermedadesControlador {
     @GetMapping("/controlEnfermedades")
     public ResponseEntity<?> getControlEnfermedades(){
         if(controlEnfermedadesServicio.listaControlEnfermedades().isEmpty()){
-
             Date date = new Date();
             ControlEnfermedades controlEnfermedades = new ControlEnfermedades("String control_id", "String enfermedad", 239.4, date,"String control_id", "String enfermedad", "String estado");
             return ResponseEntity.ok(controlEnfermedades);

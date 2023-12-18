@@ -69,7 +69,6 @@ public class GanadoServicio {
 
     public ControlEnfermedades buscarControlEnfermedadesPorId(String id) {
         return controlEnfermedadesRepositorio.buscarPorId(id);
-
     }
 
 }
