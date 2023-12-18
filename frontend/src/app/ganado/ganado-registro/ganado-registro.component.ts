@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ServicioService } from '../servicio.service';
+import * as Chartist from 'chartist';
 
 
 @Component({
@@ -7,23 +8,8 @@ import { ServicioService } from '../servicio.service';
   templateUrl: './ganado-registro.component.html',
   styleUrls: ['./ganado-registro.component.css']
 })
-export class GanadoRegistroComponent implements OnInit {
-  ganados: any = []; // array to store all ganados
-  constructor(private  servicioService: ServicioService) {}
+export class GanadoRegistroComponent {
 
-  // lifecycle hook to fetch initial data
-
-  ngOnInit(): void {
-    this.getGanados();
-  }
-
-  // traer lista de ganados
-  getGanados(): void {
-    this.servicioService.getGanados().subscribe(ganados => {
-      this.ganados = ganados;
-      console.log("hola");
-    });
-  }
 
 
 }

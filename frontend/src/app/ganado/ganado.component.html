@@ -1,0 +1,58 @@
+<div class="dashboard-container">
+  <aside class="sidebar">
+    <div class="sidebar-content">
+      <div class="logo-container">
+        <img src="https://cdn-icons-png.flaticon.com/512/4357/4357594.png " alt="Logo de tu aplicación">
+        <div class="logo-text">Ganaderia Nuevo Amanecer</div>
+      </div>
+      <div class="divider"></div> <!-- Línea divisoria -->
+      <ul class="list-unstyled">
+        <li>
+          <a class="text-white" routerLink="./inicio" (click)="cambiarEnlaceActivo('./inicio')"
+            [class.active]="enlaceActivo === './inicio'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Inicio</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./ganado-registro" (click)="cambiarEnlaceActivo('./ganado-registro')"
+            [class.active]="enlaceActivo === './ganado-registro'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Registro Ganado</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./reproduccion" (click)="cambiarEnlaceActivo('./reproduccion')"
+            [class.active]="enlaceActivo === './reproduccion'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Reproduccion</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./alimentacion" (click)="cambiarEnlaceActivo('./alimentacion')"
+            [class.active]="enlaceActivo === './alimentacion'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Alimentacion</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./area" (click)="cambiarEnlaceActivo('./area')"
+            [class.active]="enlaceActivo === './area'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Area</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./enfermedades" (click)="cambiarEnlaceActivo('./enfermedades')"
+            [class.active]="enlaceActivo === './enfermedades'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Enfermedades</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./medicina" (click)="cambiarEnlaceActivo('./medicina')"
+            [class.active]="enlaceActivo === './medicina'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Medicina</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
