@@ -2,6 +2,9 @@ package com.grupo1.ganaderiagrupo1.Servicios;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
+
+import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
+
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +15,9 @@ public class GanadoServicio {
 
     @Autowired
     private GanadoRepositorio ganadoRepositorio;
+
+    @Autowired
+    private ControlEnfermedadesRepositorio controlEnfermedadesRepositorio;
 
     public List<Ganado> buscarTodos() {
         return ganadoRepositorio.buscarTodos();
@@ -24,7 +30,8 @@ public class GanadoServicio {
 
     }
 
-    public void actualizar(Object o) {
+    public void actualizar(Ganado o) {
+        ganadoRepositorio.actualizar(o);
 
     }
 
@@ -35,7 +42,7 @@ public class GanadoServicio {
     public void guardarControlEnfermedades(ControlEnfermedades controlEnfermedades) {
         Ganado ganado = buscarPorId(controlEnfermedades.getGanado_id());
         ganado.getControlEnfermedades().add(controlEnfermedades);
-        ganadoRepositorio.actualizar(ganado);
+        controlEnfermedadesRepositorio.guardar(controlEnfermedades);
     }
 
     public void actualizarContolEnfermedades(ControlEnfermedades controlEnfermedades) {
@@ -49,13 +56,22 @@ public class GanadoServicio {
                 controlEnfermedades1.setObservaciones(controlEnfermedades.getObservaciones());
             }
         }
-        ganadoRepositorio.actualizar(ganado);
+        controlEnfermedadesRepositorio.actualizar(controlEnfermedades);
     }
 
     public void eliminarControlEnfermedades(ControlEnfermedades controlEnfermedades) {
         Ganado ganado = buscarPorId(controlEnfermedades.getGanado_id());
+        ControlEnfermedades controlEnfermedades1 = controlEnfermedadesRepositorio.buscarPorId(controlEnfermedades.getControl_id());
         ganado.getControlEnfermedades().remove(controlEnfermedades);
-        ganadoRepositorio.actualizar(ganado);
+        controlEnfermedadesRepositorio.eliminar(controlEnfermedades1);
+    }
+
+    public List<ControlEnfermedades> listaControlEnfermedades() {
+        return controlEnfermedadesRepositorio.buscarTodos();
+    }
+
+    public ControlEnfermedades buscarControlEnfermedadesPorId(String id) {
+        return controlEnfermedadesRepositorio.buscarPorId(id);
     }
 
 }
