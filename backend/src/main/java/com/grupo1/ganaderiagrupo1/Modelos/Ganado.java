@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +27,8 @@ public class Ganado {
     private String control_id;
     @Setter
     @Getter
-    public List<ControlEnfermedades> controlEnfermedades;
+    public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
+
 
     public Ganado() {
     }
@@ -41,7 +44,8 @@ public class Ganado {
      * @param tipo
      * TODO: Agregar vaca o toro
      */
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String estado, String control_id) {
+
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String estado) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
@@ -53,7 +57,6 @@ public class Ganado {
         this.madre = null;
         this.padre = null;
         this.estado = estado;
-        this.control_id = control_id;
     }
 
     /**
@@ -80,6 +83,7 @@ public class Ganado {
         this.tipo = tipo;
         this.madre = madre;
         this.padre = padre;
+
     }
 
     /**
