@@ -43,6 +43,7 @@ public class Ganado {
      * @param tipo
      * TODO: Agregar vaca o toro
      */
+
     public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String estado) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;

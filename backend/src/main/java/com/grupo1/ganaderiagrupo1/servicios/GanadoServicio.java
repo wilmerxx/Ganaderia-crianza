@@ -15,7 +15,6 @@ public class GanadoServicio {
 
     @Autowired
     private GanadoRepositorio ganadoRepositorio;
-
     @Autowired
     private ControlEnfermedadesRepositorio controlEnfermedadesRepositorio;
 

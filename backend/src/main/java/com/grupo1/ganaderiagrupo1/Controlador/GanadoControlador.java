@@ -22,7 +22,9 @@ public class GanadoControlador {
     public ResponseEntity<?> getGanado(){
         if(ganadoServicio.buscarTodos().isEmpty()){
             Date date = new Date();
+
             Ganado ganado = new Ganado( "", "","", "", 0.00, "String sexo", date,"String tipo","");
+
             return ResponseEntity.ok(ganado);
         }else {
             return ResponseEntity.ok(ganadoServicio.buscarTodos());

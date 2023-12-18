@@ -11,6 +11,7 @@ import java.util.Date;
 
 import java.util.Objects;
 
+
 @RestController
 @RequestMapping("/api")
 public class ControlEnfermedadesControlador {
@@ -24,12 +25,15 @@ public class ControlEnfermedadesControlador {
             ControlEnfermedades controlEnfermedades = new ControlEnfermedades("String control_id", "String enfermedad", 239.4, date,"String control_id", "String enfermedad", "String estado");
             return ResponseEntity.ok(controlEnfermedades);
         }else {
+
             return ResponseEntity.ok(controlEnfermedadesServicio.listaControlEnfermedades());
+
         }
     }
 
     @PostMapping("/controlEnfermedades")
     public ResponseEntity<?> postControlEnfermedades(@RequestBody ControlEnfermedades controlEnfermedades){
+
         if(!controlEnfermedadesServicio.listaControlEnfermedades().contains(controlEnfermedades)){
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);
