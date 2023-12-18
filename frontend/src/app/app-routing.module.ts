@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import {GanadoRegistroComponent} from "./ganado/ganado-registro/ganado-registro.component";
+import { GanadoComponent } from './ganado/ganado.component';
 
 const routes: Routes = [
-  {path: '', component: GanadoRegistroComponent},
+  { path: 'ganado', component: GanadoComponent },
+  { path: '', pathMatch: 'full', redirectTo: 'ganado' },
 ];
 
 @NgModule({
