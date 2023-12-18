@@ -22,7 +22,9 @@ public class GanadoControlador {
     public ResponseEntity<?> getGanado(){
         if(ganadoServicio.buscarTodos().isEmpty()){
             Date date = new Date();
-            Ganado ganado = new Ganado( "String ganado_id", "String codigo"," String nombre_ganado", "String raza", 345.34, "String sexo", date,"String tipo");
+
+            Ganado ganado = new Ganado( "", "","", "", 0.00, "String sexo", date,"String tipo","");
+
             return ResponseEntity.ok(ganado);
         }else {
             return ResponseEntity.ok(ganadoServicio.buscarTodos());
@@ -37,6 +39,28 @@ public class GanadoControlador {
             return ResponseEntity.badRequest().body("No se puede crear un ganado con un id");
         }
         ganadoServicio.guardar(ganado);
+        return ResponseEntity.ok(ganado);
+    }
+
+    // traer por id el ganado
+    @GetMapping("/ganados/{id}")
+    public ResponseEntity<?> getGanadoPorId(@PathVariable String id){
+        Ganado ganado = ganadoServicio.buscarPorId(id);
+        if(Objects.isNull(ganado)){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+        }else {
+            return ResponseEntity.ok(ganado);
+        }
+    }
+
+    //actualizar ganado
+    @PutMapping("/ganados")
+    public ResponseEntity<?> putGanado(@RequestBody Ganado ganado){
+        Ganado ganado1 = ganadoServicio.buscarPorId(ganado.getGanado_id());
+        if(Objects.isNull(ganado1)){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+        }
+        ganadoServicio.actualizar(ganado);
         return ResponseEntity.ok(ganado);
     }
 }

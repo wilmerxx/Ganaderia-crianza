@@ -1,53 +1,65 @@
 package com.grupo1.ganaderiagrupo1.Repositorios;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
-import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import org.springframework.stereotype.Repository;
 
-import java.util.Collections;
+import javax.xml.crypto.Data;
+import java.util.ArrayList;
+import java.util.Date;
+
 import java.util.List;
-import java.util.Objects;
 
 @Repository
-public class ControlEnfermedadesRepositorio  implements InterfazRepositorio{
+public class ControlEnfermedadesRepositorio {
+    Date date = new Date();
 
-    private final List<ControlEnfermedades> controlEnfermedadesList = Ganado.getControlEnfermedades();
+    List<ControlEnfermedades> controlEnfermedadesList = new ArrayList<>();
 
-    @Override
-    public void guardar(Object o) {
-        controlEnfermedadesList.add((ControlEnfermedades) o);
-    }
+  /*List<ControlEnfermedades> controlEnfermedadesList = new ArrayList<>(
+          List.of(
+                  new ControlEnfermedades("1","Garrapata", 345.43, date, "100", "TM232", "Activo"),
+                  new ControlEnfermedades("2","Garrapata", 345.43, date, "100", "TM222", "Activo"),
+                  new ControlEnfermedades("3","Garrapata", 345.43, date, "100", "TM272", "Inactivo"),
+                  new ControlEnfermedades("4","Garrapata", 345.43, date, "100", "TM242", "Activo"),
+                  new ControlEnfermedades("5","Garrapata", 345.43, date, "100", "TM212", "Inactivo"),
+                  new ControlEnfermedades("6","Garrapata", 345.43, date, "100", "TM292", "Activo"),
+                  new ControlEnfermedades("7","Garrapata", 345.43, date, "100", "TM672", "Activo")
+          )
+  );*/
 
-    @Override
-    public void cambioEstado(Object o, String estado) {
-        // los tipos de estados son: Sospechoso, Confirmado, en tratamiento, no resuelto, resuelto, fallido
-        ((ControlEnfermedades) o).setEstado(estado);
-    }
+  public List<ControlEnfermedades> buscarTodos() {
+    return controlEnfermedadesList;
+  }
 
-    @Override
-    public void actualizar(Object o) {
-        //actualizar el control de enfermedades
+    public ControlEnfermedades buscarPorId(String id) {
         for (ControlEnfermedades controlEnfermedades: controlEnfermedadesList) {
-            if (Objects.equals(controlEnfermedades.getControl_id(), ((ControlEnfermedades) o).getControl_id())){
-                controlEnfermedadesList.remove(controlEnfermedades);
-                controlEnfermedadesList.add((ControlEnfermedades) o);
-            }
-        }
-    }
-
-    @Override
-    public Object buscarPorId(String id) {
-        for (ControlEnfermedades controlEnfermedades: controlEnfermedadesList) {
-            if (Objects.equals(controlEnfermedades.getControl_id(), id)){
+            if (controlEnfermedades.getControl_id().equals(id)){
                 return controlEnfermedades;
             }
         }
         return null;
     }
 
-
-    public List<ControlEnfermedades> buscarTodos() {
-        //buscar todos los controles de enfermedades
-        return controlEnfermedadesList;
+    public void guardar(ControlEnfermedades o) {
+        controlEnfermedadesList.add(o);
     }
+
+    public void cambioEstado( ControlEnfermedades o) {
+        ControlEnfermedades controlEnfermedades = buscarPorId(o.getControl_id());
+        controlEnfermedades.setEstado(o.getEstado());
+    }
+
+    public void actualizar(ControlEnfermedades o) {
+        ControlEnfermedades controlEnfermedades = buscarPorId(o.getControl_id());
+        controlEnfermedades.setEstado(o.getEstado());
+        controlEnfermedades.setFechaControl(o.getFechaControl());
+        controlEnfermedades.setTipo_control(o.getTipo_control());
+        controlEnfermedades.setPesoActual(o.getPesoActual());
+        controlEnfermedades.setObservaciones(o.getObservaciones());
+    }
+
+    public void eliminar(ControlEnfermedades o) {
+        controlEnfermedadesList.remove(o);
+    }
+
 }
