@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/areas")
 public class AreaController {
 
@@ -78,8 +79,4 @@ public class AreaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> Desarrollo
 }

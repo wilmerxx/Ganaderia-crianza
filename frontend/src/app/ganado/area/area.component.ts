@@ -1,4 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AreaService} from "../../area.service";
+import {Area} from "../../models/area.model";
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-area',
@@ -6,21 +10,30 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
   styleUrls: ['./area.component.css']
 })
 export class AreaComponent implements OnInit {
-
-
-
+  validador: boolean;
+  constructor(public areaService: AreaService) {
+    this.validador = false;
+  }
   ngOnInit(): void {
+    this.getAreas();
   }
 
   areaData: any[] = [
     { nombre: 'La palmera',tipo_terreno:'plano', tipo_pasto: 'Gramalote', superficie: '3 hectareas',total_ganado:'23' },
 
   ];
+
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
 
-  constructor() {}
+  getAreas(){
+    this.areaService.getAreas().subscribe((res) =>{
+      this.areaService.areas = res as Area[];
+      console.log(res);
+    })
+  }
+
 
   openModal() {
     if (this.exampleModal) {
