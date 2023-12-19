@@ -31,6 +31,12 @@ public class Ganado {
     @Setter
     @Getter
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
+    @Setter
+    @Getter
+    public List<Medicina> medicinas = new ArrayList<>();
+    @Setter
+    @Getter
+    public List<Alimentacion> alimentaciones = new ArrayList<>();
     public Ganado() {
     }
 
