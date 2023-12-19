@@ -1,9 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
-
-<<<<<<< HEAD
-=======
 import com.fasterxml.jackson.annotation.JsonFormat;
->>>>>>> Desarrollo
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
