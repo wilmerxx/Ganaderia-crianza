@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,10 +26,11 @@ public class Ganado {
     // estado = muerto, vivo, enfermo, sano
     private String estado;
     private String control_id;
+    private String areaId;
+
     @Setter
     @Getter
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
-
     public Ganado() {
     }
 
@@ -111,4 +113,17 @@ public class Ganado {
         this.padre = padre;
         this.controlEnfermedades = controlEnfermedades;
     }
+
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
+    }
+    public boolean estaAsignadoAArea() {
+        return areaId != null;
+    }
+
 }
