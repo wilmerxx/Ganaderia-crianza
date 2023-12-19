@@ -78,5 +78,4 @@ public class AreaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-
 }
