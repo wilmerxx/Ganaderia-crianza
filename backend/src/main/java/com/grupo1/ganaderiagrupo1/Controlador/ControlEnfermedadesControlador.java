@@ -1,7 +1,9 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
+
 import com.grupo1.ganaderiagrupo1.Servicios.ControlEnfermedadesServicio;
+
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;

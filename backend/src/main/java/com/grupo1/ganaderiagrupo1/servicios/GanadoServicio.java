@@ -1,11 +1,10 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
+import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
-<<<<<<< HEAD
-=======
+
 
 import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
 
->>>>>>> 9f232e2 (actualización del merge (#24))
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,4 +34,6 @@ public class GanadoServicio {
     public Ganado buscarPorId(String id) {
         return ganadoRepositorio.buscarPorId(id);
     }
+
+
 }
