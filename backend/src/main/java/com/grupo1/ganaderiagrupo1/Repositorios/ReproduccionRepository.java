@@ -29,7 +29,6 @@ public class ReproduccionRepository {
     public void agregar(Reproduccion reproduccion) {
         // Agregar la reproducción a la lista
         reproduccionesList.add(reproduccion);
-
     }
 
     private boolean tieneGanadoTipoVaca(List<Ganado> ganados) {
