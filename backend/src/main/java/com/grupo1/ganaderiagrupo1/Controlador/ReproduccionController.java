@@ -1,10 +1,13 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
+import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
 import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
+import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,12 +20,16 @@ public class ReproduccionController {
         this.reproduccionService = reproduccionService;
     }
 
-    @GetMapping("/listar-todos")
-    public ResponseEntity<List<Reproduccion>> listarTodos() {
-        List<Reproduccion> reproducciones = reproduccionService.buscarTodos();
-        return ResponseEntity.ok(reproducciones);
+    @GetMapping()
+    public ResponseEntity<?> listarTodos() {
+        if(reproduccionService.buscarTodos().isEmpty()){
+            Date date = new Date();
+            Reproduccion reproduccion = new Reproduccion("",date,"","","");
+            return ResponseEntity.ok(reproduccion);
+        }
+        return ResponseEntity.ok( reproduccionService.buscarTodos());
     }
-    @PostMapping("/agregar")
+    @PostMapping()
     public ResponseEntity<String> agregarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
             reproduccionService.agregarReproduccion(reproduccion);
@@ -32,7 +39,7 @@ public class ReproduccionController {
         }
     }
 
-    @GetMapping("/buscar-por-id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Reproduccion> buscarPorId(@PathVariable String id) {
         Reproduccion reproduccion = reproduccionService.buscarPorId(id);
         if (reproduccion != null) {
@@ -42,7 +49,7 @@ public class ReproduccionController {
         }
     }
 
-    @PutMapping("/actualizar")
+    @PutMapping()
     public ResponseEntity<String> actualizarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
             reproduccionService.actualizarReproduccion(reproduccion);
@@ -52,7 +59,7 @@ public class ReproduccionController {
         }
     }
 
-    @DeleteMapping("/eliminar/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarReproduccion(@PathVariable String id) {
         try {
             reproduccionService.eliminarReproduccion(id);

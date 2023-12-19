@@ -2,6 +2,8 @@ package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Area;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
+import com.grupo1.ganaderiagrupo1.Servicios.AreaService;
+import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,38 +17,53 @@ public class AreaController {
     @Autowired
     private AreaService areaService;
 
+    @Autowired
+    private GanadoServicio ganadoServicio;
+
     @GetMapping
-    public ResponseEntity<List<Area>> getAllAreas() {
+    public ResponseEntity<?> getAllAreas() {
         List<Area> areas = areaService.getAllAreas();
+        if (areaService.getAllAreas().isEmpty()) {
+            Area area = new Area("", "", "", "", 23.34,"");
+            return ResponseEntity.ok(area);
+
+        }
         return new ResponseEntity<>(areas, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Area> getAreaById(@PathVariable String id) {
+    public ResponseEntity<?> getAreaById(@PathVariable String id) {
         Area area = areaService.getAreaById(id);
         if (area != null) {
-            return new ResponseEntity<>(area, HttpStatus.OK);
+            return  ResponseEntity.ok(area);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+               return ResponseEntity.badRequest().body("No existe un area con ese id");
         }
     }
 
     @PostMapping
-    public ResponseEntity<Area> addArea(@RequestBody Area area) {
+    public ResponseEntity<?> addArea(@RequestBody Area area) {
         try {
-            Area nuevaArea = areaService.addArea(area);
-            return new ResponseEntity<>(nuevaArea, HttpStatus.CREATED);
+
+            if(areaService.getAllAreas().contains(area)){
+                return ResponseEntity.badRequest().body("Ya existe un area con ese id");
+            }
+            if (ganadoServicio.buscarPorId(area.getGanado_id()) == null) {
+                return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+            }
+            areaService.addArea(area);
+            return new ResponseEntity<>("Area creada", HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Area> updateArea(@PathVariable String id, @RequestBody Area updatedArea) {
+    @PutMapping()
+    public ResponseEntity<Area> updateArea(@RequestBody Area updatedArea) {
         try {
-            Area area = areaService.updateArea(id, updatedArea);
-            if (area != null) {
-                return new ResponseEntity<>(area, HttpStatus.OK);
+            areaService.updateArea(updatedArea);
+            if (updatedArea != null) {
+                return new ResponseEntity<>(updatedArea, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -59,19 +76,5 @@ public class AreaController {
     public ResponseEntity<Void> deleteArea(@PathVariable String id) {
         areaService.deleteArea(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-
-    @PostMapping("/{areaId}/ganados")
-    public ResponseEntity<Area> assignGanadoToArea(@PathVariable String areaId, @RequestBody Ganado ganado) {
-        try {
-            Area area = areaService.assignGanadoToArea(areaId, ganado);
-            if (area != null) {
-                return new ResponseEntity<>(area, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
     }
 }

@@ -14,7 +14,7 @@ public class ControlEnfermedades {
         private String control_id;
         private String tipo_control;
         private double pesoActual;
-        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+        @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
         private Date fechaControl;
         private String observaciones;
         private String ganado_id;
