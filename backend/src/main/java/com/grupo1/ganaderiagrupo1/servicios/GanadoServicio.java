@@ -1,6 +1,10 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
+
+
+import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
+
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ public class GanadoServicio {
 
     public void actualizar(Ganado o) {
         ganadoRepositorio.actualizar(o);
+
     }
 
     public Ganado buscarPorId(String id) {

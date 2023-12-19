@@ -1,5 +1,6 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
 
+import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,5 @@ public class Area {
     private String tipoPasto;
     private double superficie;
     private String ganado_id;
-
 }
 

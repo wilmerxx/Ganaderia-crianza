@@ -1,12 +1,10 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
-
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
 import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
 import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Date;
 import java.util.List;
 
