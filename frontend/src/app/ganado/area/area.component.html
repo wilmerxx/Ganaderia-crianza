@@ -1,1 +1,82 @@
-<p>area works!</p>
+
+<div>
+  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+</div>
+<table class="table">
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Tipo de terreno</th>
+    <th scope="col">Tipo de pasto</th>
+    <th scope="col">Superficie</th>
+    <th scope="col">Asignacion</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let row of areaData; let i = index">
+    <th scope="row">{{ i + 1 }}</th>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.nombre }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.tipo_terreno }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.tipo_pasto }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.superficie }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.total_ganado}}</td>
+
+    <td>
+      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
+      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+
+<!-- Modal -->
+<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir Area</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="nombre">Nombre</label>
+            <input type="text" class="form-control" id="nombre">
+          </div>
+          <div class="form-group">
+            <label for="tipo_terreno">Seleciona el tipo de terreno</label>
+            <select class="form-control" id="tipo_terreno">
+              <option>Plano</option>
+              <option>Ladera</option>
+              <option>Montañoso</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="tipo_pasto">Tipo de pasto</label>
+            <select class="form-control" id="tipo_pasto">
+              <option>Gramalote</option>
+              <option>Tundilla</option>
+              <option>Picuyo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="superficie">Superficie</label>
+            <input type="text" class="form-control" id="superficie">
+          </div>
+
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
