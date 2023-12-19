@@ -35,22 +35,37 @@ public class GanadoRepositorio {
         ganadoList.add((Ganado) o);
     }
 
-    public void cambioEstado(Ganado o, String estado) {
+    public void cambiarEstado(Ganado o) {
         Ganado ganado = buscarPorId(o.getGanado_id());
-        ganado.setEstado(estado);
+        ganado.setEstado(o.getEstado());
+    }
+
+    public void actulizarGeneral(Ganado o){
+
+        if(Objects.equals(o.getMadre().getGanado_id(), o.getGanado_id())){
+
+
+        }
+
 
     }
 
     public void actualizar(Ganado o) {
         Ganado ganado = buscarPorId(o.getGanado_id());
-        ganado.setEstado(o.getEstado());
-        ganado.setFechaNacimiento(o.getFechaNacimiento());
-        ganado.setPeso(o.getPeso());
+        ganado.setGanado_id(o.getGanado_id());
+        ganado.setNombre_ganado(o.getNombre_ganado());
         ganado.setRaza(o.getRaza());
         ganado.setSexo(o.getSexo());
-        ganado.setTipo(o.getTipo());
-        ganado.setNombre_ganado(o.getNombre_ganado());
+        ganado.setPeso(o.getPeso());
+        ganado.setFechaNacimiento(o.getFechaNacimiento());
+        ganado.setEstado(o.getEstado());
         ganado.setCodigo(o.getCodigo());
+        ganado.setTipo(o.getTipo());
+        ganado.setMadre_id(o.getMadre_id());
+        ganado.setPadre_id(o.getPadre_id());
+        ganado.setPadre(buscarPorId(o.getPadre_id()));
+        ganado.setMadre(buscarPorId(o.getMadre_id()));
+
     }
 
     public Ganado buscarPorId(String id) {

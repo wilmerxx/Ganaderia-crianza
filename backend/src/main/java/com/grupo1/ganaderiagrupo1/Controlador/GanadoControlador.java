@@ -34,9 +34,9 @@ public class GanadoControlador {
 
     @PostMapping("/ganados")
     public ResponseEntity<?> postGanado(@RequestBody Ganado ganado){
-        Ganado ganado1 = ganadoServicio.buscarPorId(ganado.getGanado_id());
-        if(!Objects.isNull(ganado1)){
-            return ResponseEntity.badRequest().body("No se puede crear un ganado con un id");
+
+        if(ganadoServicio.buscarTodos().contains(ganado)){
+            return ResponseEntity.badRequest().body("Ya existe es ganado");
         }
         ganadoServicio.guardar(ganado);
         return ResponseEntity.ok(ganado);

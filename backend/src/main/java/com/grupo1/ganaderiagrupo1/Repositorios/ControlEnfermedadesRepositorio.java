@@ -50,12 +50,8 @@ public class ControlEnfermedadesRepositorio {
     }
 
     public void actualizar(ControlEnfermedades o) {
-        ControlEnfermedades controlEnfermedades = buscarPorId(o.getControl_id());
-        controlEnfermedades.setEstado(o.getEstado());
-        controlEnfermedades.setFechaControl(o.getFechaControl());
-        controlEnfermedades.setTipo_control(o.getTipo_control());
-        controlEnfermedades.setPesoActual(o.getPesoActual());
-        controlEnfermedades.setObservaciones(o.getObservaciones());
+        controlEnfermedadesList.removeIf(controlEnfermedades -> controlEnfermedades.getControl_id().equals(o.getControl_id()));
+        controlEnfermedadesList.add(o);
     }
 
     public void eliminar(ControlEnfermedades o) {

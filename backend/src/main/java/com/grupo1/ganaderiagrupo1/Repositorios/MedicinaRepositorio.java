@@ -43,10 +43,7 @@ public class MedicinaRepositorio {
     }
 
     public void actualizar(Medicina o) {
-        Medicina medicina = buscarPorId(o.getMedicina_id());
-        medicina.setSintomas(o.getSintomas());
-        medicina.setDiagnostico(o.getDiagnostico());
-        medicina.setTratamiento(o.getTratamiento());
-        medicina.setFecha_vacuna(o.getFecha_vacuna());
+        medicinaList.removeIf(medicina -> medicina.getMedicina_id().equals(o.getMedicina_id()));
+        medicinaList.add(o);
     }
 }

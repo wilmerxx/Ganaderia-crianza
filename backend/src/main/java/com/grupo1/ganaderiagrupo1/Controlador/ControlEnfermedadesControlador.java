@@ -1,6 +1,7 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
+import com.grupo1.ganaderiagrupo1.Servicios.ControlEnfermedadesServicio;
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,9 @@ import java.util.Objects;
 @RequestMapping("/api")
 public class ControlEnfermedadesControlador {
     @Autowired
-    GanadoServicio controlEnfermedadesServicio;
+    ControlEnfermedadesServicio controlEnfermedadesServicio;
+    @Autowired
+    GanadoServicio ganasoServicio;
 
     @GetMapping("/controlEnfermedades")
     public ResponseEntity<?> getControlEnfermedades(){
@@ -35,6 +38,9 @@ public class ControlEnfermedadesControlador {
     public ResponseEntity<?> postControlEnfermedades(@RequestBody ControlEnfermedades controlEnfermedades){
 
         if(!controlEnfermedadesServicio.listaControlEnfermedades().contains(controlEnfermedades)){
+            if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado_id()))){
+                return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+            }
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);
 
