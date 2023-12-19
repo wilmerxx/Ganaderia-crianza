@@ -77,4 +77,6 @@ public class AreaController {
         areaService.deleteArea(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 }
