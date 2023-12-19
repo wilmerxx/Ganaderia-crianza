@@ -1,4 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
+import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,6 @@ public class GanadoServicio {
     public Ganado buscarPorId(String id) {
         return ganadoRepositorio.buscarPorId(id);
     }
+
+
 }
