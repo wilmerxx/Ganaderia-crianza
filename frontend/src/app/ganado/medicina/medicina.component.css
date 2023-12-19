@@ -3,7 +3,7 @@
   float: right;
 }
 .editable-cell {
-  max-width: 200px; /* Ajusta el valor según tus preferencias */
+  max-width: 200px;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
