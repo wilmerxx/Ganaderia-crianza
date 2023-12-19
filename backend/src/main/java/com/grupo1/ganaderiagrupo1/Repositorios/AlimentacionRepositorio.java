@@ -10,7 +10,6 @@ import java.util.List;
 @Repository
 public class AlimentacionRepositorio {
     Date date = new Date();
-
     List<Alimentacion> alimentacionList = new ArrayList<>();
 
     /*List<Alimentacion> alimentacionList = new ArrayList<>(
@@ -30,6 +29,9 @@ public class AlimentacionRepositorio {
     }
 
     public Alimentacion buscarPorId(String id) {
+        if (alimentacionList.isEmpty()){
+            return null;
+        }
         for (Alimentacion alimentacion: alimentacionList) {
             if (alimentacion.getAlimentacion_id().equals(id)){
                 return alimentacion;

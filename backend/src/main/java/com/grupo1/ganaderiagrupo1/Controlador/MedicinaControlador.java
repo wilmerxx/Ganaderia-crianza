@@ -1,6 +1,7 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
+import com.grupo1.ganaderiagrupo1.Servicios.MedicinaServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,13 +13,13 @@ import java.util.Date;
 @RequestMapping("/api")
 public class MedicinaControlador {
     @Autowired
-    GanadoServicio medicinaServicio;
+    MedicinaServicio medicinaServicio;
 
     @GetMapping("/medicina")
     public ResponseEntity<?> getMedicina(){
         if(medicinaServicio.listaMedicina().isEmpty()){
             Date date = new Date();
-            Medicina medicina = new Medicina("String medicina_id", "String sintomas", "String diagnostico", "String tratamiento", date, "String ganado_id");
+            Medicina medicina = new Medicina("", "", "", "", date, "");
             return ResponseEntity.ok(medicina);
         }else {
 

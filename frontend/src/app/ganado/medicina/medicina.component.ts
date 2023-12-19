@@ -1,10 +1,15 @@
+<<<<<<< HEAD
 import { Component, ElementRef, ViewChild } from '@angular/core';
+=======
+import { Component, OnInit } from '@angular/core';
+>>>>>>> Desarrollo
 
 @Component({
   selector: 'app-medicina',
   templateUrl: './medicina.component.html',
   styleUrls: ['./medicina.component.css']
 })
+<<<<<<< HEAD
 export class MedicinaComponent {
   medicinaData: any[] = [
     { tipoGanado: 'Vaca', sintoma: 'Fiebre', diagnostico: 'Resfriado', tratamiento: 'Descanso', fechaVacuna: '2023-01-01' },
@@ -48,4 +53,13 @@ export class MedicinaComponent {
   isEditing(rowId: number): boolean {
     return this.editingRow === rowId;
   }
+=======
+export class MedicinaComponent implements OnInit {
+
+  constructor() { }
+
+  ngOnInit(): void {
+  }
+
+>>>>>>> Desarrollo
 }

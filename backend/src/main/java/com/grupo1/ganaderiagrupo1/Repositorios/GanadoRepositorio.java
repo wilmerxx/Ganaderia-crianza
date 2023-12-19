@@ -54,6 +54,9 @@ public class GanadoRepositorio {
     }
 
     public Ganado buscarPorId(String id) {
+        if(ganadoList.isEmpty()){
+            return null;
+        }
         for (Ganado ganado: ganadoList) {
             if (ganado.getGanado_id().equals(id)){
                 return ganado;
