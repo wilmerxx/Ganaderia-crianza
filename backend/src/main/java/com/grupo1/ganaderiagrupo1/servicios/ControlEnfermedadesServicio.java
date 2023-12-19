@@ -11,7 +11,6 @@ import java.util.List;
 public class ControlEnfermedadesServicio {
     @Autowired
     private ControlEnfermedadesRepositorio controlEnfermedadesRepositorio;
-
     @Autowired
     private GanadoServicio ganadoServicio;
 
@@ -23,15 +22,8 @@ public class ControlEnfermedadesServicio {
 
     public void actualizarContolEnfermedades(ControlEnfermedades controlEnfermedades) {
         Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado_id());
-        for (ControlEnfermedades controlEnfermedades1: ganado.getControlEnfermedades()) {
-            if (controlEnfermedades1.getControl_id().equals(controlEnfermedades.getControl_id())){
-                controlEnfermedades1.setEstado(controlEnfermedades.getEstado());
-                controlEnfermedades1.setFechaControl(controlEnfermedades.getFechaControl());
-                controlEnfermedades1.setTipo_control(controlEnfermedades.getTipo_control());
-                controlEnfermedades1.setPesoActual(controlEnfermedades.getPesoActual());
-                controlEnfermedades1.setObservaciones(controlEnfermedades.getObservaciones());
-            }
-        }
+        ganado.getControlEnfermedades().removeIf(controlEnfermedades1 -> controlEnfermedades1.getControl_id().equals(controlEnfermedades.getControl_id()));
+        ganado.getControlEnfermedades().add(controlEnfermedades);
         controlEnfermedadesRepositorio.actualizar(controlEnfermedades);
     }
 
