@@ -24,7 +24,7 @@ public class AreaController {
     public ResponseEntity<?> getAllAreas() {
         List<Area> areas = areaService.getAllAreas();
         if (areaService.getAllAreas().isEmpty()) {
-            Area area = new Area("", "", "", "", 23.34,"");
+            Area area = new Area("", "", "", "", 23.34, "");
             return ResponseEntity.ok(area);
 
         }
@@ -35,9 +35,9 @@ public class AreaController {
     public ResponseEntity<?> getAreaById(@PathVariable String id) {
         Area area = areaService.getAreaById(id);
         if (area != null) {
-            return  ResponseEntity.ok(area);
+            return ResponseEntity.ok(area);
         } else {
-               return ResponseEntity.badRequest().body("No existe un area con ese id");
+            return ResponseEntity.badRequest().body("No existe un area con ese id");
         }
     }
 
@@ -45,7 +45,7 @@ public class AreaController {
     public ResponseEntity<?> addArea(@RequestBody Area area) {
         try {
 
-            if(areaService.getAllAreas().contains(area)){
+            if (areaService.getAllAreas().contains(area)) {
                 return ResponseEntity.badRequest().body("Ya existe un area con ese id");
             }
             if (ganadoServicio.buscarPorId(area.getGanado_id()) == null) {
@@ -78,8 +78,5 @@ public class AreaController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-<<<<<<< HEAD
-=======
 
->>>>>>> Desarrollo
 }
