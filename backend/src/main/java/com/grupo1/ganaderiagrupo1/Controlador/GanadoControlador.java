@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,6 +36,7 @@ public class GanadoControlador {
         if(ganadoServicio.buscarTodos().contains(ganado)){
             return ResponseEntity.badRequest().body("Ya existe es ganado");
         }
+        ganado.setGanado_id(UUID.randomUUID().toString());
         ganadoServicio.guardar(ganado);
         return ResponseEntity.ok(ganado);
     }
