@@ -21,7 +21,6 @@
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.suplemento }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.cantidad }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.fecha }}</td>
-
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>

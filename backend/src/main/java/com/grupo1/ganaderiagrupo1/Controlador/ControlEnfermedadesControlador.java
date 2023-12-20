@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 
 import java.util.Objects;
+import java.util.UUID;
 
 
 @RestController
@@ -44,6 +45,7 @@ public class ControlEnfermedadesControlador {
             if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado_id()))){
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
+            controlEnfermedades.setControl_id(UUID.randomUUID().toString());
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);
 

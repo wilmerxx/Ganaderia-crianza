@@ -3,7 +3,6 @@ import {AreaService} from "../../area.service";
 import {Area} from "../../models/area.model";
 import { HttpClient } from '@angular/common/http';
 
-
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
@@ -14,6 +13,7 @@ export class AreaComponent implements OnInit {
   constructor(public areaService: AreaService) {
     this.validador = false;
   }
+
   ngOnInit(): void {
     this.getAreas();
   }
@@ -26,7 +26,6 @@ export class AreaComponent implements OnInit {
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
-
   getAreas(){
     this.areaService.getAreas().subscribe((res) =>{
       this.areaService.areas = res as Area[];

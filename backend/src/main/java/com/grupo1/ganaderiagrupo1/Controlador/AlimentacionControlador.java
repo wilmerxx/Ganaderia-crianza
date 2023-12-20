@@ -12,6 +12,7 @@ import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -55,6 +56,7 @@ public class AlimentacionControlador {
         if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
+        alimentacion.setAlimentacion_id(UUID.randomUUID().toString());
         alimentacionServicio.guardarAlimentacion(alimentacion);
         return ResponseEntity.ok(alimentacion);
     }
