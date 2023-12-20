@@ -1,5 +1,5 @@
 export class Medicina{
-  constructor(medicinaId='',nombre_ganado='',sintomas='',diagnostico='' ,tratamiento='',fecha_vacuna='',ganado_id=''){
+  constructor(medicinaId='',sintomas='',nombre_ganado='',diagnostico='' ,tratamiento='',fecha_vacuna='',ganado_id=''){
     this.medicinaId = medicinaId;
     this.nombre_ganado = nombre_ganado;
     this.sintomas = sintomas;

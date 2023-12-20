@@ -5,7 +5,6 @@
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Nombre</th>
     <th scope="col">Sintoma</th>
     <th scope="col">Diagnostico</th>
     <th scope="col">Tratamiento</th>
@@ -16,7 +15,6 @@
   <tbody>
   <tr *ngFor="let medicina of medicinaService.medicina; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.nombre_ganado }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.sintomas }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.diagnostico }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.tratamiento }}</td>
@@ -42,36 +40,35 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #mediFrom = "ngForm">
           <div class="form-group">
-            <label for="nombre-ganado">Seleciona el nombre</label>
-            <select class="form-control" id="nombre-ganado">
-              <option>lola</option>
-              <option>federico</option>
-              <option>Julio</option>
+            <label for="ganado_id">Selecciona el nombre</label>
+            <select class="form-control" id="ganado_id" name="ganado_id" [(ngModel)]="ganadoService.selectedGanado.ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
+
           <div class="form-group">
             <label for="sintoma">Sintoma</label>
-            <textarea class="form-control" id="sintoma" rows="3"></textarea>
+            <textarea class="form-control" id="sintoma" rows="3" name="sintomas" [ngModel]="medicinaService.selectedMedicina.sintomas" ></textarea>
           </div>
           <div class="form-group">
             <label for="diagnostico">Diagnostico</label>
-            <textarea class="form-control" id="diagnostico" rows="3"></textarea>
+            <textarea class="form-control" id="diagnostico" rows="3" name="diagnostico" [ngModel]="medicinaService.selectedMedicina.diagnostico" ></textarea>
           </div>
           <div class="form-group">
             <label for="tratamiento">Tratamiento</label>
-            <textarea class="form-control" id="tratamiento" rows="3"></textarea>
+            <textarea class="form-control" id="tratamiento" rows="3" name="tratamiento" [ngModel]="medicinaService.selectedMedicina.tratamiento"></textarea>
           </div>
           <div class="form-group">
             <label for="fecha-vacuna">Fecha Vacuna</label>
-            <input type="date" class="form-control" id="fecha-vacuna">
+            <input type="date" class="form-control" id="fecha-vacuna" name="fecha_vacuna" [ngModel]="medicinaService.selectedMedicina.fecha_vacuna">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="crearMedicina(mediFrom)">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
       </div>
     </div>
   </div>

@@ -1,6 +1,9 @@
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
 import {MedicinaService} from "../../medicina.service";
 import {Medicina} from "../../models/medicina.model";
+import {GanadoService} from "../../service/ganado.service";
+import {NgForm} from "@angular/forms";
+import {Ganado} from "../../models/ganado";
 
 
 @Component({
@@ -12,24 +15,48 @@ export class MedicinaComponent implements OnInit {
 
   validador: boolean;
 
-    constructor(public medicinaService: MedicinaService) {
+
+  constructor(public medicinaService: MedicinaService, public ganadoService: GanadoService) {
     this.validador = false;
   }
   ngOnInit(): void {
+    this.getGanados();
     this.getMedicinas();
   }
+  /*
+  getGanados() {
+    this.ganadoService.getGanados().subscribe(
+        (res) => {
+          this.ganados = res as any[];
+        },
+        (error) => {
+          console.error('Error al obtener la lista de ganados:', error);
+        }
+    );
+  }*/
 
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
+
+  crearMedicina(from: NgForm) {
+    console.log(from.value);
+    this.medicinaService.postMedicina(from.value).subscribe((res) => {
+      console.log(res);
+      this.getMedicinas();
+    });
+  }
+
+
+
   getMedicinas(){
     this.medicinaService.getMedicinas().subscribe((res) =>{
       this.medicinaService.medicina = res as Medicina[];
-      this.obtenerNombreDatos();
+      this.getGanados();
       console.log(res);
     })
   }
-
+/*
     obtenerNombreDatos() {
         for (const medicina of this.medicinaService.medicina) {
             this.medicinaService.getGanadoNombre(medicina.ganado_id).subscribe(
@@ -41,7 +68,13 @@ export class MedicinaComponent implements OnInit {
                 }
             );
         }
-    }
+    }*/
+  getGanados() {
+    this.ganadoService.getGanados().subscribe((res) =>{
+      this.ganadoService.ganados = res as Ganado[];
+      console.log(res);
+    })
+  }
 
 
 
