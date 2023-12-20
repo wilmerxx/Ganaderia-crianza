@@ -87,6 +87,5 @@ export class GanadoRegistroComponent implements OnInit{
     }
   }
 
-  protected readonly onsubmit = onsubmit;
 }
 
