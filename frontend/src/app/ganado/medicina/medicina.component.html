@@ -14,13 +14,13 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let medicina of medicinaData; let i = index">
+  <tr *ngFor="let medicina of medicinaService.medicina; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.tipoGanado }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.sintoma }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.ganado_id }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.sintomas }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.diagnostico }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.tratamiento }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.fechaVacuna }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.fecha_vacuna }}</td>
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>

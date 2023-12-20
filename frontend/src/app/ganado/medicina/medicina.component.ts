@@ -1,4 +1,6 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
+import {MedicinaService} from "../../medicina.service";
+import {Medicina} from "../../models/medicina.model";
 
 
 @Component({
@@ -6,18 +8,26 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   templateUrl: './medicina.component.html',
   styleUrls: ['./medicina.component.css']
 })
-export class MedicinaComponent {
-  medicinaData: any[] = [
-    { tipoGanado: 'Vaca', sintoma: 'Fiebre', diagnostico: 'Resfriado', tratamiento: 'Descanso', fechaVacuna: '2023-01-01' },
-    { tipoGanado: 'Toro', sintoma: 'Dolor de cabeza', diagnostico: 'Migraña', tratamiento: 'Analgésicos', fechaVacuna: '2023-02-01' },
-    { tipoGanado: 'Ternero', sintoma: 'Dolor de estómago', diagnostico: 'Indigestión', tratamiento: 'Ayuno', fechaVacuna: '2023-03-01' }
-    // Agrega más datos de prueba según sea necesario
-  ];
+export class MedicinaComponent implements OnInit {
+
+  validador: boolean;
+  constructor(public medicinaService: MedicinaService) {
+    this.validador = false;
+  }
+  ngOnInit(): void {
+    this.getMedicinas();
+  }
+
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
+  getMedicinas(){
+    this.medicinaService.getMedicinas().subscribe((res) =>{
+      this.medicinaService.medicina = res as Medicina[];
+      console.log(res);
+    })
+  }
 
-  constructor() {}
 
   openModal() {
     if (this.exampleModal) {

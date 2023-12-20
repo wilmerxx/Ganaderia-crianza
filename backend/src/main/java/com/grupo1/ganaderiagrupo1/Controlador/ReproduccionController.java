@@ -1,4 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
+
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
 import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
 import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/reproducciones")
 public class ReproduccionController {
 
@@ -47,6 +49,7 @@ public class ReproduccionController {
         }
     }
 
+
     @PutMapping()
     public ResponseEntity<String> actualizarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
@@ -56,6 +59,7 @@ public class ReproduccionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarReproduccion(@PathVariable String id) {

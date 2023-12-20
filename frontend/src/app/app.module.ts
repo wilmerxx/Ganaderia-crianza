@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
 import { GanadoModule } from './ganado/ganado.module';
-
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +18,7 @@ import { GanadoModule } from './ganado/ganado.module';
     AppRoutingModule,
     NgbModule,
     GanadoModule,
+    FormsModule,
     HttpClientModule
   ],
   providers: [],

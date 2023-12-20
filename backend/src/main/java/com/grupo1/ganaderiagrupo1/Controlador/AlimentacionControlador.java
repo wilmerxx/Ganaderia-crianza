@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class AlimentacionControlador {
 
@@ -22,7 +23,7 @@ public class AlimentacionControlador {
     @Autowired
     GanadoServicio ganadoServicio;
 
-    @GetMapping("/alimentaciones")
+    @GetMapping("/alimentacion")
     public ResponseEntity<?> getAlimentacion(){
         if(alimentacionServicio.listaAlimentacion().isEmpty()){
             Date date = new Date();
