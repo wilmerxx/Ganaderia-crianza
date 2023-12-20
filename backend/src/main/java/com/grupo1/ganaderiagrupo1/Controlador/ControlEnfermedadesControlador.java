@@ -16,6 +16,7 @@ import java.util.Objects;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class ControlEnfermedadesControlador {
     @Autowired

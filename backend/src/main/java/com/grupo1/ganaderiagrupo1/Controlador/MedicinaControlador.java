@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Objects;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class MedicinaControlador {
     @Autowired
