@@ -9,6 +9,7 @@ import { AreaComponent } from './area/area.component';
 import { EnfermedadesComponent } from './enfermedades/enfermedades.component';
 import { MedicinaComponent } from './medicina/medicina.component';
 import { InicioComponent } from './inicio/inicio.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -22,9 +23,10 @@ import { InicioComponent } from './inicio/inicio.component';
     MedicinaComponent,
     InicioComponent
   ],
-  imports: [
-    CommonModule,
-    GanadoRoutingModule
+    imports: [
+        CommonModule,
+        GanadoRoutingModule,
+        FormsModule
     ],
   providers: [],
   bootstrap: [GanadoComponent]

@@ -37,6 +37,12 @@ public class GanadoControlador {
             return ResponseEntity.badRequest().body("Ya existe es ganado");
         }
         ganado.setGanado_id(UUID.randomUUID().toString());
+        if(ganado.getMadre_id()!=null){
+            ganado.setMadre(ganadoServicio.buscarPorId(ganado.getMadre_id()));
+        }if(ganado.getPadre_id()!=null){
+            ganado.setPadre(ganadoServicio.buscarPorId(ganado.getPadre_id()));
+        }
+
         ganadoServicio.guardar(ganado);
         return ResponseEntity.ok(ganado);
     }
