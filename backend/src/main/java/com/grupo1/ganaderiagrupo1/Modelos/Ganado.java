@@ -27,22 +27,12 @@ public class Ganado {
     private Ganado padre;
     // estado = muerto, vivo, enfermo, sano
     private String estado;
-<<<<<<< HEAD
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
-
     public List<Medicina> medicinas = new ArrayList<>();
     public List<Alimentacion> alimentaciones = new ArrayList<>();
     public List<Area> areas = new ArrayList<>();
     public List<Reproduccion> reproducciones = new ArrayList<>();
 
-=======
-    private String control_id;
-    private String areaId;
-
-    @Setter
-    @Getter
-    public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
->>>>>>> a26df49 (clase reproduccion y areav2)
     public Ganado() {
     }
 
@@ -158,19 +148,5 @@ public class Ganado {
         this.controlEnfermedades = controlEnfermedades;
     }
 
-<<<<<<< HEAD
-=======
 
-    public String getAreaId() {
-        return areaId;
-    }
-
-    public void setAreaId(String areaId) {
-        this.areaId = areaId;
-    }
-    public boolean estaAsignadoAArea() {
-        return areaId != null;
-    }
-
->>>>>>> a26df49 (clase reproduccion y areav2)
 }

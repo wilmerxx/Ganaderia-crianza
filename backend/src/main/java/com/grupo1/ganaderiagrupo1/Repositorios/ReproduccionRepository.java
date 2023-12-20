@@ -27,18 +27,8 @@ public class ReproduccionRepository {
     }
 
     public void agregar(Reproduccion reproduccion) {
-<<<<<<< HEAD
         // Agregar la reproducción a la lista
         reproduccionesList.add(reproduccion);
-=======
-        // Verificar que haya al menos un ganado tipo vaca en la lista
-        if (reproduccion.getGanados() != null && tieneGanadoTipoVaca(reproduccion.getGanados())) {
-            // Agregar la reproducción a la lista
-            reproduccionesList.add(reproduccion);
-        } else {
-            throw new IllegalArgumentException("La reproducción debe tener al menos un ganado de tipo vaca");
-        }
->>>>>>> a26df49 (clase reproduccion y areav2)
     }
 
     private boolean tieneGanadoTipoVaca(List<Ganado> ganados) {
@@ -46,24 +36,10 @@ public class ReproduccionRepository {
     }
 
     public void actualizar(Reproduccion reproduccion) {
-<<<<<<< HEAD
+
        reproduccionesList.removeIf(reproduccion1 -> reproduccion1.getReproduccion_id().equals(reproduccion.getReproduccion_id()));
        reproduccionesList.add(reproduccion);
-=======
-        Reproduccion reproduccionExistente = buscarPorId(reproduccion.getReproduccion_id());
-        if (reproduccionExistente != null) {
-            reproduccionExistente.setFecha_parto(reproduccion.getFecha_parto());
-            reproduccionExistente.setEstado_salud(reproduccion.getEstado_salud());
-            reproduccionExistente.setNumero_crias(reproduccion.getNumero_crias());
 
-            // Asegúrate de no perder la lista existente de ganados
-            List<Ganado> ganados = reproduccionExistente.getGanados();
-            if (reproduccion.getGanados() != null) {
-                ganados.clear();
-                ganados.addAll(reproduccion.getGanados());
-            }
-        }
->>>>>>> a26df49 (clase reproduccion y areav2)
     }
 
     public void eliminar(String id) {
