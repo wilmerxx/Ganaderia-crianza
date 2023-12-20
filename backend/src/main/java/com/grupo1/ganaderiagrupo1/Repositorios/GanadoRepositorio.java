@@ -85,5 +85,9 @@ public class GanadoRepositorio {
        return ganadoList;
     }
 
+    public void eliminar(String id) {
+        ganadoList.removeIf(ganado -> ganado.getGanado_id().equals(id));
+    }
+
 
 }

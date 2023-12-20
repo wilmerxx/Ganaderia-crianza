@@ -6,6 +6,8 @@ import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -33,6 +35,10 @@ public class ReproduccionController {
     @PostMapping()
     public ResponseEntity<String> agregarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String fechaFormateada = sdf.format(reproduccion.getFecha_parto());
+            Date fecha = new Date(fechaFormateada);
+            reproduccion.setFecha_parto(fecha);
             reproduccion.setReproduccion_id(UUID.randomUUID().toString());
             reproduccionService.agregarReproduccion(reproduccion);
             return ResponseEntity.status(HttpStatus.CREATED).body("Reproducción agregada correctamente");

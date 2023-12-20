@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.util.Objects;
@@ -45,6 +46,10 @@ public class ControlEnfermedadesControlador {
             if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado_id()))){
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String fechaFormateada = sdf.format(controlEnfermedades.getFechaControl());
+            Date fecha = new Date(fechaFormateada);
+            controlEnfermedades.setFechaControl(fecha);
             controlEnfermedades.setControl_id(UUID.randomUUID().toString());
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);

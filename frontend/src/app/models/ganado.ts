@@ -1,23 +1,6 @@
 import {Area} from "./area.model";
 
 export class Ganado {
-
-  /*
-      {
-        "ganado_id": "c54623d0-ad13-419c-9ad5-5fc0ab8d8db3",
-        "codigo": "",
-        "nombre_ganado": "torivio",
-        "raza": "",
-        "peso": 0.0,
-        "sexo": "String sexo",
-        "fechaNacimiento": "19-12-2023",
-        "tipo": "Toro",
-        "madre_id": null,
-        "padre_id": null,
-        "estado": "",
-
-    }
-   */
   ganado_id: string | undefined;
   codigo: string | undefined;
   nombre_ganado: string | undefined;

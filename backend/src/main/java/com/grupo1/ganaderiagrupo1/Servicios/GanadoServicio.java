@@ -35,5 +35,9 @@ public class GanadoServicio {
         return ganadoRepositorio.buscarPorId(id);
     }
 
+    public void eliminar(String id) {
+        ganadoRepositorio.eliminar(id);
+    }
+
 
 }

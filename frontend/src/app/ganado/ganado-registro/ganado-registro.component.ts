@@ -14,42 +14,38 @@ export class GanadoRegistroComponent implements OnInit{
   constructor(protected ganadoService: GanadoService) {
     this.validador = false;
   }
+  ganado_id: string = '';
   ganado: Ganado = new Ganado();
   searchText = ''
   editingRow: number | null = null;
   ngOnInit(): void {
-   this.getGanados()
+
+   this.getGanados();
+   ganado: this.buscarGanadoID(this.ganado_id);
   }
 
-  /*
-  "codigo": "1",
-        "nombre_ganado": "1",
-        "raza": "1",
-        "peso": 345.0,
-        "sexo": "1",
-        "fechaNacimiento": "20-12-2023",
-        "tipo": "1",
-        "madre_id": null,
-        "padre_id": null,
-        "madre": null,
-        "padre": null,
-        "estado": "1",
-   */
 
-
-  ngSubmit() {
-   // this.ganadoService.postGanado(this.ganadoService.selectedGanado).subscribe((res) => {
-
-    console.log(this.ganadoService.selectedGanado);
-      //this.getGanados();
-    //});
+  //obtener ganado por id
+  buscarGanadoID(id: string){
+    this.ganadoService.getGanadoID(id).subscribe((res) =>{
+      this.ganadoService.selectedGanado = res as Ganado;
+      console.log(res);
+    }
+    )
   }
+
   crearGanado(from: NgForm){
     console.log(from.value);
     this.ganadoService.postGanado(from.value).subscribe((res) => {
       console.log(res);
       this.getGanados();
+      this.closeModal();
+      this.limpiarFormulario(from);
     });
+  }
+
+  limpiarFormulario(form: NgForm){
+    form.reset();
   }
 
   getGanados() {
@@ -59,12 +55,25 @@ export class GanadoRegistroComponent implements OnInit{
     })
   }
 
+  // Método para determinar si la fila actual está en modo de edición
+  putGanado(form: NgForm){
+    console.log(form.value);
+    this.ganadoService.putGanado(form.value).subscribe((res) => {
+      console.log(res);
+      this.getGanados();
+      this.closeModal();
+      this.limpiarFormulario(form);
+    });
+  }
+
+
   isEditing(rowId: number) {
     return this.editingRow === rowId;
   }
 
   startEditing(rowId: number) {
-    this.editingRow = rowId;
+    this.editingRow = (rowId);
+    console.log(rowId);
   }
 
   stopEditing() {
@@ -87,5 +96,20 @@ export class GanadoRegistroComponent implements OnInit{
     }
   }
 
+  closeModalEdit() {
+
+  }
+
+  deleteGanado(ganado_id: string | undefined) {
+    if (ganado_id) {
+      this.ganadoService.deleteGanado(ganado_id).subscribe((res) => {
+        console.log(res);
+        this.getGanados();
+        //actualizar la pagina
+
+      });
+    }
+
+  }
 }
 

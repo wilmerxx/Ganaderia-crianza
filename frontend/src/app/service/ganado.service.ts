@@ -28,4 +28,12 @@ export class GanadoService {
     return this.http.put(this.URL_API ,ganado);
   }
 
+  //obtener ganado por id
+  getGanadoID(id: string): Observable<any>{
+    return this.http.get(this.URL_API + '/' + id);
+  }
+
+  deleteGanado(id: string): Observable<any> {
+    return this.http.delete(this.URL_API + '/' + id);
+  }
 }

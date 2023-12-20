@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -56,6 +57,10 @@ public class AlimentacionControlador {
         if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String fechaFormateada = sdf.format(alimentacion.getFecha_alimentacion());
+        Date fecha = new Date(fechaFormateada);
+        alimentacion.setFecha_alimentacion(fecha);
         alimentacion.setAlimentacion_id(UUID.randomUUID().toString());
         alimentacionServicio.guardarAlimentacion(alimentacion);
         return ResponseEntity.ok(alimentacion);
