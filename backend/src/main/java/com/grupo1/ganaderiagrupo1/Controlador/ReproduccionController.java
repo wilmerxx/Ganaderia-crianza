@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -32,6 +33,7 @@ public class ReproduccionController {
     @PostMapping()
     public ResponseEntity<String> agregarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
+            reproduccion.setReproduccion_id(UUID.randomUUID().toString());
             reproduccionService.agregarReproduccion(reproduccion);
             return ResponseEntity.status(HttpStatus.CREATED).body("Reproducción agregada correctamente");
         } catch (IllegalArgumentException e) {
