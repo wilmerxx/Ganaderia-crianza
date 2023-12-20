@@ -1,4 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
+<<<<<<< HEAD
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
 import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
 import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
@@ -10,6 +11,17 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
+=======
+
+import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+>>>>>>> a26df49 (clase reproduccion y areav2)
 @RequestMapping("/api/reproducciones")
 public class ReproduccionController {
 
@@ -19,6 +31,7 @@ public class ReproduccionController {
         this.reproduccionService = reproduccionService;
     }
 
+<<<<<<< HEAD
     @GetMapping()
     public ResponseEntity<?> listarTodos() {
         if(reproduccionService.buscarTodos().isEmpty()){
@@ -29,6 +42,14 @@ public class ReproduccionController {
         return ResponseEntity.ok( reproduccionService.buscarTodos());
     }
     @PostMapping()
+=======
+    @GetMapping("/listar-todos")
+    public ResponseEntity<List<Reproduccion>> listarTodos() {
+        List<Reproduccion> reproducciones = reproduccionService.buscarTodos();
+        return ResponseEntity.ok(reproducciones);
+    }
+    @PostMapping("/agregar")
+>>>>>>> a26df49 (clase reproduccion y areav2)
     public ResponseEntity<String> agregarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
             reproduccionService.agregarReproduccion(reproduccion);
@@ -38,7 +59,11 @@ public class ReproduccionController {
         }
     }
 
+<<<<<<< HEAD
     @GetMapping("/{id}")
+=======
+    @GetMapping("/buscar-por-id/{id}")
+>>>>>>> a26df49 (clase reproduccion y areav2)
     public ResponseEntity<Reproduccion> buscarPorId(@PathVariable String id) {
         Reproduccion reproduccion = reproduccionService.buscarPorId(id);
         if (reproduccion != null) {
@@ -48,7 +73,11 @@ public class ReproduccionController {
         }
     }
 
+<<<<<<< HEAD
     @PutMapping()
+=======
+    @PutMapping("/actualizar")
+>>>>>>> a26df49 (clase reproduccion y areav2)
     public ResponseEntity<String> actualizarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
             reproduccionService.actualizarReproduccion(reproduccion);
@@ -58,7 +87,11 @@ public class ReproduccionController {
         }
     }
 
+<<<<<<< HEAD
     @DeleteMapping("/{id}")
+=======
+    @DeleteMapping("/eliminar/{id}")
+>>>>>>> a26df49 (clase reproduccion y areav2)
     public ResponseEntity<String> eliminarReproduccion(@PathVariable String id) {
         try {
             reproduccionService.eliminarReproduccion(id);
