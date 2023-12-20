@@ -24,7 +24,6 @@ export class GanadoRegistroComponent implements OnInit{
    ganado: this.buscarGanadoID(this.ganado_id);
   }
 
-
   //obtener ganado por id
   buscarGanadoID(id: string){
     this.ganadoService.getGanadoID(id).subscribe((res) =>{

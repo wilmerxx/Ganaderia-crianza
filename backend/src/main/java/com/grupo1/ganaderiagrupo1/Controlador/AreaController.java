@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@RestController
 @CrossOrigin(origins = "http://localhost:4200")
+@RestController
 @RequestMapping("/api/areas")
 public class AreaController {
 
@@ -25,6 +25,7 @@ public class AreaController {
     @Autowired
     private GanadoServicio ganadoServicio;
 
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public ResponseEntity<?> getAllAreas() {
         List<Area> areas = areaService.getAllAreas();
@@ -36,7 +37,7 @@ public class AreaController {
 
         return new ResponseEntity<>(areas, HttpStatus.OK);
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
     public ResponseEntity<?> getAreaById(@PathVariable String id) {
         Area area = areaService.getAreaById(id);
@@ -47,7 +48,9 @@ public class AreaController {
         }
     }
 
+
     @PostMapping
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<?> addArea(@RequestBody Area area) {
         try {
 
@@ -66,6 +69,7 @@ public class AreaController {
     }
 
     @PutMapping()
+    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<Area> updateArea(@RequestBody Area updatedArea) {
         try {
             areaService.updateArea(updatedArea);
@@ -79,7 +83,7 @@ public class AreaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
+    @CrossOrigin(origins = "http://localhost:4200")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteArea(@PathVariable String id) {
         areaService.deleteArea(id);

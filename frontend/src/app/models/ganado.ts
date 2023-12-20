@@ -27,7 +27,4 @@ export class Ganado {
     this.estado = estado;
 
   }
-
-
-
 }
