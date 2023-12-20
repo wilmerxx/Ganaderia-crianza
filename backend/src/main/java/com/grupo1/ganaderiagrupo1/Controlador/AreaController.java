@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -56,6 +57,7 @@ public class AreaController {
             if (ganadoServicio.buscarPorId(area.getGanado_id()) == null) {
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
+            area.setAreaId(UUID.randomUUID().toString());
             areaService.addArea(area);
             return new ResponseEntity<>("Area creada", HttpStatus.CREATED);
         } catch (Exception e) {

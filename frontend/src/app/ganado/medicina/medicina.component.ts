@@ -11,7 +11,8 @@ import {Medicina} from "../../models/medicina.model";
 export class MedicinaComponent implements OnInit {
 
   validador: boolean;
-  constructor(public medicinaService: MedicinaService) {
+
+    constructor(public medicinaService: MedicinaService) {
     this.validador = false;
   }
   ngOnInit(): void {
@@ -24,18 +25,38 @@ export class MedicinaComponent implements OnInit {
   getMedicinas(){
     this.medicinaService.getMedicinas().subscribe((res) =>{
       this.medicinaService.medicina = res as Medicina[];
+      this.obtenerNombreDatos();
       console.log(res);
     })
   }
 
+    obtenerNombreDatos() {
+        for (const medicina of this.medicinaService.medicina) {
+            this.medicinaService.getGanadoNombre(medicina.ganado_id).subscribe(
+                (nombreGanado) => {
+                    medicina.nombre_ganado= nombreGanado;
+                },
+                (error) => {
+                    console.error(`Error al obtener el nombre del ganado (${medicina.ganado_id}):`, error);
+                }
+            );
+        }
+    }
 
-  openModal() {
+
+
+
+
+
+    openModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
       modalElement.classList.add('show');
       modalElement.style.display = 'block';  // Asegúrate de que el modal se muestre
     }
   }
+
+
 
   closeModal() {
     if (this.exampleModal) {

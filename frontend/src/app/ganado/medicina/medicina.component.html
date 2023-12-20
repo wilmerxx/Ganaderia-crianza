@@ -5,7 +5,7 @@
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Tipo Ganado</th>
+    <th scope="col">Nombre</th>
     <th scope="col">Sintoma</th>
     <th scope="col">Diagnostico</th>
     <th scope="col">Tratamiento</th>
@@ -16,7 +16,7 @@
   <tbody>
   <tr *ngFor="let medicina of medicinaService.medicina; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.ganado_id }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.nombre_ganado }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.sintomas }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.diagnostico }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.tratamiento }}</td>
@@ -43,14 +43,6 @@
       </div>
       <div class="modal-body">
         <form>
-          <div class="form-group">
-            <label for="tipo-ganado">Seleciona el tipo</label>
-            <select class="form-control" id="tipo-ganado">
-              <option>Vaca</option>
-              <option>Toro</option>
-              <option>Ternero</option>
-            </select>
-          </div>
           <div class="form-group">
             <label for="nombre-ganado">Seleciona el nombre</label>
             <select class="form-control" id="nombre-ganado">
