@@ -17,7 +17,8 @@ import { GanadoModule } from './ganado/ganado.module';
     RouterModule,
     AppRoutingModule,
     NgbModule,
-    GanadoModule
+    GanadoModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
