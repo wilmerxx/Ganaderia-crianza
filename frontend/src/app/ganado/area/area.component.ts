@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import {NgForm} from "@angular/forms";
 import Swal from 'sweetalert2';
 
+
 @Component({
   selector: 'app-area',
   templateUrl: './area.component.html',
@@ -17,6 +18,7 @@ export class AreaComponent implements OnInit {
   constructor(public areaService: AreaService) {
     this.validador = false;
   }
+
   ngOnInit(): void {
     this.getAreas();
   }
@@ -29,8 +31,6 @@ export class AreaComponent implements OnInit {
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
-
-
 
 
   openModal() {
@@ -66,26 +66,11 @@ export class AreaComponent implements OnInit {
     })
   }
   //agregar areas
-
-
-  updateAreas(area: Area) {
-    this.areaService.editar(area).subscribe(
-      () => {
-        console.log('Área actualizada correctamente');
-        this.editarAreaIndex = null; // Detener la edición
-        this.getAreas(); // Recargar áreas después de la actualización si es necesario
-      },
-      (error) => {
-        console.error('Error al actualizar el área', error);
-        // Manejar el error según sea necesario
-      }
-    );
-  }
-
-  // Agregar este nuevo método para manejar la edición
-  editarArea(index: number, area: Area) {
-    this.startEditing(index);
-    // Puedes realizar otras acciones según tu implementación, como abrir un modal de edición, etc.
+  crearArea(from: NgForm){
+    console.log(from.value);
+    this.areaService.postArea(from.value).subscribe((res) => {
+      this.getAreas();
+    });
   }
 
 

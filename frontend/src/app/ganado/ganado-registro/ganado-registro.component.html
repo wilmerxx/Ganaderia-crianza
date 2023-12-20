@@ -1,32 +1,124 @@
 <div>
-    <button type="button" class="btn btn-success" data-mdb-ripple-init>+ Añadir</button>
+  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
 </div>
 <table class="table">
     <thead class="table-dark">
       <tr>
         <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
+        <th scope="col">Codigo</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Raza</th>
+        <th scope="col">Peso</th>
+        <th scope="col">Sexo</th>
+        <th scope="col">Fecha nacimiento</th>
+        <th scope="col">Tipo</th>
+        <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
-      </tr>
+    <tr *ngFor="let ganado of ganadoService.ganados; let i = index ">
+      <th scope="row">{{ i + 1 }}</th>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.codigo }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.nombre_ganado  }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.raza}}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.peso  }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.sexo }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.fechaNacimiento }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.tipo  }}</td>
+      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.estado }}</td>
+      <td>
+        <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
+        <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+      </td>
+    </tr>
     </tbody>
   </table>
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir Medicina</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #ganadFrom ="ngForm">
+
+          <div class="form-group">
+            <label for="codigo">Codigo</label>
+            <input type="text" class="form-control" id="codigo" [ngModel]="ganadoService.selectedGanado.codigo" name="codigo">
+          </div>
+          <div class="form-group">
+            <label for="nombre">Nombre Ganado</label>
+            <input type="text" class="form-control" id="nombre" [ngModel]="ganadoService.selectedGanado.nombre_ganado" name="nombre_ganado">
+          </div>
+          <div class="form-group">
+            <label for="raza">Raza</label>
+            <input type="text" class="form-control" id="raza" [ngModel]="ganadoService.selectedGanado.raza" name="raza">
+          </div>
+          <div class="form-group">
+            <label for="peso">Peso</label>
+            <input type="number" class="form-control" id="peso" [ngModel]="ganadoService.selectedGanado.peso" name="peso">
+          </div>
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select class="form-control" id="sexo" [ngModel]="ganadoService.selectedGanado.sexo" name="sexo">
+              <option selected >Selecciona</option>
+              <option>Macho</option>
+              <option>Hembra</option>
+            </select>
+          </div>
+
+
+
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha Nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento" [ngModel]="ganadoService.selectedGanado.fechaNacimiento" name="fechaNacimiento">
+          </div>
+          <div class="form-group">
+            <label for="tipo">Seleciona el tipo</label>
+            <select class="form-control" id="tipo" [ngModel]="ganadoService.selectedGanado.tipo" name="tipo">
+              <option>Vaca</option>
+              <option>Toro</option>
+              <option>Ternero</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <select class="form-control" id="estado" [ngModel]="ganadoService.selectedGanado.estado" name="estado">
+              <option>Activo</option>
+              <option>Inactivo</option>
+            </select>
+          </div>
+       <!-- Selecionar el id de la madre-->
+          <div class="form-group">
+            <label for="madre_id">Madre</label>
+            <select class="form-control" id="madre_id" [ngModel]="ganadoService.selectedGanado.madre_id" name="madre_id">
+              <option>Selecciona</option>
+              <option *ngFor="let ganado of ganadoService.ganados" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <!-- Selecionar el id del padre-->
+          <div class="form-group">
+            <label for="padre_id">Padre</label>
+            <select class="form-control" [ngModel]="ganadoService.selectedGanado.padre_id" name="padre_id" id="padre_id">
+              <option>Selecciona</option>
+              <option *ngFor="let ganado of ganadoService.ganados"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="crearGanado(ganadFrom)">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+
+          </div>
+        </form>
+    </div>
+  </div>
+</div>

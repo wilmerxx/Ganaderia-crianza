@@ -1,10 +1,10 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
 
 import lombok.Data;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,5 +18,6 @@ public class Area {
     private String tipoPasto;
     private double superficie;
     private String ganado_id;
+
 }
 

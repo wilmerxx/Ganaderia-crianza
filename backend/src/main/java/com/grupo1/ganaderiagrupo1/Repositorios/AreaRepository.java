@@ -35,6 +35,7 @@ public class AreaRepository {
         areas.removeIf(area -> area.getAreaId().equals(id));
     }
 
+
     public void updateById(Area updatedArea) {
         areas.removeIf(area -> area.getAreaId().equals(updatedArea.getAreaId()));
         areas.add(updatedArea);

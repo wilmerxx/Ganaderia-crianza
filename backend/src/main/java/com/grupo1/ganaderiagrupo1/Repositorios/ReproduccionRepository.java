@@ -36,8 +36,10 @@ public class ReproduccionRepository {
     }
 
     public void actualizar(Reproduccion reproduccion) {
+
        reproduccionesList.removeIf(reproduccion1 -> reproduccion1.getReproduccion_id().equals(reproduccion.getReproduccion_id()));
        reproduccionesList.add(reproduccion);
+
     }
 
     public void eliminar(String id) {

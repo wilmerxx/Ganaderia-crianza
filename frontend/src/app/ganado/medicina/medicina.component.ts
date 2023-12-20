@@ -1,5 +1,8 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-
+import {NgForm} from "@angular/forms";
+import {Medicina} from "../../models/medicina.model";
+import {MedicinaService} from "../../medicina.service";
+import {Ganado} from "../../models/ganado";
 
 @Component({
   selector: 'app-medicina',
@@ -7,17 +10,13 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./medicina.component.css']
 })
 export class MedicinaComponent {
-  medicinaData: any[] = [
-    { tipoGanado: 'Vaca', sintoma: 'Fiebre', diagnostico: 'Resfriado', tratamiento: 'Descanso', fechaVacuna: '2023-01-01' },
-    { tipoGanado: 'Toro', sintoma: 'Dolor de cabeza', diagnostico: 'Migraña', tratamiento: 'Analgésicos', fechaVacuna: '2023-02-01' },
-    { tipoGanado: 'Ternero', sintoma: 'Dolor de estómago', diagnostico: 'Indigestión', tratamiento: 'Ayuno', fechaVacuna: '2023-03-01' }
-    // Agrega más datos de prueba según sea necesario
-  ];
   editingRow: number | null = null;
-
   @ViewChild('exampleModal') exampleModal!: ElementRef;
 
-  constructor() {}
+  validador: boolean;
+  constructor(protected medicinaService: MedicinaService) {
+    this.validador = false;
+  }
 
   openModal() {
     if (this.exampleModal) {
@@ -49,5 +48,21 @@ export class MedicinaComponent {
   isEditing(rowId: number): boolean {
     return this.editingRow === rowId;
   }
+
+  crearGanado(from: NgForm){
+    console.log(from.value);
+    this.medicinaService.postMedicina(from.value).subscribe((res) => {
+      console.log(res);
+      this.getGanados();
+    });
+  }
+
+  getGanados() {
+    this.medicinaService.getMedicna().subscribe((res) =>{
+      this.medicinaService.medicina = res as Medicina[];
+      console.log(res);
+    })
+  }
+
 
 }

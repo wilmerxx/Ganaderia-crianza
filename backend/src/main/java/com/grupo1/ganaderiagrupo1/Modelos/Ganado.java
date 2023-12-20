@@ -28,7 +28,6 @@ public class Ganado {
     // estado = muerto, vivo, enfermo, sano
     private String estado;
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
-
     public List<Medicina> medicinas = new ArrayList<>();
     public List<Alimentacion> alimentaciones = new ArrayList<>();
     public List<Area> areas = new ArrayList<>();
@@ -148,5 +147,6 @@ public class Ganado {
         this.padre = padre;
         this.controlEnfermedades = controlEnfermedades;
     }
+
 
 }

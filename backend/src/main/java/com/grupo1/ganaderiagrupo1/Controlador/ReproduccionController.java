@@ -1,4 +1,5 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
+
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
 import com.grupo1.ganaderiagrupo1.Modelos.Reproduccion;
 import com.grupo1.ganaderiagrupo1.Servicios.ReproduccionService;
@@ -7,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/reproducciones")
 public class ReproduccionController {
 
@@ -31,6 +33,7 @@ public class ReproduccionController {
     @PostMapping()
     public ResponseEntity<String> agregarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
+            reproduccion.setReproduccion_id(UUID.randomUUID().toString());
             reproduccionService.agregarReproduccion(reproduccion);
             return ResponseEntity.status(HttpStatus.CREATED).body("Reproducción agregada correctamente");
         } catch (IllegalArgumentException e) {
@@ -48,6 +51,7 @@ public class ReproduccionController {
         }
     }
 
+
     @PutMapping()
     public ResponseEntity<String> actualizarReproduccion(@RequestBody Reproduccion reproduccion) {
         try {
@@ -57,6 +61,7 @@ public class ReproduccionController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarReproduccion(@PathVariable String id) {

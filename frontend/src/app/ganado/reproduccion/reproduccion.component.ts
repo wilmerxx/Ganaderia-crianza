@@ -59,7 +59,15 @@ export class ReproduccionComponent implements OnInit {
       console.log(res);
     })
   }
-  deleteReproduccion(reproduccion_id: string){
+  crearReproduccion(from: NgForm){
+    console.log(from.value);
+    this.reproduccionService.postReproduccion(from.value).subscribe((res) => {
+      console.log(res);
+      this.getReproduccion();
+    });
+  }
+
+  deleteReproduccion(reproduccion_id: string) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Este registro se eliminará completamente',
@@ -72,10 +80,16 @@ export class ReproduccionComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe((res) => {
-          this.getReproduccion();
-          Swal.fire('Eliminado!', 'Registro eliminado', 'success');
-        });
+        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe(
+          () => {
+            this. getReproduccion();
+            Swal.fire('Eliminado!', 'Registro eliminado', 'success');
+          },
+          (error) => {
+            console.error('Error al eliminar', error);
+            // Manejar el error según sea necesario
+          }
+        );
       }
     });
   }

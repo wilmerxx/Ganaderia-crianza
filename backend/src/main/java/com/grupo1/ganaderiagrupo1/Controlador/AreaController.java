@@ -2,13 +2,16 @@ package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Area;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
+
 import com.grupo1.ganaderiagrupo1.Servicios.AreaService;
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -17,6 +20,7 @@ public class AreaController {
 
     @Autowired
     private AreaService areaService;
+
 
     @Autowired
     private GanadoServicio ganadoServicio;
@@ -30,6 +34,7 @@ public class AreaController {
             return ResponseEntity.ok(area);
 
         }
+
         return new ResponseEntity<>(areas, HttpStatus.OK);
     }
     @CrossOrigin(origins = "http://localhost:4200")
@@ -55,6 +60,7 @@ public class AreaController {
             if (ganadoServicio.buscarPorId(area.getGanado_id()) == null) {
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
+            area.setAreaId(UUID.randomUUID().toString());
             areaService.addArea(area);
             return new ResponseEntity<>("Area creada", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -69,6 +75,7 @@ public class AreaController {
             areaService.updateArea(updatedArea);
             if (updatedArea != null) {
                 return new ResponseEntity<>(updatedArea, HttpStatus.OK);
+
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }

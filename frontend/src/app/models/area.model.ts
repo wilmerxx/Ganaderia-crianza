@@ -1,5 +1,5 @@
 export class Area {
-  constructor(areaId= '', nombreArea='', tipoArea='', tipoPasto='', superficie='', ganado_id=''){
+  constructor(areaId= '', nombreArea='', tipoArea='', tipoPasto='', superficie= 0.0, ganado_id=''){
     this.areaId = areaId;
     this.nombreArea = nombreArea;
     this.tipoArea = tipoArea;
@@ -11,6 +11,6 @@ export class Area {
   nombreArea: string;
   tipoArea: string;
   tipoPasto: string;
-  superficie: string;
+  superficie:number;
   ganado_id: string;
 }
