@@ -26,7 +26,15 @@
 
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
-      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="updateAreas(areas); stopEditing()">Guardar</button>
+
+    </td>
+    <td>
+      <a
+        (click)="deleteArea(areas.areaId)"
+        style="cursor: pointer"
+      ><i class="material-icons">delete</i></a
+      >
     </td>
   </tr>
   </tbody>
@@ -45,38 +53,63 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #areaForm="ngForm">
           <div class="form-group">
-            <label for="nombre">Nombre</label>
-            <input type="text" class="form-control" id="nombre">
-          </div>
-          <div class="form-group">
-            <label for="tipo_terreno">Seleciona el tipo de terreno</label>
-            <select class="form-control" id="tipo_terreno">
-              <option>Plano</option>
-              <option>Ladera</option>
-              <option>Montañoso</option>
-            </select>
+            <label >ID</label>
+            <input name="code" class="form-control"  name="areaId" #areaId="ngModel" [(ngModel)]=" areaService.selectedArea.areaId">
           </div>
 
           <div class="form-group">
-            <label for="tipo_pasto">Tipo de pasto</label>
-            <select class="form-control" id="tipo_pasto">
-              <option>Gramalote</option>
-              <option>Tundilla</option>
-              <option>Picuyo</option>
+            <label >Nombre</label>
+            <input name="code" class="form-control" name="nombreArea" maxlength="30" required #nombreArea="ngModel" [(ngModel)]="areaService.selectedArea.nombreArea"/>
+          </div>
+
+
+          <div class="form-group">
+            <label>Tipo de terreno</label>
+            <select class="form-control" name="tipoArea" required [(ngModel)]="areaService.selectedArea.tipoArea" #tipoArea="ngModel">
+              <option value="plano">Plano</option>
+              <option value="laderoso">Laderoso</option>
+              <option value="montanoso">Montañoso</option>
             </select>
           </div>
+
+
           <div class="form-group">
-            <label for="superficie">Superficie</label>
-            <input type="text" class="form-control" id="superficie">
+            <label>Tipo de pasto</label>
+            <select class="form-control" name="tipoPasto" required [(ngModel)]="areaService.selectedArea.tipoPasto" #tipoPasto="ngModel">
+              <option value="pastomiel">pastomiel</option>
+              <option value="tundilla">tundilla</option>
+              <option value="picuyo">picuyo</option>
+            </select>
           </div>
+
+
+          <div class="form-group">
+            <label >Superficie</label>
+            <input name="code" class="form-control" name="superficie" maxlength="30" required #superficie="ngModel" [(ngModel)]="areaService.selectedArea.superficie"/>
+          </div>
+
+          <div class="form-group">
+            <label >ID GANADO</label>
+            <input name="code" class="form-control" name="ganado_id" maxlength="30" required #ganado_id="ngModel" [(ngModel)]="areaService.selectedArea.ganado_id"/>
+          </div>
+
+
+
+
 
         </form>
+
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary">Guardar</button>
-        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Cancelar
+          </button>
+          <button type="button" class="btn btn-primary">Guardar</button>
+        </div>
+
       </div>
     </div>
   </div>

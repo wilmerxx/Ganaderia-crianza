@@ -1,5 +1,8 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-
+import {ReproduccionService} from "../../reproduccion.service";
+import {Reproduccion} from "../../models/reproduccion.model";
+import {NgForm} from "@angular/forms";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-reproduccion',
@@ -9,19 +12,21 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 export class ReproduccionComponent implements OnInit {
 
 
-  ngOnInit(): void {
-
-  }
-
-  areaData: any[] = [
-    { nombre: 'La palmera',tipo_terreno:'plano', tipo_pasto: 'Gramalote', superficie: '3 hectareas',total_ganado:'23' },
-
-  ];
   editingRow: number | null = null;
 
   @ViewChild('exampleModal') exampleModal!: ElementRef;
 
-  constructor() {}
+  validador: boolean;
+
+  constructor(public reproduccionService: ReproduccionService){
+    this.validador = false;
+  }
+
+  ngOnInit(): void {
+    this.getReproduccion();
+  }
+
+
 
   openModal() {
     if (this.exampleModal) {
@@ -48,6 +53,31 @@ export class ReproduccionComponent implements OnInit {
   isEditing(rowId: number): boolean {
     return this.editingRow === rowId;
   }
-
+  getReproduccion(){
+    this.reproduccionService.getReproduccion().subscribe((res) =>{
+      this.reproduccionService.reproducciones = res as Reproduccion[];
+      console.log(res);
+    })
+  }
+  deleteReproduccion(reproduccion_id: string){
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Este registro se eliminará completamente',
+      position: 'top',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, deseo eliminarlo!',
+      cancelButtonText: 'Cancelar',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe((res) => {
+          this.getReproduccion();
+          Swal.fire('Eliminado!', 'Registro eliminado', 'success');
+        });
+      }
+    });
+  }
 
 }

@@ -6,25 +6,33 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nombre</th>
-    <th scope="col">Tipo de terreno</th>
-    <th scope="col">Tipo de pasto</th>
-    <th scope="col">Superficie</th>
-    <th scope="col">Asignacion</th>
+    <th scope="col">Fecha de parto</th>
+    <th scope="col">Estado Salud</th>
+    <th scope="col">Numero de crias</th>
+    <th scope="col">Ganado</th>
     <th scope="col">Acciones</th>
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let row of areaData; let i = index">
+  <tr *ngFor="let reproducciones of reproduccionService.reproducciones; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.nombre }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.tipo_terreno }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.tipo_pasto }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.superficie }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.total_ganado}}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.reproduccion_id  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.fecha_parto  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.estado_salud  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.numero_crias  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.ganado_id }}</td>
 
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+
+    </td>
+    <td>
+      <a
+        (click)="deleteReproduccion(reproducciones.reproduccion_id)"
+        style="cursor: pointer"
+      ><i class="material-icons">delete</i></a
+      >
     </td>
   </tr>
   </tbody>
