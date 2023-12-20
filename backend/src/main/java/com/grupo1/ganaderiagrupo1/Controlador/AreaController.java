@@ -2,8 +2,10 @@ package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Area;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
+
 import com.grupo1.ganaderiagrupo1.Servicios.AreaService;
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/areas")
 public class AreaController {
 
     @Autowired
     private AreaService areaService;
+
 
     @Autowired
     private GanadoServicio ganadoServicio;
@@ -28,6 +32,7 @@ public class AreaController {
             return ResponseEntity.ok(area);
 
         }
+
         return new ResponseEntity<>(areas, HttpStatus.OK);
     }
 
@@ -64,6 +69,7 @@ public class AreaController {
             areaService.updateArea(updatedArea);
             if (updatedArea != null) {
                 return new ResponseEntity<>(updatedArea, HttpStatus.OK);
+
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
@@ -77,6 +83,5 @@ public class AreaController {
         areaService.deleteArea(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }
