@@ -110,7 +110,6 @@
           <div class="form-group">
             <label for="padre_id">Padre</label>
             <select class="form-control" [ngModel]="ganadoService.selectedGanado.padre_id" name="padre_id" id="padre_id">
-              <option>Selecciona</option>
               <option *ngFor="let ganado of ganadoService.ganados"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
@@ -123,8 +122,9 @@
         </form>
     </div>
   </div>
+  </div>
 </div>
-</div>
+
 
 <!-- Modal -->
 <!-- Modal -->

@@ -1,24 +1,19 @@
-export class Medicina {
-  medicina_id: string;
-  sintomas: string;
-  diagnostico: string;
-  tratamiento: string;
-  fecha_vacuna: string;
-  ganado_id: string;
 
-  constructor(
-    medicina_id: string = "",
-    sintomas: string = "",
-    diagnostico: string = "",
-    tratamiento: string = "",
-    fecha_vacuna: string = "",
-    ganado_id: string = ""
-  ) {
-    this.medicina_id = medicina_id;
+export class Medicina{
+  constructor(medicinaId='',sintomas='',nombre_ganado='',diagnostico='' ,tratamiento='',fecha_vacuna='',ganado_id=''){
+    this.medicinaId = medicinaId;
+    this.nombre_ganado = nombre_ganado;
     this.sintomas = sintomas;
     this.diagnostico = diagnostico;
     this.tratamiento = tratamiento;
     this.fecha_vacuna = fecha_vacuna;
     this.ganado_id = ganado_id;
   }
+  medicinaId: string;
+  nombre_ganado: string;
+  sintomas: string;
+  diagnostico: string;
+  tratamiento: string;
+  fecha_vacuna: string;
+  ganado_id: string;
 }

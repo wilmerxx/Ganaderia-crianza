@@ -8,7 +8,6 @@
     <th scope="col">Fecha de parto</th>
     <th scope="col">Estado Salud</th>
     <th scope="col">Numero de crias</th>
-    <th scope="col">Ganado</th>
     <th scope="col">Acciones</th>
   </tr>
   </thead>
@@ -19,7 +18,6 @@
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.fecha_parto  }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.estado_salud  }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.numero_crias  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.ganado_id }}</td>
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)" >Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>

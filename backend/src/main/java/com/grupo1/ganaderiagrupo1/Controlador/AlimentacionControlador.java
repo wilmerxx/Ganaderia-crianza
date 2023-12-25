@@ -25,7 +25,7 @@ public class AlimentacionControlador {
     @Autowired
     GanadoServicio ganadoServicio;
 
-    @GetMapping("/alimentaciones")
+    @GetMapping("/alimentacion")
     public ResponseEntity<?> getAlimentacion(){
         if(alimentacionServicio.listaAlimentacion().isEmpty()){
             Date date = new Date();

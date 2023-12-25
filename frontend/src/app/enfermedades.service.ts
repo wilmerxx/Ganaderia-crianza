@@ -30,7 +30,8 @@ export class EnfermedadesService {
     return this.http.put(this.URL_API, enfermedades);
   }
 
-  deleteEnfermedades(control_id: string): Observable<any> {
-    return this.http.delete(this.URL_API + `/${control_id}`);
+
+  deleteEnfermedades(id: string | undefined): Observable<any> {
+    return this.http.delete(this.URL_API + '/' + id);
   }
 }

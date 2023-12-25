@@ -1,12 +1,10 @@
 <div>
-  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+Añadir</button>
 </div>
 <table class="table">
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Tipo Ganado</th>
-    <th scope="col">Nombre</th>
     <th scope="col">Suplemento</th>
     <th scope="col">Cantidad</th>
     <th scope="col">Fecha</th>
@@ -14,13 +12,12 @@
   </tr>
   </thead>
   <tbody>
-  <tr *ngFor="let row of alimentoData; let i = index">
+  <tr *ngFor="let alimentacion of alimentacionService.alimentacion; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.tipoGanado }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.nombre }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.suplemento }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.cantidad }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ row.fecha }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.nombre_suplemento }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.cantidad_suplemento }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.fecha_alimentacion }}</td>
+
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
@@ -28,7 +25,6 @@
   </tr>
   </tbody>
 </table>
-
 
 
 <!-- Modal -->

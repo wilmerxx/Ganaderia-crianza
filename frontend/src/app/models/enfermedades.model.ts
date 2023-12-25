@@ -1,5 +1,5 @@
 export class Enfermedad {
-  control_id: string | undefined;
+  control_id?: string | undefined;
   tipo_control: string | undefined;
   pesoActual: number | undefined;
   fechaControl: string | undefined;

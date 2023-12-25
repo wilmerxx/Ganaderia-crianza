@@ -9,7 +9,6 @@
     <th scope="col">Peso</th>
     <th scope="col">Fecha de control</th>
     <th scope="col">Observaciones</th>
-    <th scope="col">Ganado</th>
     <th scope="col">Estado</th>
     <th scope="col">Acciones</th>
   </tr>
@@ -21,11 +20,11 @@
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.pesoActual  }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.fechaControl}}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.observaciones  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.ganado_id }}</td>
     <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.estado }}</td>
     <td>
       <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
       <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+      <button class="btn btn-danger btn-sm" (click)="delete(enfermedades.control_id)">Eliminar</button>
     </td>
   </tr>
   </tbody>

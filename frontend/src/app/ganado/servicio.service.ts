@@ -19,4 +19,5 @@ export class ServicioService {
     return this.http.delete<void>('/ganados/' + id);
   }
 
+
 }

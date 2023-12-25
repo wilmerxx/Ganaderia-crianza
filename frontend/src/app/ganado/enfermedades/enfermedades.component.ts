@@ -67,7 +67,7 @@ export class EnfermedadesComponent implements OnInit {
   }
 
   protected readonly onsubmit = onsubmit;
-  delete(control_id: string) {
+  delete(control_id: string | undefined) {
     Swal.fire({
       title: '¿Estás seguro?',
       text: 'Este registro se eliminará completamente',
@@ -80,15 +80,16 @@ export class EnfermedadesComponent implements OnInit {
       cancelButtonText: 'Cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-        this.enfermedadesService.deleteEnfermedades(control_id).subscribe(
+        this.enfermedadesService.deleteEnfermedades(control_id).subscribe( (res) => {
           () => {
-            this.getEnfermedad();
-            Swal.fire('Eliminado!', 'Registro eliminado', 'success');
-          },
-          (error) => {
-            console.error('Error al eliminar el área', error);
-            // Manejar el error según sea necesario
+            this. getEnfermedad();
           }
+        }
+        );
+        Swal.fire(
+          '¡Eliminado!',
+          'El registro ha sido eliminado.',
+          'success'
         );
       }
     });
