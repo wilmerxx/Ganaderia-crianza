@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
   providedIn: 'root'
 })
 export class ServicioService {
-
+  opened = false;
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:8080/api/animal';
 
@@ -17,6 +17,14 @@ export class ServicioService {
 
   deleteGanado(id: number | undefined): Observable<void> {
     return this.http.delete<void>('/ganados/' + id);
+  }
+
+  openSidebar() {
+    this.opened = true;
+  }
+
+  closeSidebar() {
+    this.opened = false
   }
 
 

@@ -1,7 +1,7 @@
 <div>
   <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
 </div>
-<table class="table">
+<table class="table table-responsive">
     <thead class="table-dark">
       <tr>
         <th scope="col">#</th>
@@ -188,7 +188,7 @@
             <label for="madre_idEdit">Madre</label>
             <select class="form-control" id="madre_idEdit" [ngModel]="ganadoService.selectedGanado.madre_id" name="madre_id">
               <option>Selecciona</option>
-              <option *ngFor="let ganado of ganadoService.ganados" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+              <option *ngFor="let ganado of ganadoService.ganados"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <!-- Selecionar el id del padre-->

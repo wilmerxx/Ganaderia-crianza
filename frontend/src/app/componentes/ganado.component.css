@@ -1,0 +1,251 @@
+.dashboard-container {
+    height: 100vh;
+  }
+
+  .sidebar {
+    background-color: #1e5511;
+    color: white;
+    width: 200px;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+
+  .sidebar::-webkit-scrollbar-track {
+    background: #1e5511;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background: #1e5511;
+  }
+
+
+
+  .sidebar-content {
+    padding-top: 20px;
+    height: 100%;
+  }
+
+  .sidebar-content img {
+    max-width: 100%;
+    max-height: 150%;
+    height: auto;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-content h2 {
+    margin-top: 10px;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+
+  .sidebar-content ul {
+    padding: 0;
+    list-style: none;
+    margin: 0;
+  }
+
+  .sidebar-content li {
+    margin-bottom: 10px;
+    width: 100%;
+  }
+
+  .sidebar-content a {
+    color: rgb(105, 8, 8);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    transition: background-color 0.3s, color 0.3s;
+    justify-content: center;
+    margin: 10px;
+    border-radius: 5px;
+  }
+
+  .sidebar-content a:hover,
+  .sidebar-content a:focus,
+  .sidebar-content a.active {
+    background-color: rgba(255, 0, 0, 0.5);;
+    color: white;
+  }
+
+  .sidebar-content a.active i {
+    color: white;
+  }
+
+  .sidebar-content i {
+    color: rgb(105, 8, 8);
+    margin-right: 10px;
+  }
+
+  .link-text {
+    color: white;
+    transition: color 0.3s;
+  }
+
+  .sidebar-content a:hover .link-text,
+  .sidebar-content a:focus .link-text,
+  .sidebar-content a.active .link-text {
+    color: white;
+  }
+  .sidebar-content a:hover i,
+  .sidebar-content a:focus i {
+    color: white;
+  }
+
+  .main-content {
+    flex: 1;
+    padding: 20px;
+  }
+
+  .main-content h1,
+  .main-content router-outlet {
+    text-align: center;
+  }
+  .sidebar-content .logo-container {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-content .logo-container img {
+    max-width: 100%;
+    max-height: 150px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .sidebar-content .logo-text {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  /* Divi del logo y opciones */
+  .sidebar-content .divider {
+    border-top: 2px solid rgb(24, 47, 5);
+    margin-bottom: 20px;
+    height: 0;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #1e5511;
+    color: white;
+    text-align: center;
+    padding: 10px;
+  }
+  main {
+    margin-left: 200px;
+    padding: 20px;
+    z-index: -1;
+
+  }
+
+  .sidebar .nav-list {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  .sidebar-close{
+    display: block;
+    align-items: center;
+
+    border-radius: 0px 20px 20px 0px;
+    background-color: #1e5511;
+    color: white;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    overflow-y: auto;
+  }
+
+  .close{
+    display: none;
+  }
+
+  .main-bar{
+    margin-left: 0;
+  }
+
+
+
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    display: flex;
+    height: 100vh;
+    padding-left: 0;
+  }
+
+  .sidebar.active {
+    left: 0;
+  }
+
+  .sidebar .logo-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+    border-bottom: 1px solid #1e5511;
+    padding: 0 1rem;
+  }
+
+  .sidebar .logo-content img {
+    height: 60px;
+    width: 60px;
+    object-fit: contain;
+    cursor: pointer;
+  }
+
+  .sidebar .logo-content .logo-text {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease;
+  }
+
+  .sidebar.active .logo-content .logo-text {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  main {
+    width: 100%;
+    margin-left: 0;
+    padding: 1rem;
+  }
+  .main-content {
+    flex: 1;
+  }
+
+  .sidebar .nav-list {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+}
+
+
+
+

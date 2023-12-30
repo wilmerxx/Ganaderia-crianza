@@ -23,12 +23,15 @@ import {FormsModule} from "@angular/forms";
     MedicinaComponent,
     InicioComponent
   ],
-    imports: [
-        CommonModule,
-        GanadoRoutingModule,
-        FormsModule
-    ],
+  imports: [
+    CommonModule,
+    GanadoRoutingModule,
+    FormsModule
+  ],
   providers: [],
+  exports: [
+    GanadoComponent
+  ],
   bootstrap: [GanadoComponent]
 })
 export class GanadoModule { }

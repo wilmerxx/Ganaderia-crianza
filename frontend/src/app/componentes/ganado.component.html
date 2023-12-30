@@ -1,9 +1,10 @@
 <div class="dashboard-container">
-  <aside class="sidebar">
+  <aside class="sidebar"  [class.close]="sidebarCollapsed">
     <div class="sidebar-content">
       <div class="logo-container">
-        <img src="https://cdn-icons-png.flaticon.com/512/4357/4357594.png " alt="Logo de tu aplicación">
-        <div class="logo-text">Ganaderia Nuevo Amanecer</div>
+        <img src="assets/template.png " alt="Logo de tu aplicación">
+        <h1 class="text-white m-0">Ganaderia</h1>
+        <h4 class="text-white">Nuevo Amanecer</h4>
       </div>
       <div class="divider"></div> <!-- Línea divisoria -->
       <ul class="list-unstyled">
@@ -53,7 +54,15 @@
       </ul>
     </div>
   </aside>
-  <main class="main-content">
+  <div class="sidebar-close" (click)="openSidebar()">
+    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>
+  </div>
+  <main class="main-content" [class.main-bar] = "mainbar">
     <router-outlet></router-outlet>
   </main>
+  <footer class="footer align-self-end">
+    <div class="footer-content">
+      <p>Desarrollado por <a href="#" target="_blank">Grupo 1</a></p>
+    </div>
+  </footer>
 </div>

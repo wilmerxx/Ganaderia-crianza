@@ -2,6 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import { NgForm } from '@angular/forms';
+import {filter} from "rxjs/operators";
 
 
 @Component({
@@ -21,7 +22,7 @@ export class GanadoRegistroComponent implements OnInit{
   ngOnInit(): void {
 
    this.getGanados();
-   ganado: this.buscarGanadoID(this.ganado_id);
+
   }
 
   //obtener ganado por id
@@ -109,6 +110,14 @@ export class GanadoRegistroComponent implements OnInit{
       });
     }
 
+  }
+
+  //lista de ganado tipo vaca
+  getGanadoVaca() {
+    this.ganadoService.getGanados().subscribe((res) =>{
+      this.ganadoService.ganados = res as Ganado[];
+      console.log(res);
+    });
   }
 }
 
