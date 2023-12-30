@@ -13,7 +13,7 @@ public class Alimentacion {
     private String alimentacion_id;
     private String nombre_suplemento;
     private String cantidad_suplemento;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_alimentacion;
     private String ganado_id;
 }

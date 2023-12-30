@@ -45,10 +45,8 @@ public class AlimentacionRepositorio {
     }
 
     public void actualizar(Alimentacion o) {
-        Alimentacion alimentacion = buscarPorId(o.getAlimentacion_id());
-        alimentacion.setNombre_suplemento(o.getNombre_suplemento());
-        alimentacion.setCantidad_suplemento(o.getCantidad_suplemento());
-        alimentacion.setFecha_alimentacion(o.getFecha_alimentacion());
+        alimentacionList.removeIf(alimentacion -> alimentacion.getAlimentacion_id().equals(o.getAlimentacion_id()));
+        alimentacionList.add(o);
     }
 
     //Calcular la cantidad de suplemento suministrado en un periodo de tiempo

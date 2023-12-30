@@ -6,13 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.crypto.Data;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class GanadoControlador {
 
@@ -34,10 +33,22 @@ public class GanadoControlador {
 
     @PostMapping("/ganados")
     public ResponseEntity<?> postGanado(@RequestBody Ganado ganado){
-        Ganado ganado1 = ganadoServicio.buscarPorId(ganado.getGanado_id());
-        if(!Objects.isNull(ganado1)){
-            return ResponseEntity.badRequest().body("No se puede crear un ganado con un id");
+        if(ganadoServicio.buscarTodos().contains(ganado)){
+            return ResponseEntity.badRequest().body("Ya existe es ganado");
+
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String fechaFormateada = sdf.format(ganado.getFechaNacimiento());
+        Date fecha = new Date(fechaFormateada);
+        ganado.setFechaNacimiento(fecha);
+        ganado.setGanado_id(UUID.randomUUID().toString());
+
+        if(ganado.getMadre_id()!=null){
+            ganado.setMadre(ganadoServicio.buscarPorId(ganado.getMadre_id()));
+        }if(ganado.getPadre_id()!=null){
+            ganado.setPadre(ganadoServicio.buscarPorId(ganado.getPadre_id()));
+        }
+
         ganadoServicio.guardar(ganado);
         return ResponseEntity.ok(ganado);
     }
@@ -62,5 +73,17 @@ public class GanadoControlador {
         }
         ganadoServicio.actualizar(ganado);
         return ResponseEntity.ok(ganado);
+
+
+    }
+
+    @DeleteMapping("/ganados/{id}")
+    public ResponseEntity<?> deleteGanado(@PathVariable String id){
+        Ganado ganado = ganadoServicio.buscarPorId(id);
+        if(Objects.isNull(ganado)){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+        }
+        ganadoServicio.eliminar(id);
+        return ResponseEntity.ok("Ganado eliminado correctamente");
     }
 }

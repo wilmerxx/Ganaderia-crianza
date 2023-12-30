@@ -3,6 +3,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,23 +18,21 @@ public class Ganado {
     private String raza;
     private double peso;
     private String sexo;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fechaNacimiento;
     private String tipo;
+    private String madre_id;
+    private String padre_id;
     private Ganado madre;
     private Ganado padre;
     // estado = muerto, vivo, enfermo, sano
     private String estado;
-    private String control_id;
-    @Setter
-    @Getter
     public List<ControlEnfermedades> controlEnfermedades = new ArrayList<>();
-    @Setter
-    @Getter
     public List<Medicina> medicinas = new ArrayList<>();
-    @Setter
-    @Getter
     public List<Alimentacion> alimentaciones = new ArrayList<>();
+    public List<Area> areas = new ArrayList<>();
+    public List<Reproduccion> reproducciones = new ArrayList<>();
+
     public Ganado() {
     }
 
@@ -60,6 +59,38 @@ public class Ganado {
         this.tipo = tipo;
         this.madre = null;
         this.padre = null;
+        this.estado = estado;
+    }
+
+    /**
+     * @param ganado_id
+     * @param codigo
+     * @param nombre_ganado
+     * @param raza
+     * @param peso
+     * @param sexo
+     * @param fechaNacimiento
+     * @param tipo
+     * @param madre_id
+     * @param padre_id
+     * @param madre
+     * @param padre
+     * TODO: Agregar general
+     */
+
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String madre_id, String padre_id, Ganado madre, Ganado padre, String estado) {
+        this.ganado_id = ganado_id;
+        this.codigo = codigo;
+        this.nombre_ganado = nombre_ganado;
+        this.raza = raza;
+        this.peso = peso;
+        this.sexo = sexo;
+        this.fechaNacimiento = fechaNacimiento;
+        this.tipo = tipo;
+        this.madre_id = madre_id;
+        this.padre_id = padre_id;
+        this.madre = madre;
+        this.padre = padre;
         this.estado = estado;
     }
 
@@ -116,4 +147,6 @@ public class Ganado {
         this.padre = padre;
         this.controlEnfermedades = controlEnfermedades;
     }
+
+
 }

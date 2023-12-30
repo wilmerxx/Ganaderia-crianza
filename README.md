@@ -32,7 +32,7 @@ El proyecto consiste en un sistema de crianza de ganado, el cual permite llevar 
 ## Clases
 - Ganado
 - Medicina
-- Alimentacion
+- AlimentacionModel
 - Reproduccion
 - Control de enfermedades
 - Area de crianza

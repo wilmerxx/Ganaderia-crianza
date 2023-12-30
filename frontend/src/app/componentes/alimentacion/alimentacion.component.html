@@ -1,0 +1,79 @@
+<div>
+  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+Añadir</button>
+</div>
+<table class="table">
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Suplemento</th>
+    <th scope="col">Cantidad</th>
+    <th scope="col">Fecha</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let alimentacion of alimentacionService.alimentacion; let i = index">
+    <th scope="row">{{ i + 1 }}</th>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.nombre_suplemento }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.cantidad_suplemento }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ alimentacion.fecha_alimentacion }}</td>
+
+    <td>
+      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
+      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir Alimento</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="tipo-ganado">Seleciona el tipo</label>
+            <select class="form-control" id="tipo-ganado">
+              <option>Vaca</option>
+              <option>Toro</option>
+              <option>Ternero</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nombre-ganado">Seleciona el nombre</label>
+            <select class="form-control" id="nombre-ganado">
+              <option>lola</option>
+              <option>lolo</option>
+              <option>pancha</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="suplemento">Suplemento</label>
+            <input type="text" class="form-control" id="suplemento">
+          </div>
+          <div class="form-group">
+            <label for="cantidad">Cantidad</label>
+            <input type="number" class="form-control" id="cantidad">
+          </div>
+          <div class="form-group">
+            <label for="fecha">Fecha</label>
+            <input type="date" class="form-control" id="fecha">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary">Guardar</button>
+        <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+

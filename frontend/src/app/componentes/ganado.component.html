@@ -1,0 +1,68 @@
+<div class="dashboard-container">
+  <aside class="sidebar"  [class.close]="sidebarCollapsed">
+    <div class="sidebar-content">
+      <div class="logo-container">
+        <img src="assets/template.png " alt="Logo de tu aplicación">
+        <h1 class="text-white m-0">Ganaderia</h1>
+        <h4 class="text-white">Nuevo Amanecer</h4>
+      </div>
+      <div class="divider"></div> <!-- Línea divisoria -->
+      <ul class="list-unstyled">
+        <li>
+          <a class="text-white" routerLink="./inicio" (click)="cambiarEnlaceActivo('./inicio')"
+            [class.active]="enlaceActivo === './inicio'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Inicio</span>
+
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./ganado-registro" (click)="cambiarEnlaceActivo('./ganado-registro')"
+            [class.active]="enlaceActivo === './ganado-registro'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Registro Ganado</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./reproduccion" (click)="cambiarEnlaceActivo('./reproduccion')"
+            [class.active]="enlaceActivo === './reproduccion'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Reproduccion</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./alimentacion" (click)="cambiarEnlaceActivo('./alimentacion')"
+            [class.active]="enlaceActivo === './alimentacion'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Alimentacion</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./area" (click)="cambiarEnlaceActivo('./area')"
+            [class.active]="enlaceActivo === './area'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Area</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./enfermedades" (click)="cambiarEnlaceActivo('./enfermedades')"
+            [class.active]="enlaceActivo === './enfermedades'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Enfermedades</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./medicina" (click)="cambiarEnlaceActivo('./medicina')"
+            [class.active]="enlaceActivo === './medicina'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Medicina</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+  <div class="sidebar-close" (click)="openSidebar()">
+    <svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2023 Fonticons, Inc.--><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>
+  </div>
+  <main class="main-content" [class.main-bar] = "mainbar">
+    <router-outlet></router-outlet>
+  </main>
+  <footer class="footer align-self-end">
+    <div class="footer-content">
+      <p>Desarrollado por <a href="#" target="_blank">Grupo 1</a></p>
+    </div>
+  </footer>
+</div>

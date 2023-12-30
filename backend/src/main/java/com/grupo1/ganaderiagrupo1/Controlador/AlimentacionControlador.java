@@ -10,10 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.UUID;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class AlimentacionControlador {
 
@@ -48,33 +51,30 @@ public class AlimentacionControlador {
     //guardar
     @PostMapping("/alimentacion")
     public ResponseEntity<?> postAlimentacion(@RequestBody Alimentacion alimentacion){
-        if(alimentacion.getAlimentacion_id().isEmpty() || alimentacion.getNombre_suplemento().isEmpty() || alimentacion.getCantidad_suplemento().isEmpty() || alimentacion.getFecha_alimentacion().equals(null) || alimentacion.getGanado_id().isEmpty()){
-            return ResponseEntity.badRequest().body("Llene todos los campos");
-        }
-        if(!Objects.isNull(alimentacionServicio.buscarAlimentacionPorId(alimentacion.getAlimentacion_id()))){
-            return ResponseEntity.badRequest().body("Ya existe una alimentacion con ese id");
 
-        }
-        if(!Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado_id()))){
-            return ResponseEntity.badRequest().body("No existe ese ganado");
-        }
-        if(Objects.isNull(alimentacionServicio.buscarAlimentacionPorId(alimentacion.getAlimentacion_id()))){
-            alimentacionServicio.guardarAlimentacion(alimentacion);
-            return ResponseEntity.ok(alimentacion);
-        }else {
+        if(alimentacionServicio.listaAlimentacion().contains(alimentacion)){
             return ResponseEntity.badRequest().body("Ya existe una alimentacion con ese id");
         }
+        if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado_id()))){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String fechaFormateada = sdf.format(alimentacion.getFecha_alimentacion());
+        Date fecha = new Date(fechaFormateada);
+        alimentacion.setFecha_alimentacion(fecha);
+        alimentacion.setAlimentacion_id(UUID.randomUUID().toString());
+        alimentacionServicio.guardarAlimentacion(alimentacion);
+        return ResponseEntity.ok(alimentacion);
     }
 
     //actualizar
     @PutMapping("/alimentacion")
     public ResponseEntity<?> putAlimentacion(@RequestBody Alimentacion alimentacion){
-        Alimentacion alimentacion1 = alimentacionServicio.buscarAlimentacionPorId(alimentacion.getAlimentacion_id());
-        if(Objects.nonNull(alimentacion1)){
+
+        if(alimentacionServicio.listaAlimentacion().contains(alimentacion)){
             return ResponseEntity.badRequest().body("No existe una alimentacion con ese id");
-        }else {
-            alimentacionServicio.actualizarAlimentacion(alimentacion);
-            return ResponseEntity.ok(alimentacion);
         }
+        alimentacionServicio.actualizarAlimentacion(alimentacion);
+        return ResponseEntity.ok(alimentacion);
     }
 }

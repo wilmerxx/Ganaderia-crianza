@@ -14,7 +14,7 @@ public class Medicina {
     private String sintomas;
     private String diagnostico;
     private String tratamiento;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private Date fecha_vacuna;
     private String ganado_id;
 }

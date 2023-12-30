@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import * as Chartist from 'chartist';
+
 
 @Component({
   selector: 'app-root',
@@ -7,6 +8,7 @@ import * as Chartist from 'chartist';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent{
-  title = 'ProyectoU1';
+  title = 'Dashboard';
+
 
 }

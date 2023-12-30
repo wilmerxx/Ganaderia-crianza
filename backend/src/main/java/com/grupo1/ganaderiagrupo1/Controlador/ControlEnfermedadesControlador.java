@@ -1,22 +1,30 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
+
+import com.grupo1.ganaderiagrupo1.Servicios.ControlEnfermedadesServicio;
+
 import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import java.util.Objects;
+import java.util.UUID;
 
 
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class ControlEnfermedadesControlador {
     @Autowired
-    GanadoServicio controlEnfermedadesServicio;
+    ControlEnfermedadesServicio controlEnfermedadesServicio;
+    @Autowired
+    GanadoServicio ganasoServicio;
 
     @GetMapping("/controlEnfermedades")
     public ResponseEntity<?> getControlEnfermedades(){
@@ -35,6 +43,14 @@ public class ControlEnfermedadesControlador {
     public ResponseEntity<?> postControlEnfermedades(@RequestBody ControlEnfermedades controlEnfermedades){
 
         if(!controlEnfermedadesServicio.listaControlEnfermedades().contains(controlEnfermedades)){
+            if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado_id()))){
+                return ResponseEntity.badRequest().body("No existe un ganado con ese id");
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String fechaFormateada = sdf.format(controlEnfermedades.getFechaControl());
+            Date fecha = new Date(fechaFormateada);
+            controlEnfermedades.setFechaControl(fecha);
+            controlEnfermedades.setControl_id(UUID.randomUUID().toString());
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);
 

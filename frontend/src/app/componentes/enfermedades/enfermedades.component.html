@@ -1,0 +1,88 @@
+<div>
+  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+</div>
+<table class="table">
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Tipo de control</th>
+    <th scope="col">Peso</th>
+    <th scope="col">Fecha de control</th>
+    <th scope="col">Observaciones</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let enfermedades of enfermedadesService.enfermedades; let i = index ">
+    <th scope="row">{{ i + 1 }}</th>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.tipo_control }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.pesoActual  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.fechaControl}}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.observaciones  }}</td>
+    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ enfermedades.estado }}</td>
+    <td>
+      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
+      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+      <button class="btn btn-danger btn-sm" (click)="delete(enfermedades.control_id)">Eliminar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<!-- Modal -->
+<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Añadir</h5>
+        <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #enfermedadFrom ="ngForm">
+
+          <div class="form-group">
+            <label for="control_id">Codigo</label>
+            <input type="text" class="form-control" id="control_id" [ngModel]="enfermedadesService.selectedEnfermedades.control_id" name="control_id">
+          </div>
+          <div class="form-group">
+            <label for="tipo_control">Tipo control</label>
+            <input type="text" class="form-control" id="tipo_control" [ngModel]="enfermedadesService.selectedEnfermedades.tipo_control" name="tipo_control">
+          </div>
+
+          <div class="form-group">
+            <label for="pesoActual">Peso actual</label>
+            <input type="text" class="form-control" id="pesoActual" [ngModel]="enfermedadesService.selectedEnfermedades.pesoActual" name="pesoActual">
+          </div>
+
+          <div class="form-group">
+            <label for="fechaControl">Fecha control</label>
+            <input type="date" class="form-control" id="fechaControl" [ngModel]="enfermedadesService.selectedEnfermedades.fechaControl" name="fechaControl">
+          </div>
+
+          <div class="form-group">
+            <label for="observaciones">Observaciones</label>
+            <input type="text" class="form-control" id="observaciones" [ngModel]="enfermedadesService.selectedEnfermedades.tipo_control" name="observaciones">
+          </div>
+          <div class="form-group">
+            <label >ID GANADO</label>
+            <input type="text" class="form-control" id="ganado_id" [ngModel]="enfermedadesService.selectedEnfermedades.ganado_id" name="ganado_id">
+          </div>
+
+          <div class="form-group">
+            <label for="estado">Estado</label>
+            <input type="text" class="form-control" id="estado" [ngModel]="enfermedadesService.selectedEnfermedades.estado" name="estado">
+          </div>
+
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="crearEnfermedad(enfermedadFrom)" (click)="closeModal()">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
