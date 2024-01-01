@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {ReproduccionService} from "../../reproduccion.service";
+import {ReproduccionService} from "../../service/reproduccion.service";
 import {Reproduccion} from "../../models/reproduccion.model";
 import {NgForm} from "@angular/forms";
 import Swal from 'sweetalert2';

@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {Medicina} from "./models/medicina.model";
+import {Medicina} from "../models/medicina.model";
 import { map, catchError } from 'rxjs/operators';
 import {error} from "@angular/compiler-cli/src/transformers/util";
 

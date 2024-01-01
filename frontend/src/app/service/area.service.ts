@@ -3,8 +3,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {Area} from "./models/area.model";
-import {Ganado} from "./models/ganado";
+import {Area} from "../models/area.model";
+import {Ganado} from "../models/ganado";
 
 @Injectable({
   providedIn: 'root'

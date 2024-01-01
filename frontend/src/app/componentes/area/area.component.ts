@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AreaService} from "../../area.service";
+import {AreaService} from "../../service/area.service";
 import {Area} from "../../models/area.model";
 import { HttpClient } from '@angular/common/http';
 import {NgForm} from "@angular/forms";

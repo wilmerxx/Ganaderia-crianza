@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import {Area} from "./models/area.model";
+import {Area} from "../models/area.model";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Reproduccion} from "./models/reproduccion.model";
-import {Ganado} from "./models/ganado";
+import {Reproduccion} from "../models/reproduccion.model";
+import {Ganado} from "../models/ganado";
 
 @Injectable({
   providedIn: 'root'

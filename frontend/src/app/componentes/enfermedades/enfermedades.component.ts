@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from "../../service/ganado.service";
 import {Ganado} from "../../models/ganado";
-import {EnfermedadesService} from "../../enfermedades.service";
+import {EnfermedadesService} from "../../service/enfermedades.service";
 import {NgForm} from "@angular/forms";
 import {Enfermedad} from "../../models/enfermedades.model";
 import Swal from "sweetalert2";

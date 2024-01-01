@@ -1,5 +1,5 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {AlimentacionService} from "../../alimentacion.service";
+import {AlimentacionService} from "../../service/alimentacion.service";
 import {Alimentacion} from "../../models/alimentacion.model";
 
 @Component({
