@@ -15,7 +15,7 @@ import { GanadoRegistroComponent } from './componentes/ganado-registro/ganado-re
 import { MedicinaComponent } from './componentes/medicina/medicina.component';
 import { ReproduccionComponent } from './componentes/reproduccion/reproduccion.component';
 import { GanadoRoutingModule } from './app-routing.module';
-
+import { NgChartsModule} from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -37,7 +37,8 @@ import { GanadoRoutingModule } from './app-routing.module';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    GanadoRoutingModule
+    GanadoRoutingModule,
+    NgChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

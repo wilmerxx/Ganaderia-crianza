@@ -8,7 +8,11 @@ import {Area} from "../models/area.model";
 })
 export class GanadoService {
   selectedGanado: Ganado;
-  ganados!: Ganado[];
+  ganados: Ganado[] = [];
+  ganadosVaca: Ganado[] = [];
+  ganadosToro: Ganado[] = [];
+  ganadosTernero: Ganado[] = [];
+  totalVacas: number = 0;
   constructor(private http: HttpClient) {
     this.selectedGanado = new Ganado();
   }
@@ -34,4 +38,27 @@ export class GanadoService {
   deleteGanado(id: string): Observable<any> {
     return this.http.delete(this.URL_API + '/' + id);
   }
+
+  getGanadosTipo(tipo: string): Observable<any> {
+    return this.http.get(this.URL_API + '/tipo/' + tipo);
+  }
+
+  //obtener ganado por
+  getGanadoTipo(tipo: string){
+    this.getGanadosTipo(tipo).subscribe((res) =>{
+      this.ganados = res as Ganado[];
+      if(tipo == 'Vaca'){
+        this.ganadosVaca = this.ganados;
+        console.log(this.ganadosVaca);
+        this.totalVacas = this.ganadosVaca.length;
+      }else if(tipo == 'Toro'){
+        this.ganadosToro = this.ganados;
+        console.log(this.ganadosToro);
+      }else if(tipo == 'Ternero'){
+        this.ganadosTernero = this.ganados;
+        console.log(this.ganadosTernero);
+      }
+    });
+  }
+
 }

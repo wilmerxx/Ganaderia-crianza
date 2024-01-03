@@ -11,14 +11,14 @@ import {NavegacionComponent} from "./navegacion/navegacion.component";
 
 const routes: Routes = [
   {path: '', component: NavegacionComponent, children: [
-        {path: '', component: InicioComponent},
+      {path: 'inicio', component: InicioComponent},
       {path: 'ganado', component: GanadoRegistroComponent},
       {path: 'reproduccion', component: ReproduccionComponent},
       {path: 'alimentacion', component: AlimentacionComponent},
       {path: 'area', component: AreaComponent},
       {path: 'enfermedades', component: EnfermedadesComponent},
       {path: 'medicina', component: MedicinaComponent},
-      { path: '', redirectTo: '/inicio', pathMatch: 'full' }
+      {path: '', redirectTo: '/inicio', pathMatch: 'full' }
     ]},
 ];
 

@@ -12,6 +12,8 @@
         <th scope="col">Sexo</th>
         <th scope="col">Fecha nacimiento</th>
         <th scope="col">Tipo</th>
+        <th scope="col">Nombre de madre</th>
+        <th scope="col">Nombre de padre</th>
         <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
       </tr>
@@ -19,32 +21,32 @@
     <tbody>
     <tr *ngFor="let ganado of ganadoService.ganados; let i = index ">
       <th scope="row">{{ i + 1 }}</th>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.codigo }}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.nombre_ganado  }}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.raza}}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.peso  }}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.sexo }}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.fechaNacimiento?.substr(6,13) | date:'yyyy/MM/dd'}}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.tipo  }}</td>
-      <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ ganado.estado }}</td>
+      <td >{{ ganado.codigo }}</td>
+      <td >{{ ganado.nombre_ganado  }}</td>
+      <td >{{ ganado.raza}}</td>
+      <td >{{ ganado.peso  }}</td>
+      <td >{{ ganado.sexo }}</td>
+      <td >{{ ganado.fechaNacimiento}}</td>
+      <td >{{ ganado.tipo  }}</td>
+      <td *ngIf="ganado.nombreMadre !=null" >{{ ganado.nombreMadre  }}</td>
+      <td *ngIf="ganado.nombrePadre !=null">{{ ganado.nombrePadre }}</td>
+      <td *ngIf="ganado.nombreMadre ==null" >No tiene madre</td>
+      <td *ngIf="ganado.nombrePadre ==null">No tiene padre</td>
+      <td >{{ ganado.estado }}</td>
       <td>
-        <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
-        <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+        <button  class="btn btn-primary btn-sm" (click)="openModalEdit(ganado)">Editar</button>
         <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado.ganado_id)">Eliminar</button>
       </td>
     </tr>
     </tbody>
   </table>
 
-
-
-
 <!-- Modal -->
 <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Añadir Medicina</h5>
+        <h3 class="modal-title" id="exampleModalLabel">Añadir Ganado</h3>
         <button type="button" class="close" (click)="closeModal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -54,7 +56,7 @@
 
           <div class="form-group">
             <label for="codigo">Codigo</label>
-            <input type="text" class="form-control" id="codigo" [ngModel]="ganadoService.selectedGanado.codigo" name="codigo">
+            <input type="text" class="form-control" id="codigo" [ngModel]="ganadoService.selectedGanado.codigo "name="codigo">
           </div>
           <div class="form-group">
             <label for="nombre">Nombre Ganado</label>
@@ -71,14 +73,10 @@
           <div class="form-group">
             <label for="sexo">Sexo</label>
             <select class="form-control" id="sexo" [ngModel]="ganadoService.selectedGanado.sexo" name="sexo">
-              <option selected >Selecciona</option>
               <option>Macho</option>
               <option>Hembra</option>
             </select>
           </div>
-
-
-
           <div class="form-group">
             <label for="fechaNacimiento">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="fechaNacimiento" [ngModel]="ganadoService.selectedGanado.fechaNacimiento" name="fechaNacimiento">
@@ -102,22 +100,19 @@
           <div class="form-group">
             <label for="madre_id">Madre</label>
             <select class="form-control" id="madre_id" [ngModel]="ganadoService.selectedGanado.madre_id" name="madre_id">
-              <option>Selecciona</option>
-              <option *ngFor="let ganado of ganadoService.ganados" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+              <option *ngFor="let ganado of ganadosVaca" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <!-- Selecionar el id del padre-->
           <div class="form-group">
             <label for="padre_id">Padre</label>
             <select class="form-control" [ngModel]="ganadoService.selectedGanado.padre_id" name="padre_id" id="padre_id">
-              <option *ngFor="let ganado of ganadoService.ganados"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+              <option *ngFor="let ganado of ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary" (click)="crearGanado(ganadFrom)">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-
-
           </div>
         </form>
     </div>
@@ -125,52 +120,51 @@
   </div>
 </div>
 
-
-<!-- Modal -->
-<!-- Modal -->
+<!-- Modal para editar-->
 <div class="modal fade" #exampleModalEdit tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelEdit" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabelEdit">Añadir Medicina</h5>
+        <div class="align-self-center">
+          <h3 class="modal-title" id="exampleModalLabelEdit">Actualizar ganado</h3>
+        </div>
         <button type="button" class="close" (click)="closeModalEdit()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <form #ganadFrom ="ngForm">
-
+        <form #ganaoFromEdit ="ngForm">
+          <input type="hidden" class="form-control" id="ganado_idEdit" value="{{ganado.ganado_id}}" [(ngModel)]="ganado.ganado_id" name="ganado_id">
           <div class="form-group">
             <label for="codigoEdit">Codigo</label>
-            <input type="text" class="form-control" id="codigoEdit" [ngModel]="ganadoService.selectedGanado.codigo" name="codigo">
+            <input type="text" class="form-control" id="codigoEdit"   value="{{ganado.codigo}}"  [(ngModel)] = "ganado.codigo" name="codigo" >
           </div>
           <div class="form-group">
             <label for="nombreEdit">Nombre Ganado</label>
-            <input type="text" class="form-control" id="nombreEdit" [ngModel]="ganadoService.selectedGanado.nombre_ganado" name="nombre_ganado">
+            <input type="text" class="form-control" id="nombreEdit" value="{{ganado.nombre_ganado}}" [ngModel]="ganado.nombre_ganado" name="nombre_ganado">
           </div>
           <div class="form-group">
             <label for="razaEdit">Raza</label>
-            <input type="text" class="form-control" id="razaEdit" [ngModel]="ganadoService.selectedGanado.raza" name="raza">
+            <input type="text" class="form-control" id="razaEdit" value="{{ganado.raza}}" [ngModel]="ganado.raza" name="raza">
           </div>
           <div class="form-group">
             <label for="pesoEdit">Peso</label>
-            <input type="number" class="form-control" id="pesoEdit" [ngModel]="ganadoService.selectedGanado.peso" name="peso">
+            <input type="number" class="form-control" id="pesoEdit" value="{{ganado.peso}}" [ngModel]="ganado.peso" name="peso">
           </div>
           <div class="form-group">
             <label for="sexoEdit">Sexo</label>
-            <select class="form-control" id="sexoEdit" [ngModel]="ganadoService.selectedGanado.sexo" name="sexo">
-              <option selected >Selecciona</option>
+            <select class="form-control" id="sexoEdit" [value]="ganado.sexo" (select)="ganado.sexo" [ngModel]="ganado.sexo" name="sexo">
               <option>Macho</option>
               <option>Hembra</option>
             </select>
           </div>
           <div class="form-group">
             <label for="fechaNacimientoEdit">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="fechaNacimientoEdit" [ngModel]="ganadoService.selectedGanado.fechaNacimiento" name="fechaNacimiento">
+            <input type="date" class="form-control" id="fechaNacimientoEdit" [value]="ganado.fechaNacimiento" [(ngModel)]="ganado.fechaNacimiento"  name="fechaNacimiento">
           </div>
           <div class="form-group">
             <label for="tipoEdit">Seleciona el tipo</label>
-            <select class="form-control" id="tipoEdit" [ngModel]="ganadoService.selectedGanado.tipo" name="tipo">
+            <select class="form-control" id="tipoEdit" (select)="ganado.tipo" [value]="ganado.tipo" [ngModel]="ganado.tipo"  name="tipo">
               <option>Vaca</option>
               <option>Toro</option>
               <option>Ternero</option>
@@ -178,7 +172,7 @@
           </div>
           <div class="form-group">
             <label for="estadoEdit">Estado</label>
-            <select class="form-control" id="estadoEdit" [ngModel]="ganadoService.selectedGanado.estado" name="estado">
+            <select class="form-control" id="estadoEdit" [ngModel]="ganado.estado" [value]="ganado.estado" name="estado">
               <option>Activo</option>
               <option>Inactivo</option>
             </select>
@@ -186,23 +180,20 @@
           <!-- Selecionar el id de la madre-->
           <div class="form-group">
             <label for="madre_idEdit">Madre</label>
-            <select class="form-control" id="madre_idEdit" [ngModel]="ganadoService.selectedGanado.madre_id" name="madre_id">
-              <option>Selecciona</option>
-              <option *ngFor="let ganado of ganadoService.ganados"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+            <select class="form-control" id="madre_idEdit" [value]="ganado.madre_id" (select)="ganado.madre_id" [ngModel]="ganado.madre_id" name="madre_id">
+              <option *ngFor="let ganado of ganadosVaca"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <!-- Selecionar el id del padre-->
           <div class="form-group">
             <label for="padre_idEdit">Padre</label>
-            <select class="form-control" [ngModel]="ganadoService.selectedGanado.padre_id" name="padre_id" id="padre_idEdit">
-              <option>Selecciona</option>
-              <option *ngFor="let ganado of ganadoService.ganados"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            <select class="form-control" [value]="ganado.padre_id" (select)="ganado.padre_id" [ngModel]="ganado.padre_id" name="padre_id" id="padre_idEdit">
+              <option *ngFor="let ganado of ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" (click)="putGanado(ganadFrom)">Guardar</button>
+            <button class="btn btn-primary" (click)="putGanado(ganaoFromEdit)">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModalEdit()">Cerrar</button>
-
           </div>
         </form>
       </div>
