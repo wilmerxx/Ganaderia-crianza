@@ -37,10 +37,7 @@ public class GanadoControlador {
         if(ganadoServicio.buscarTodos().contains(ganado)){
             return ResponseEntity.badRequest().body("Ya existe es ganado");
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String fechaFormateada = sdf.format(ganado.getFechaNacimiento());
-        Date fecha = new Date(fechaFormateada);
-        ganado.setFechaNacimiento(fecha);
+
         ganado.setGanado_id(UUID.randomUUID().toString());
 
         if(ganado.getMadre_id()!=null){
@@ -74,7 +71,6 @@ public class GanadoControlador {
         ganadoServicio.actualizar(ganado);
         return ResponseEntity.ok(ganado);
 
-
     }
 
     @DeleteMapping("/ganados/{id}")
@@ -85,5 +81,16 @@ public class GanadoControlador {
         }
         ganadoServicio.eliminar(id);
         return ResponseEntity.ok("Ganado eliminado correctamente");
+    }
+
+    //filtrar por tipo de vaca
+    @GetMapping("/ganados/tipo/{tipo}")
+    public ResponseEntity<?> getGanadoPorTipo(@PathVariable String tipo){
+        List<Ganado> ganado = ganadoServicio.buscarPorTipo(tipo);
+        if(Objects.isNull(ganado)){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese tipo");
+        }else {
+            return ResponseEntity.ok(ganado);
+        }
     }
 }

@@ -44,10 +44,6 @@ public class MedicinaControlador {
         if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        String fechaFormateada = sdf.format(medicina.getFecha_vacuna());
-        Date fecha = new Date(fechaFormateada);
-        medicina.setFecha_vacuna(fecha);
         medicina.setMedicina_id(UUID.randomUUID().toString());
         medicinaServicio.guardarMedicina(medicina);
         return ResponseEntity.ok(medicina);

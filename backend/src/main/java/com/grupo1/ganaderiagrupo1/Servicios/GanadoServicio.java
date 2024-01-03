@@ -39,5 +39,10 @@ public class GanadoServicio {
         ganadoRepositorio.eliminar(id);
     }
 
+    //filtrar por tipo de vaca
+    public List<Ganado> buscarPorTipo(String tipo) {
+        return ganadoRepositorio.buscarPorTipo(tipo);
+    }
+
 
 }
