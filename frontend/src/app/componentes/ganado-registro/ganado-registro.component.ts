@@ -2,7 +2,7 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import { NgForm } from '@angular/forms';
-import {filter} from "rxjs/operators";
+
 
 
 
@@ -13,8 +13,12 @@ import {filter} from "rxjs/operators";
 })
 export class GanadoRegistroComponent implements OnInit{
   validador: boolean;
+  totalVacas: number = 0;
+
+
   constructor(protected ganadoService: GanadoService) {
     this.validador = false;
+
   }
   ganado_id: string = '';
   ganado: Ganado = new Ganado();
@@ -25,7 +29,10 @@ export class GanadoRegistroComponent implements OnInit{
     this.ganado;
     this.getGanadoVaca();
     this.getGanadoToro();
+
   }
+
+
 
   //obtener ganado por id
   buscarGanadoID(id: string){
@@ -33,6 +40,8 @@ export class GanadoRegistroComponent implements OnInit{
       this.ganadoService.selectedGanado = res as Ganado;
     });
   }
+
+
 
   crearGanado(from: NgForm){
     console.log(from.value);
@@ -51,8 +60,9 @@ export class GanadoRegistroComponent implements OnInit{
     form.reset();
   }
 
+
   getGanados() {
-    this.ganadoService.getGanados().subscribe((res) =>{
+  this.ganadoService.getGanados().subscribe((res) =>{
       for(let i = 0; i < res.length; i++){
         this.ganadoService.ganados[i] = res[i];
         this.ganadoService.getGanadoID(res[i].madre_id??'').subscribe((res2) =>{
@@ -62,7 +72,7 @@ export class GanadoRegistroComponent implements OnInit{
           this.ganadoService.ganados[i].nombrePadre = res3.nombre_ganado;
         });
       }
-      console.log(res);
+
     })
   }
 
@@ -136,14 +146,14 @@ export class GanadoRegistroComponent implements OnInit{
     //filtrar por tipo vaca
     this.ganadoService.getGanadosTipo('Vaca').subscribe((res) =>{
       this.ganadosVaca = res as Ganado[];
-      console.log(res);
+      //console.log(res);
     });
   }
   getGanadoToro() {
     //filtrar por tipo vaca
     this.ganadoService.getGanadosTipo('Toro').subscribe((res) =>{
       this.ganadosToro = res as Ganado[];
-      console.log(res);
+
     });
   }
   formatearFecha(fecha: string){

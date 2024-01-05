@@ -3,7 +3,7 @@ import {Area} from "../models/area.model";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Reproduccion} from "../models/reproduccion.model";
-import {Ganado} from "../models/ganado";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class ReproduccionService {
   selectedReproduccion:Reproduccion;
   reproducciones!: Reproduccion[];
 
-  readonly URL_API = "http://localhost:8080/api/reproducciones"; // Ajusta la URL según tu API
+  readonly URL_API = environment.baseUrl+"/reproducciones"; // Ajusta la URL según tu API
 
   constructor(private http: HttpClient) {
     this.selectedReproduccion = new Reproduccion();

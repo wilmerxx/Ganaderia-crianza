@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ganado } from '../models/ganado';
 import {Area} from "../models/area.model";
+import {environment} from "../../environments/environment";
 @Injectable({
   providedIn: 'root'
 })
@@ -17,9 +18,15 @@ export class GanadoService {
     this.selectedGanado = new Ganado();
   }
 
-  readonly URL_API = 'http://localhost:8080/api/ganados';
+  readonly URL_API = environment.baseUrl + '/ganados';
+  // @ts-ignore
+
   getGanados(): Observable<Ganado[]> {
-    return this.http.get<Ganado[]>(this.URL_API);
+    try {
+      return this.http.get<Ganado[]>(this.URL_API);
+    }catch (e) {
+      console.log(e);
+    }
   }
 
   postGanado(ganado: Ganado): Observable<any> {
@@ -49,14 +56,11 @@ export class GanadoService {
       this.ganados = res as Ganado[];
       if(tipo == 'Vaca'){
         this.ganadosVaca = this.ganados;
-        console.log(this.ganadosVaca);
-        this.totalVacas = this.ganadosVaca.length;
       }else if(tipo == 'Toro'){
         this.ganadosToro = this.ganados;
-        console.log(this.ganadosToro);
       }else if(tipo == 'Ternero'){
         this.ganadosTernero = this.ganados;
-        console.log(this.ganadosTernero);
+
       }
     });
   }

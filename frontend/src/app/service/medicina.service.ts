@@ -4,7 +4,7 @@ import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {Medicina} from "../models/medicina.model";
 import { map, catchError } from 'rxjs/operators';
-import {error} from "@angular/compiler-cli/src/transformers/util";
+import {environment} from "../../environments/environment";
 
 
 @Injectable({
@@ -14,8 +14,8 @@ export class MedicinaService {
   selectedMedicina: Medicina;
   medicina!: Medicina[];
 
-  readonly URL_API = "http://localhost:8080/api/medicina";
-  readonly URL_GANADO_API = "http://localhost:8080/api/ganados";
+  readonly URL_API = environment.baseUrl + '/medicinas';
+  readonly URL_GANADO_API = environment.baseUrl + '/ganado';
 
   constructor(private http: HttpClient) {
     this.selectedMedicina = new Medicina();

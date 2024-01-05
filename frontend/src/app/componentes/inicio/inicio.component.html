@@ -1,22 +1,49 @@
 <div class="container">
   <div class="col-lg-12">
     <div class="row">
-      <div class="col-lg-5">
-        <h1 > </h1>
-        <h3 class="mt-2"></h3>
-        <button type="button" class="btn btn-outline-primary" (click)="datos()" >datos</button>
+      <div class="col-lg-6">
+        <div class="ct-chart-bar">
+          <canvas baseChart
+                  [datasets]="doughnutChartData"
+                  [labels]="barChartLabels"
+                  [type]="barChartType"
+                  [options]="barChartOptions"
+                  [legend]="barChartLegend"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
+          </canvas>
+
+        </div>
       </div>
-      <div class="col-lg-7">
+      <div class="col-lg-6">
         <div class="ct-chart-bar">
           <canvas baseChart
                   [datasets]="doughnutChartData"
                   [labels]="doughnutChartLabels"
                   [type]="doughnutChartType"
                   (chartHover)="chartHovered($event)"
-                  (chartClick)="chartClicked($event)"></canvas>
+                  (chartClick)="chartClicked($event)">
+          </canvas>
         </div>
 
       </div>
+
+    </div>
+    <div class="row">
+      <!--realizar un card con los datos de la cantidad de ganado-->
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header text-center">
+            <h2 class="card-title">Cantidad de Ganado</h2>
+          </div>
+          <div class="card-body">
+            <div class="ct-chart-bar text-center">
+              <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
     </div>
   </div>
