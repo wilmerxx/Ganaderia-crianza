@@ -33,9 +33,9 @@ public class GanadoControlador {
 
     @PostMapping("/ganados")
     public ResponseEntity<?> postGanado(@RequestBody Ganado ganado){
-
         if(ganadoServicio.buscarTodos().contains(ganado)){
             return ResponseEntity.badRequest().body("Ya existe es ganado");
+
         }
 
         ganado.setGanado_id(UUID.randomUUID().toString());

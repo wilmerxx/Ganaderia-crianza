@@ -14,6 +14,8 @@ public class ControlEnfermedadesServicio {
     @Autowired
     private GanadoServicio ganadoServicio;
 
+
+    // Control de enfermedades
     public void guardarControlEnfermedades(ControlEnfermedades controlEnfermedades) {
         Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado_id());
         ganado.getControlEnfermedades().add(controlEnfermedades);
@@ -41,4 +43,5 @@ public class ControlEnfermedadesServicio {
     public ControlEnfermedades buscarControlEnfermedadesPorId(String id) {
         return controlEnfermedadesRepositorio.buscarPorId(id);
     }
+
 }

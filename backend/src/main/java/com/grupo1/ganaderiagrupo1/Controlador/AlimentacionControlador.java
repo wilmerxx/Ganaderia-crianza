@@ -25,7 +25,7 @@ public class AlimentacionControlador {
     @Autowired
     GanadoServicio ganadoServicio;
 
-    @GetMapping("/alimentacion")
+    @GetMapping("/alimentaciones")
     public ResponseEntity<?> getAlimentacion(){
         if(alimentacionServicio.listaAlimentacion().isEmpty()){
             Date date = new Date();
@@ -51,6 +51,7 @@ public class AlimentacionControlador {
     //guardar
     @PostMapping("/alimentacion")
     public ResponseEntity<?> postAlimentacion(@RequestBody Alimentacion alimentacion){
+
         if(alimentacionServicio.listaAlimentacion().contains(alimentacion)){
             return ResponseEntity.badRequest().body("Ya existe una alimentacion con ese id");
         }
