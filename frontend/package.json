@@ -23,6 +23,7 @@
     "@angular/router": "^14.2.0",
     "@ng-bootstrap/ng-bootstrap": "^13.0.0",
     "@popperjs/core": "^2.10.2",
+    "@swimlane/ngx-charts": "^20.5.0",
     "@types/node": "^20.10.4",
     "axios": "^1.6.2",
     "bootstrap": "^5.2.0",

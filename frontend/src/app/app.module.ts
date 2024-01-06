@@ -16,6 +16,8 @@ import { MedicinaComponent } from './componentes/medicina/medicina.component';
 import { ReproduccionComponent } from './componentes/reproduccion/reproduccion.component';
 import { GanadoRoutingModule } from './app-routing.module';
 import { NgChartsModule} from 'ng2-charts';
+import { NgxChartsModule} from "@swimlane/ngx-charts";
+
 
 @NgModule({
   declarations: [
@@ -38,7 +40,8 @@ import { NgChartsModule} from 'ng2-charts';
     HttpClientModule,
     BrowserAnimationsModule,
     GanadoRoutingModule,
-    NgChartsModule
+    NgChartsModule,
+    NgxChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
