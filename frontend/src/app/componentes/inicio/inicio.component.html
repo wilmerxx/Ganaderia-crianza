@@ -44,6 +44,25 @@
         </div>
       </div>
 
+      <div class="col-lg-12">
+        <button class="btn btn-outline-primary" (click)="onRandomData()">
+          Random Data ewfew
+        </button>
+        <ngx-charts-advanced-pie-chart
+          scheme="cool"
+          [results]="single"
+          [gradient]="gradient"
+          (select)="onSelect($event)"
+          (activate)="onActivate($event)"
+          (deactivate)="onDeactivate($event)"
+        >
+        </ngx-charts-advanced-pie-chart>
+
+
+
+
+      </div>
+
 
     </div>
   </div>

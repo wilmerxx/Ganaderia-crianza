@@ -8,6 +8,7 @@ import * as colorette from "colorette";
 import {ColorsPluginOptions} from "chart.js/dist/plugins/plugin.colors";
 import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
 import {Observable} from "rxjs";
+import {ServicioService} from "../../service/servicio.service";
 
 @Component({
   selector: 'app-inicio',
@@ -26,7 +27,7 @@ export class InicioComponent implements OnInit {
   public totalGanado: number = 0;
   public doughnutChartData:ChartDataset[] = [];
 
-  constructor(private ganadoService: GanadoService) {
+  constructor(private ganadoService: GanadoService, private servicioService: ServicioService) {
 
   }
   ngOnInit(): void {
@@ -114,6 +115,35 @@ export class InicioComponent implements OnInit {
 
   public chartHovered(e:any):void {
     //console.log(e);
+  }
+
+
+
+  // options
+  gradient: boolean = true;
+  showLegend: boolean = true;
+  showLabels: boolean = true;
+  isDoughnut: boolean = false;
+
+
+  get single() {
+    return this.servicioService.countryData;
+  }
+
+  onRandomData() {
+    this.servicioService.randomData();
+  }
+
+  onSelect(data: any): void {
+    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
+  }
+
+  onActivate(data: any): void {
+    console.log('Activate', JSON.parse(JSON.stringify(data)));
+  }
+
+  onDeactivate(data: any): void {
+    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
   }
 
 

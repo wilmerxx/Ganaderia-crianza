@@ -2,30 +2,60 @@ import {HttpClient} from "@angular/common/http";
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 
-
+interface Country {
+  name: string;
+  value: number;
+}
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class ServicioService {
-  opened = false;
-  constructor(private http: HttpClient) {}
-  private url = 'http://localhost:8080/api/animal';
 
-  public getGanados(){
-    return this.http.get(this.url);
+  private data: Country[] = [
+    {
+      "name": "Germany",
+      "value": 8940000
+    },
+    {
+      "name": "USA",
+      "value": 5000000
+    },
+    {
+      "name": "France",
+      "value": 7200000
+    },
+    {
+      "name": "UK",
+      "value": 6200000
+    }
+  ];
+
+
+  get countryData() {
+    return this.data;
   }
 
-  deleteGanado(id: number | undefined): Observable<void> {
-    return this.http.delete<void>('/ganados/' + id);
+  randomData() {
+    this.data = [
+      {
+        "name": "Germany",
+        "value": Math.random() * 1000000
+      },
+      {
+        "name": "USA",
+        "value": Math.random() * 1000000
+      },
+      {
+        "name": "France",
+        "value": Math.random() * 1000000
+      },
+      {
+        "name": "UK",
+        "value": Math.random() * 1000000
+      }
+    ];
   }
-
-  openSidebar() {
-    this.opened = true;
-  }
-
-  closeSidebar() {
-    this.opened = false
-  }
-
 
 }
