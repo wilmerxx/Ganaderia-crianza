@@ -1,15 +1,13 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import * as Chartist from 'chartist';
-import  {ServicioService} from './servicio.service';
+import { Component, OnInit } from '@angular/core';
+import {ServicioService} from "../service/servicio.service";
 
 @Component({
-  selector: 'app-ganado',
-  templateUrl: './ganado.component.html',
-  styleUrls: ['./ganado.component.css']
+  selector: 'app-navegacion',
+  templateUrl: './navegacion.component.html',
+  styleUrls: ['./navegacion.component.css']
 })
-export class  GanadoComponent implements OnInit{
+export class NavegacionComponent implements OnInit {
 
-  title = 'Dashboard';
   sidebarCollapsed = false;
   mainbar = false;
   constructor(private servicio:ServicioService) { }

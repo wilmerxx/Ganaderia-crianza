@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Ganado} from "./models/ganado";
+import {Ganado} from "../models/ganado";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {Medicina} from "./models/medicina.model";
-import {Enfermedad  } from "./models/enfermedades.model";
+import {Medicina} from "../models/medicina.model";
+import {Enfermedad  } from "../models/enfermedades.model";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class EnfermedadesService {
     this.selectedEnfermedades = new Enfermedad();
   }
 
-  readonly URL_API = 'http://localhost:8080/api/controlEnfermedades';
+  readonly URL_API = environment.baseUrl + '/enfermedades';
 
   getEnfermedad(): Observable<Enfermedad[]> {
     return this.http.get<Enfermedad[]>(this.URL_API);

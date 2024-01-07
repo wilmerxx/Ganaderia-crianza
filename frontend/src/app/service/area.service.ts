@@ -3,8 +3,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import {catchError, Observable} from 'rxjs';
-import {Area} from "./models/area.model";
-import {Ganado} from "./models/ganado";
+import {Area} from "../models/area.model";
+import {Ganado} from "../models/ganado";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class AreaService {
   selectedArea: Area;
   areas!: Area[];
 
-  readonly URL_API = "http://localhost:8080/api/areas";
+  readonly URL_API = environment.baseUrl + '/area';
 
   constructor(private http: HttpClient) {
     this.selectedArea = new Area();

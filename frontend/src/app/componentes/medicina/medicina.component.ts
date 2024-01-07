@@ -1,6 +1,6 @@
 
 import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import {MedicinaService} from "../../medicina.service";
+import {MedicinaService} from "../../service/medicina.service";
 import {Medicina} from "../../models/medicina.model";
 import {GanadoService} from "../../service/ganado.service";
 import {NgForm} from "@angular/forms";
