@@ -75,8 +75,6 @@ export class GanadoRegistroComponent implements OnInit {
     });
   }
 
-
-
 guardar(even: Event){
   even.preventDefault();
     const value = this.form.value;
@@ -88,9 +86,6 @@ guardar(even: Event){
       this.limpiarFormulario(this.form.value);
     });
 }
-
-
-
 
   getCurrentDate() {
     return new Date().toISOString().split('T')[0];
