@@ -2,33 +2,34 @@ package com.grupo1.ganaderiagrupo1.Repositorios;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import org.springframework.stereotype.Repository;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Repository
 public class GanadoRepositorio {
 
-    Date date = new Date();
 
     //List<Ganado> ganadoList = new ArrayList<>();
     List<Ganado> ganadoList = new ArrayList<>(
             List.of(
-                    new Ganado("skfsjfsff", "G23", "pepe", "Rosst", 34.5, "Macho", date, "Toro", "Activo"),
-                    new Ganado("2", "2", "maria", "2", 345, "2", date, "Vaca", "2"),
-                    new Ganado("3", "3", "sofia", "3", 64, "3", date, "Vaca", "3"),
-                    new Ganado("4", "4", "sebas", "4", 456, "4", date, "Ternero", "4"),
-                    new Ganado("4", "4", "adria", "4", 456, "4", date, "Ternero", "4"),
-                    new Ganado("5", "5", "coco", "5", 456, "5", date, "Ternero", "5"),
-                    new Ganado("6", "6", "matilde", "6", 456, "6", date, "Vaca", "6"),
-                    new Ganado("7", "7", "pablo", "7", 456, "7", date, "Toro", "7"),
-                    new Ganado("8", "8", "lola", "8", 46, "8", date, "Vaca", "8"),
-                    new Ganado("9", "9", "camilo", "9", 456, "9", date, "Toro", "9"),
-                    new Ganado("10", "10", "camila", "10", 456, "10", date, "Vaca", "10"),
-                    new Ganado("11", "11", "leo", "11", 456, "11", date, "Toro", "11"),
-                    new Ganado("12", "12", "pancho", "12", 456, "12", date, "Toro", "12"),
-                    new Ganado("13", "13", "servio", "13", 456, "13", date, "Ternero", "13"),
-                    new Ganado("14", "14", "sisa", "14", 45, "14", date, "Vaca", "14"),
-                    new Ganado("15", "15", "pedro", "15", 2, "15", date, "Toro", "15"),
-                    new Ganado("16", "16", "silvia", "16", 5, "16", date, "Vaca", "16")
+                    new Ganado("skf", "G23", "pepe", "Rosst", 34.5, "Macho", "12-12-2019", "Toro", "Activo"),
+                    new Ganado("2", "2", "maria", "2", 345, "Hembra", "2018-12-12", "Vaca", "2"),
+                    new Ganado("3", "3", "sofia", "3", 64, "Hembra", "2018-12-12", "Vaca", "3"),
+                    new Ganado("4", "4", "julieta", "4", 456, "Hembra", "2018-12-12", "Ternero", "4"),
+                    new Ganado("4", "4", "adria", "4", 456, "Macho", "2018-12-12", "Ternero", "4"),
+                    new Ganado("5", "5", "coco", "5", 456, "Hembra", "2018-12-12", "Ternero", "5"),
+                    new Ganado("6", "6", "matilde", "6", 456, "Hembra", "2018-12-12", "Vaca", "6"),
+                    new Ganado("7", "7", "pablo", "7", 456, "Macho", "2018-12-12", "Toro", "7"),
+                    new Ganado("8", "8", "lola", "8", 46, "Hembra", "2018-12-12", "Vaca", "8"),
+                    new Ganado("9", "9", "camilo", "9", 456, "Macho", "2018-12-12", "Toro", "9"),
+                    new Ganado("10", "10", "camila", "10", 456, "Hembra", "2018-12-12", "Vaca", "10"),
+                    new Ganado("11", "11", "leo", "11", 456, "Macho", "2018-12-12", "Toro", "11"),
+                    new Ganado("12", "12", "pancho", "12", 456, "Macho", "2018-12-12", "Toro", "12"),
+                    new Ganado("13", "13", "rosalia", "13", 456, "Hembra", "2018-12-12", "Ternero", "13"),
+                    new Ganado("14", "14", "sisa", "14", 45, "Hembra", "2018-12-12", "Vaca", "14"),
+                    new Ganado("15", "15", "pedro", "15", 2, "Macho", "2018-12-12", "Toro", "15"),
+                    new Ganado("16", "16", "silvia", "16", 5, "Hembra", "2018-12-12", "Vaca", "16")
             )
     );
 
@@ -93,6 +94,16 @@ public class GanadoRepositorio {
         List<Ganado> ganadoList = new ArrayList<>();
         for (Ganado ganado: this.ganadoList) {
             if (ganado.getTipo().equals(tipo)){
+                ganadoList.add(ganado);
+            }
+        }
+        return ganadoList;
+    }
+
+    public List<Ganado> buscarPorNombre(String nombre) {
+        List<Ganado> ganadoList = new ArrayList<>();
+        for (Ganado ganado: this.ganadoList) {
+            if (ganado.getNombre_ganado().contains(nombre)){
                 ganadoList.add(ganado);
             }
         }

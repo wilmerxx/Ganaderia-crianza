@@ -14,6 +14,7 @@ export class Ganado {
   estado?: string;
   nombreMadre?: string;
   nombrePadre?: string;
+  edad?: number;
 
   public Ganado(){
     this.ganado_id = "";

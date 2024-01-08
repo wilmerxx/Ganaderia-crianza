@@ -3,11 +3,6 @@ import * as Chartist from 'chartist';
 import { GanadoService } from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import {Chart, ChartDataset, ChartOptions, ChartType, Color, Colors, plugins} from "chart.js";
-import {baseColors} from "ng2-charts";
-import * as colorette from "colorette";
-import {ColorsPluginOptions} from "chart.js/dist/plugins/plugin.colors";
-import {observableToBeFn} from "rxjs/internal/testing/TestScheduler";
-import {Observable} from "rxjs";
 import {ServicioService} from "../../service/servicio.service";
 
 @Component({
@@ -26,6 +21,9 @@ export class InicioComponent implements OnInit {
   public totalTerneros: number = 0;
   public totalGanado: number = 0;
   public doughnutChartData:ChartDataset[] = [];
+  public barChartDatasets: ChartDataset[] = [];
+  public totalMachos: number = 0;
+  public totalHembras: number = 0;
 
   constructor(private ganadoService: GanadoService, private servicioService: ServicioService) {
 
@@ -35,11 +33,13 @@ export class InicioComponent implements OnInit {
     this.ganadoService.getGanadoTipo('Ternero');
     this.ganadoService.getGanadoTipo('Vaca');
     this.datosDoughnut();
+    this.barChartDatos();
   }
 
 
   //datos de grafica de pastel
   datosDoughnut(){
+
     this.ganadoService.getGanados().subscribe((res) =>{
       this.ganados = res as Ganado[];
       this.ganadoService.ganados = this.ganados;
@@ -62,6 +62,40 @@ export class InicioComponent implements OnInit {
             '#FF6384',
             '#36A2EB',
             '#FFCE56'
+          ]
+        }
+      ];
+    });
+  }
+
+  barChartDatos(){
+    this.ganadoService.getGanados().forEach((res) =>{
+        //condicion si es macho o hembra
+        res.forEach((ganado) =>{
+          if(ganado.sexo == 'Macho'){
+            this.totalMachos++;
+          }else{
+            this.totalHembras++;
+          }
+        });
+
+      this.barChartDatasets = [
+        {
+          label: 'Sexo', data: [this.totalMachos, this.totalHembras],
+          backgroundColor: [
+            '#38d93b',
+          ],
+          hoverBackgroundColor: [
+            '#3ca140',
+          ]
+        },
+        {
+          label: 'Tipo', data: [this.totalHembras, this.totalTerneros],
+          backgroundColor: [
+            'rgba(227,47,115,0.99)',
+          ],
+          hoverBackgroundColor: [
+            '#b71256',
           ]
         }
       ];
@@ -92,7 +126,7 @@ export class InicioComponent implements OnInit {
     },
     responsive: true,
   };
-  public barChartLabels: string[] = ['Vacas', 'Toros', 'Terneros'];
+  public barChartLabels: string[] = ['Machos', 'Hembras'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];

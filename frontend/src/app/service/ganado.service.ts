@@ -8,6 +8,7 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 export class GanadoService {
+  [x: string]: any;
   selectedGanado: Ganado;
   ganados: Ganado[] = [];
   ganadosVaca: Ganado[] = [];
@@ -53,16 +54,27 @@ export class GanadoService {
   //obtener ganado por
   getGanadoTipo(tipo: string){
     this.getGanadosTipo(tipo).subscribe((res) =>{
-      this.ganados = res as Ganado[];
       if(tipo == 'Vaca'){
-        this.ganadosVaca = this.ganados;
+        this.ganadosVaca = res as Ganado[];
       }else if(tipo == 'Toro'){
-        this.ganadosToro = this.ganados;
+        this.ganadosToro = res as Ganado[];
       }else if(tipo == 'Ternero'){
-        this.ganadosTernero = this.ganados;
+        this.ganadosTernero = res as Ganado[];
 
       }
     });
+  }
+
+  //calcular edad del ganado en meses
+  calcularEdad(fechaNacimiento: string): number{
+    let fechaActual = new Date();
+    let fechaNac = new Date(fechaNacimiento);
+    let edad = fechaActual.getMonth() - fechaNac.getMonth() + (12 * (fechaActual.getFullYear() - fechaNac.getFullYear()));
+    return edad;
+  }
+
+  busquedaGanado(busqueda: string): Observable<any>{
+    return this.http.get(this.URL_API + '/nombre/' + busqueda);
   }
 
 }

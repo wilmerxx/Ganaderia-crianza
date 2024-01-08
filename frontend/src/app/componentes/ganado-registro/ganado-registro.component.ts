@@ -1,7 +1,9 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
-import { NgForm } from '@angular/forms';
+import {FormGroup, FormBuilder, FormControl, Validator, Validators, NgForm} from '@angular/forms';
+import {MAT_DATEPICKER_VALIDATORS} from "@angular/material/datepicker";
+import {Observable} from "rxjs";
 
 
 
@@ -11,25 +13,87 @@ import { NgForm } from '@angular/forms';
   templateUrl: './ganado-registro.component.html',
   styleUrls: ['./ganado-registro.component.css']
 })
-export class GanadoRegistroComponent implements OnInit{
-  validador: boolean;
-  totalVacas: number = 0;
+export class GanadoRegistroComponent implements OnInit {
 
-
-  constructor(protected ganadoService: GanadoService) {
-    this.validador = false;
-
-  }
   ganado_id: string = '';
   ganado: Ganado = new Ganado();
-  ganadosVaca: Ganado[] = [];
-  ganadosToro: Ganado[] = [];
-  ngOnInit(): void {
-    this.getGanados();
-    this.ganado;
-    this.getGanadoVaca();
-    this.getGanadoToro();
+  form!: FormGroup;
+  resultados$!: Observable<string[]>;
+  ganados: Ganado[] = [];
+  textoBusquedo: string = '';
 
+  constructor(protected ganadoService: GanadoService, private formBuilder: FormBuilder) {
+    //validaciones
+    this.buscarGanado(this.textoBusquedo);
+  }
+
+  ngOnInit(): void {
+    this.ganado;
+    this.ganadoService.getGanadoTipo('Vaca');
+    this.ganadoService.getGanadoTipo('Toro');
+    this.formularioNuevoGanado();
+    console.log(this.form.value);
+
+    this.resultados$ = this.ganadoService.busquedaGanado(this.textoBusquedo);
+    this.buscarGanado('');
+  }
+
+  buscarGanado(query: string){
+    if(query != ''){
+     this.ganadoService.busquedaGanado(query).subscribe((res) =>{
+        this.ganadoService.ganados = res as Ganado[];
+        for(let i = 0; i < res.length; i++){
+          this.ganadoService.ganados[i] = res[i];
+          //calcular edad del ganado en meses
+          this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento??'');
+          this.ganadoService.getGanadoID(res[i].madre_id??'').subscribe((res2) =>{
+            this.ganadoService.ganados[i].nombreMadre = res2.nombre_ganado;
+          });
+          this.ganadoService.getGanadoID(res[i].padre_id??'').subscribe((res3) =>{
+            this.ganadoService.ganados[i].nombrePadre = res3.nombre_ganado;
+          });
+        }
+      });
+    }else if(query == ''){
+      this.getGanados();
+    }
+  }
+
+
+  private formularioNuevoGanado() {
+    this.form = this.formBuilder.group({
+      codigo: new FormControl('', [Validators.required]),
+      nombre_ganado: new FormControl('', [Validators.required]),
+      raza: new FormControl('', [Validators.required]),
+      peso: new FormControl('', [Validators.required]),
+      sexo: new FormControl('', [Validators.required]),
+      fechaNacimiento: new FormControl('', [Validators.required]),
+      tipo: new FormControl('', [Validators.required]),
+      madre_id: new FormControl(''),
+      padre_id: new FormControl(''),
+      estado: new FormControl('', [Validators.required])
+    });
+  }
+
+
+
+guardar(even: Event){
+  even.preventDefault();
+    const value = this.form.value;
+    console.log(value);
+    this.ganadoService.postGanado(this.form.value).subscribe((res) => {
+      console.log(res);
+      this.buscarGanado(this.textoBusquedo);
+      this.closeModal();
+      this.limpiarFormulario(this.form.value);
+    });
+}
+
+
+
+
+  getCurrentDate() {
+    return new Date().toISOString().split('T')[0];
   }
 
 
@@ -42,20 +106,6 @@ export class GanadoRegistroComponent implements OnInit{
   }
 
 
-
-  crearGanado(from: NgForm){
-    console.log(from.value);
-    //cambiar el formatoto de la fecha de nacimiento a dd-mm-yyyy
-    from.value.fechaNacimiento = this.formatearFecha(from.value.fechaNacimiento);
-    console.log(from.value);
-    this.ganadoService.postGanado(from.value).subscribe((res) => {
-      console.log(res);
-      this.getGanados();
-      this.closeModal();
-      this.limpiarFormulario(from);
-    });
-  }
-
   limpiarFormulario(form: NgForm){
     form.reset();
   }
@@ -65,6 +115,8 @@ export class GanadoRegistroComponent implements OnInit{
   this.ganadoService.getGanados().subscribe((res) =>{
       for(let i = 0; i < res.length; i++){
         this.ganadoService.ganados[i] = res[i];
+        //calcular edad del ganado en meses
+        this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento??'');
         this.ganadoService.getGanadoID(res[i].madre_id??'').subscribe((res2) =>{
           this.ganadoService.ganados[i].nombreMadre = res2.nombre_ganado;
         });
@@ -79,14 +131,11 @@ export class GanadoRegistroComponent implements OnInit{
   // Método para determinar si la fila actual está en modo de edición
   putGanado(form: NgForm){
     console.log(form.value);
-    //cambiar el formatoto de la fecha de nacimiento a dd-mm-yyyy
-    form.value.fechaNacimiento = this.formatearFecha(form.value.fechaNacimiento);
     this.ganadoService.putGanado(form.value).subscribe((res) => {
       console.log(res);
-      this.getGanados();
+      this.buscarGanado(this.textoBusquedo);
       this.closeModalEdit();
     });
-    window.location.reload();
     console.log(form.value);
   }
 
@@ -125,8 +174,6 @@ export class GanadoRegistroComponent implements OnInit{
       modalElement.style.display = 'block';
       this.ganadoService.getGanadoID(ganado.ganado_id).subscribe(res =>{
         this.ganado = res;
-        //cambiar el formatoto de la fecha de nacimiento a dd-mm-yyyy
-        this.ganado.fechaNacimiento = this.formatearFecha(ganado.fechaNacimiento);
         console.log("Funcion OpenModalEdit");
         console.log(this.ganado);
       });
@@ -141,25 +188,9 @@ export class GanadoRegistroComponent implements OnInit{
     }
   }
 
-  //lista de ganado tipo vaca
-  getGanadoVaca() {
-    //filtrar por tipo vaca
-    this.ganadoService.getGanadosTipo('Vaca').subscribe((res) =>{
-      this.ganadosVaca = res as Ganado[];
-      //console.log(res);
-    });
-  }
-  getGanadoToro() {
-    //filtrar por tipo vaca
-    this.ganadoService.getGanadosTipo('Toro').subscribe((res) =>{
-      this.ganadosToro = res as Ganado[];
 
-    });
-  }
-  formatearFecha(fecha: string){
-    let fechaNacimiento = fecha.split('-');
-    let fechaNacimiento2 = fechaNacimiento[2] + '-' + fechaNacimiento[1] + '-' + fechaNacimiento[0];
-    return fechaNacimiento2;
-  }
+
 }
+
+
 

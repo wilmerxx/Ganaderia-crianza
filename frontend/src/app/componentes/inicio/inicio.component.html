@@ -4,7 +4,7 @@
       <div class="col-lg-6">
         <div class="ct-chart-bar">
           <canvas baseChart
-                  [datasets]="doughnutChartData"
+                  [datasets]="barChartDatasets"
                   [labels]="barChartLabels"
                   [type]="barChartType"
                   [options]="barChartOptions"
@@ -57,8 +57,6 @@
           (deactivate)="onDeactivate($event)"
         >
         </ngx-charts-advanced-pie-chart>
-
-
 
 
       </div>

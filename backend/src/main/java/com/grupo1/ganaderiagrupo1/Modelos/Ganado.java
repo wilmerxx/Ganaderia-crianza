@@ -18,8 +18,7 @@ public class Ganado {
     private String raza;
     private double peso;
     private String sexo;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date fechaNacimiento;
+    private String fechaNacimiento;
     private String tipo;
     private String madre_id;
     private String padre_id;
@@ -48,7 +47,7 @@ public class Ganado {
      * TODO: Agregar vaca o toro
      */
 
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String estado) {
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, String fechaNacimiento, String tipo, String estado) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
@@ -78,7 +77,7 @@ public class Ganado {
      * TODO: Agregar general
      */
 
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, String madre_id, String padre_id, Ganado madre, Ganado padre, String estado) {
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, String fechaNacimiento, String tipo, String madre_id, String padre_id, Ganado madre, Ganado padre, String estado) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
@@ -107,7 +106,7 @@ public class Ganado {
      * @param padre
      * TODO: Agregar ternero
      */
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, Ganado madre, Ganado padre) {
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, String fechaNacimiento, String tipo, Ganado madre, Ganado padre) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
@@ -134,7 +133,7 @@ public class Ganado {
      * @param padre
      * @param controlEnfermedades
      */
-    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, Date fechaNacimiento, String tipo, Ganado madre, Ganado padre, List<ControlEnfermedades> controlEnfermedades) {
+    public Ganado(String ganado_id, String codigo, String nombre_ganado, String raza, double peso, String sexo, String fechaNacimiento, String tipo, Ganado madre, Ganado padre, List<ControlEnfermedades> controlEnfermedades) {
         this.ganado_id = ganado_id;
         this.codigo = codigo;
         this.nombre_ganado = nombre_ganado;
