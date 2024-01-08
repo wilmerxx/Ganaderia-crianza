@@ -22,13 +22,24 @@ public class GanadoControlador {
         if(ganadoServicio.buscarTodos().isEmpty()){
             Date date = new Date();
 
-            Ganado ganado = new Ganado( "", "","", "", 0.00, "String sexo", date,"String tipo","");
+            Ganado ganado = new Ganado( "", "","", "", 0.00, "String sexo", "12-12-2018","String tipo","");
 
             return ResponseEntity.ok(ganado);
         }else {
             return ResponseEntity.ok(ganadoServicio.buscarTodos());
         }
 
+    }
+
+    //busqueda por nombre
+    @GetMapping("/ganados/nombre/{nombre}")
+    public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre){
+        List<Ganado> ganado = ganadoServicio.buscarPorNombre(nombre);
+        if(Objects.isNull(ganado)){
+            return ResponseEntity.badRequest().body("No existe un ganado con ese nombre");
+        }else {
+            return ResponseEntity.ok(ganado);
+        }
     }
 
     @PostMapping("/ganados")

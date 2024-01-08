@@ -45,4 +45,7 @@ public class GanadoServicio {
     }
 
 
+    public List<Ganado> buscarPorNombre(String nombre) {
+        return ganadoRepositorio.buscarPorNombre(nombre);
+    }
 }

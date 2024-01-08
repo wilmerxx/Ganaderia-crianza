@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavegacionComponent } from './navegacion/navegacion.component';
 import { InicioComponent } from './componentes/inicio/inicio.component';
@@ -32,17 +32,18 @@ import { NgxChartsModule} from "@swimlane/ngx-charts";
     ReproduccionComponent
 
     ],
-  imports: [
-    BrowserModule,
-    RouterModule,
-    NgbModule,
-    FormsModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    GanadoRoutingModule,
-    NgChartsModule,
-    NgxChartsModule
-  ],
+    imports: [
+        BrowserModule,
+        RouterModule,
+        NgbModule,
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        GanadoRoutingModule,
+        NgChartsModule,
+        NgxChartsModule,
+        ReactiveFormsModule
+    ],
   providers: [],
   bootstrap: [AppComponent]
 })
