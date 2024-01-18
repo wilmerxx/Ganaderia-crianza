@@ -17,20 +17,20 @@ public class ControlEnfermedadesServicio {
 
     // Control de enfermedades
     public void guardarControlEnfermedades(ControlEnfermedades controlEnfermedades) {
-        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado_id());
+        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado().getGanado_id());
         ganado.getControlEnfermedades().add(controlEnfermedades);
         controlEnfermedadesRepositorio.guardar(controlEnfermedades);
     }
 
     public void actualizarContolEnfermedades(ControlEnfermedades controlEnfermedades) {
-        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado_id());
+        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado().getGanado_id());
         ganado.getControlEnfermedades().removeIf(controlEnfermedades1 -> controlEnfermedades1.getControl_id().equals(controlEnfermedades.getControl_id()));
         ganado.getControlEnfermedades().add(controlEnfermedades);
         controlEnfermedadesRepositorio.actualizar(controlEnfermedades);
     }
 
     public void eliminarControlEnfermedades(ControlEnfermedades controlEnfermedades) {
-        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado_id());
+        Ganado ganado = ganadoServicio.buscarPorId(controlEnfermedades.getGanado().getGanado_id());
         ControlEnfermedades controlEnfermedades1 = controlEnfermedadesRepositorio.buscarPorId(controlEnfermedades.getControl_id());
         ganado.getControlEnfermedades().remove(controlEnfermedades);
         controlEnfermedadesRepositorio.eliminar(controlEnfermedades1);

@@ -20,11 +20,7 @@ public class GanadoControlador {
     @GetMapping("/ganados")
     public ResponseEntity<?> getGanado(){
         if(ganadoServicio.buscarTodos().isEmpty()){
-            Date date = new Date();
-
-            Ganado ganado = new Ganado( "", "","", "", 0.00, "String sexo", "12-12-2018","String tipo","");
-
-            return ResponseEntity.ok(ganado);
+            return ResponseEntity.ok("No hay ganados registrados");
         }else {
             return ResponseEntity.ok(ganadoServicio.buscarTodos());
         }
@@ -51,10 +47,10 @@ public class GanadoControlador {
 
         ganado.setGanado_id(UUID.randomUUID().toString());
 
-        if(ganado.getMadre_id()!=null){
-            ganado.setMadre(ganadoServicio.buscarPorId(ganado.getMadre_id()));
-        }if(ganado.getPadre_id()!=null){
-            ganado.setPadre(ganadoServicio.buscarPorId(ganado.getPadre_id()));
+        if(ganado.getMadre().getGanado_id()!=null){
+            ganado.setMadre(ganadoServicio.buscarPorId(ganado.getGanado_id()));
+        }if(ganado.getPadre().getGanado_id()!=null){
+            ganado.setPadre(ganadoServicio.buscarPorId(ganado.getGanado_id()));
         }
 
         ganadoServicio.guardar(ganado);

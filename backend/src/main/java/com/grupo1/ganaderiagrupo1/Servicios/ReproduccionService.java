@@ -19,14 +19,14 @@ public class ReproduccionService {
 
     public void agregarReproduccion(Reproduccion reproduccion) {
         reproduccionRepository.agregar(reproduccion);
-        ganadoServicio.buscarPorId(reproduccion.getGanado_id()).getReproducciones().add(reproduccion);
+        ganadoServicio.buscarPorId(reproduccion.getGanado().getGanado_id()).getReproducciones().add(reproduccion);
     }
     public void eliminarReproduccion(String id) {
         reproduccionRepository.eliminar(id);
     }
 
     public void actualizarReproduccion(Reproduccion o) {
-        Ganado ganado = ganadoServicio.buscarPorId(o.getGanado_id());
+        Ganado ganado = ganadoServicio.buscarPorId(o.getGanado().getGanado_id());
         ganado.getReproducciones().removeIf(reproduccion -> reproduccion.getReproduccion_id().equals(o.getReproduccion_id()));
         ganado.getReproducciones().add(o);
         reproduccionRepository.actualizar(o);

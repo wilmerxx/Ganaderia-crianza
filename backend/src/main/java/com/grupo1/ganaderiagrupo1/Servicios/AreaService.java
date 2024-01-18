@@ -21,7 +21,7 @@ public class AreaService {
     }
     public void addArea(Area area) {
         areaRepository.save(area);
-        ganadoRepositorio.buscarPorId(area.getGanado_id()).getAreas().add(area);
+        ganadoRepositorio.buscarPorId(area.getGanado().getGanado_id()).getAreas().add(area);
 
     }
 
@@ -31,7 +31,7 @@ public class AreaService {
 
     public void updateArea(Area updatedArea) {
          areaRepository.updateById(updatedArea);
-         Ganado ganado = ganadoRepositorio.buscarPorId(updatedArea.getGanado_id());
+         Ganado ganado = ganadoRepositorio.buscarPorId(updatedArea.getGanado().getGanado_id());
          ganado.getAreas().removeIf(area -> area.getAreaId().equals(updatedArea.getAreaId()));
          ganado.getAreas().add(updatedArea);
     }

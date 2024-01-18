@@ -26,9 +26,7 @@ public class ReproduccionController {
     @GetMapping()
     public ResponseEntity<?> listarTodos() {
         if(reproduccionService.buscarTodos().isEmpty()){
-            Date date = new Date();
-            Reproduccion reproduccion = new Reproduccion("",date,"","","");
-            return ResponseEntity.ok(reproduccion);
+            return ResponseEntity.ok("No hay reproducciones registradas");
         }
         return ResponseEntity.ok( reproduccionService.buscarTodos());
     }

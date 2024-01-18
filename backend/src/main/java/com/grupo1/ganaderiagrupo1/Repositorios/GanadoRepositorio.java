@@ -10,8 +10,8 @@ import java.util.*;
 public class GanadoRepositorio {
 
 
-    //List<Ganado> ganadoList = new ArrayList<>();
-    List<Ganado> ganadoList = new ArrayList<>(
+    List<Ganado> ganadoList = new ArrayList<>();
+   /* List<Ganado> ganadoList = new ArrayList<>(
             List.of(
                     new Ganado("skf", "G23", "pepe", "Rosst", 34.5, "Macho", "12-12-2019", "Toro", "Activo"),
                     new Ganado("2", "2", "maria", "2", 345, "Hembra", "2018-12-12", "Vaca", "2"),
@@ -32,6 +32,8 @@ public class GanadoRepositorio {
                     new Ganado("16", "16", "silvia", "16", 5, "Hembra", "2018-12-12", "Vaca", "16")
             )
     );
+    ]
+    */
 
     public void guardar(Object o) {
         ganadoList.add((Ganado) o);
@@ -63,10 +65,8 @@ public class GanadoRepositorio {
         ganado.setEstado(o.getEstado());
         ganado.setCodigo(o.getCodigo());
         ganado.setTipo(o.getTipo());
-        ganado.setMadre_id(o.getMadre_id());
-        ganado.setPadre_id(o.getPadre_id());
-        ganado.setPadre(buscarPorId(o.getPadre_id()));
-        ganado.setMadre(buscarPorId(o.getMadre_id()));
+        ganado.setMadre(o.getMadre());
+        ganado.setPadre(o.getPadre());
     }
 
     public Ganado buscarPorId(String id) {

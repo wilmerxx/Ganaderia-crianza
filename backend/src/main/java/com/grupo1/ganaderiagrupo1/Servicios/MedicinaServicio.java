@@ -19,12 +19,12 @@ public class MedicinaServicio {
     private GanadoRepositorio ganadoRepositorio;
 
     public void guardarMedicina(Medicina medicina) {
-        ganadoRepositorio.buscarPorId(medicina.getGanado_id()).getMedicinas().add(medicina);
+        ganadoRepositorio.buscarPorId(medicina.getGanado().getGanado_id()).getMedicinas().add(medicina);
         medicinaRepositorio.guardar(medicina);
     }
 
     public void actualizarMedicina(Medicina medicina) {
-        Ganado ganado = ganadoRepositorio.buscarPorId(medicina.getGanado_id());
+        Ganado ganado = ganadoRepositorio.buscarPorId(medicina.getGanado().getGanado_id());
         ganado.getMedicinas().removeIf(medicina1 -> medicina1.getMedicina_id().equals(medicina.getMedicina_id()));
         ganado.getMedicinas().add(medicina);
         medicinaRepositorio.actualizar(medicina);

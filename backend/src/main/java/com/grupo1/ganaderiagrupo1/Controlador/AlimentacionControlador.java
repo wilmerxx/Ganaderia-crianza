@@ -28,9 +28,8 @@ public class AlimentacionControlador {
     @GetMapping("/alimentaciones")
     public ResponseEntity<?> getAlimentacion(){
         if(alimentacionServicio.listaAlimentacion().isEmpty()){
-            Date date = new Date();
-            Alimentacion alimentacion = new Alimentacion("","", "", date, "");
-            return ResponseEntity.ok(alimentacion);
+
+            return ResponseEntity.ok("No hay alimentaciones registradas");
         }else {
             return ResponseEntity.ok(alimentacionServicio.listaAlimentacion());
         }
@@ -55,7 +54,7 @@ public class AlimentacionControlador {
         if(alimentacionServicio.listaAlimentacion().contains(alimentacion)){
             return ResponseEntity.badRequest().body("Ya existe una alimentacion con ese id");
         }
-        if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado_id()))){
+        if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado().getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
         alimentacion.setAlimentacion_id(UUID.randomUUID().toString());

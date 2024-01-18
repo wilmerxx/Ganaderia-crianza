@@ -25,9 +25,7 @@ public class MedicinaControlador {
     @GetMapping("/medicina")
     public ResponseEntity<?> getMedicina(){
         if(medicinaServicio.listaMedicina().isEmpty()){
-            Date date = new Date();
-            Medicina medicina = new Medicina("", "", "", "", date, "");
-            return ResponseEntity.ok(medicina);
+            return ResponseEntity.ok("No hay medicinas registradas");
         }else {
 
             return ResponseEntity.ok(medicinaServicio.listaMedicina());
@@ -41,7 +39,7 @@ public class MedicinaControlador {
         if(medicinaServicio.listaMedicina().contains(medicina)){
             return ResponseEntity.badRequest().body("Ya existe una medicina con ese id");
         }
-        if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado_id()))){
+        if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado().getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
         medicina.setMedicina_id(UUID.randomUUID().toString());

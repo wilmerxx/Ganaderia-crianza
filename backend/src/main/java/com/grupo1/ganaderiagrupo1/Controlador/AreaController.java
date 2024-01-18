@@ -30,8 +30,7 @@ public class AreaController {
     public ResponseEntity<?> getAllAreas() {
         List<Area> areas = areaService.getAllAreas();
         if (areaService.getAllAreas().isEmpty()) {
-            Area area = new Area("", "", "", "", 23.34, "");
-            return ResponseEntity.ok(area);
+            return ResponseEntity.ok("No hay areas registradas");
 
         }
 
@@ -57,7 +56,7 @@ public class AreaController {
             if (areaService.getAllAreas().contains(area)) {
                 return ResponseEntity.badRequest().body("Ya existe un area con ese id");
             }
-            if (ganadoServicio.buscarPorId(area.getGanado_id()) == null) {
+            if (ganadoServicio.buscarPorId(area.getGanado().getGanado_id()) == null) {
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
             area.setAreaId(UUID.randomUUID().toString());

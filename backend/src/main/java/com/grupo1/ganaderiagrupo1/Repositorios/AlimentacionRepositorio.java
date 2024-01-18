@@ -53,9 +53,7 @@ public class AlimentacionRepositorio {
     public double calcularCantidadSuplemento(Date fechaInicio, Date fechaFin) {
         double cantidadSuplemento = 0;
         for (Alimentacion alimentacion: alimentacionList) {
-            if (alimentacion.getFecha_alimentacion().after(fechaInicio) && alimentacion.getFecha_alimentacion().before(fechaFin)){
-                cantidadSuplemento += Double.parseDouble(alimentacion.getCantidad_suplemento());
-            }
+
         }
         return cantidadSuplemento;
     }

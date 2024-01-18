@@ -29,9 +29,7 @@ public class ControlEnfermedadesControlador {
     @GetMapping("/controlEnfermedades")
     public ResponseEntity<?> getControlEnfermedades(){
         if(controlEnfermedadesServicio.listaControlEnfermedades().isEmpty()){
-            Date date = new Date();
-            ControlEnfermedades controlEnfermedades = new ControlEnfermedades("String control_id", "String enfermedad", 239.4, date,"String control_id", "String enfermedad", "String estado");
-            return ResponseEntity.ok(controlEnfermedades);
+            return ResponseEntity.ok("No hay controles de enfermedades registrados");
         }else {
 
             return ResponseEntity.ok(controlEnfermedadesServicio.listaControlEnfermedades());
@@ -43,7 +41,7 @@ public class ControlEnfermedadesControlador {
     public ResponseEntity<?> postControlEnfermedades(@RequestBody ControlEnfermedades controlEnfermedades){
 
         if(!controlEnfermedadesServicio.listaControlEnfermedades().contains(controlEnfermedades)){
-            if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado_id()))){
+            if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado().getGanado_id()))){
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
             controlEnfermedades.setControl_id(UUID.randomUUID().toString());
