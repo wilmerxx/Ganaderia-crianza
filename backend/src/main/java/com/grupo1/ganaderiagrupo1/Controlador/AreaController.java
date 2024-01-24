@@ -1,10 +1,9 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Area;
-import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 
-import com.grupo1.ganaderiagrupo1.Servicios.AreaService;
-import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.AreaServiceImpl;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,19 +12,17 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/areas")
 public class AreaController {
 
     @Autowired
-    private AreaService areaService;
+    private AreaServiceImpl areaService;
 
 
     @Autowired
-    private GanadoServicio ganadoServicio;
+    private GanadoServicioImpl ganadoServicio;
 
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping
     public ResponseEntity<?> getAllAreas() {
         List<Area> areas = areaService.getAllAreas();
@@ -36,9 +33,8 @@ public class AreaController {
 
         return new ResponseEntity<>(areas, HttpStatus.OK);
     }
-    @CrossOrigin(origins = "http://localhost:4200")
     @GetMapping("/{id}")
-    public ResponseEntity<?> getAreaById(@PathVariable String id) {
+    public ResponseEntity<?> getAreaById(@PathVariable int id) {
         Area area = areaService.getAreaById(id);
         if (area != null) {
             return ResponseEntity.ok(area);
@@ -49,7 +45,6 @@ public class AreaController {
 
 
     @PostMapping
-    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<?> addArea(@RequestBody Area area) {
         try {
 
@@ -59,7 +54,6 @@ public class AreaController {
             if (ganadoServicio.buscarPorId(area.getGanado().getGanado_id()) == null) {
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
-            area.setAreaId(UUID.randomUUID().toString());
             areaService.addArea(area);
             return new ResponseEntity<>("Area creada", HttpStatus.CREATED);
         } catch (Exception e) {
@@ -68,7 +62,6 @@ public class AreaController {
     }
 
     @PutMapping()
-    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<Area> updateArea(@RequestBody Area updatedArea) {
         try {
             areaService.updateArea(updatedArea);
@@ -82,9 +75,9 @@ public class AreaController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    @CrossOrigin(origins = "http://localhost:4200")
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArea(@PathVariable String id) {
+    public ResponseEntity<Void> deleteArea(@PathVariable int id) {
         areaService.deleteArea(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

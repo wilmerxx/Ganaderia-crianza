@@ -18,7 +18,7 @@ import java.util.Date;
 @Entity
 public class Medicina {
     @Id
-    private String medicina_id;
+    private int medicina_id;
     private String sintomas;
     private String diagnostico;
     private String tratamiento;

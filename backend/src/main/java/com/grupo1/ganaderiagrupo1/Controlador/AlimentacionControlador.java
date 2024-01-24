@@ -1,27 +1,26 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
+import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
+import com.grupo1.ganaderiagrupo1.Excepciones.ResourceNotFoundException;
 import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 
-import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
-import com.grupo1.ganaderiagrupo1.Servicios.AlimentacionServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.AlimentacionServicioImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class AlimentacionControlador {
 
     @Autowired
-    AlimentacionServicio alimentacionServicio;
+    AlimentacionServicioImpl alimentacionServicio;
     @Autowired
     GanadoServicio ganadoServicio;
 
@@ -37,7 +36,7 @@ public class AlimentacionControlador {
 
     // traer por id la alimentacion
     @GetMapping("/alimentacion/{id}")
-    public ResponseEntity<?> getAlimentacionPorId(@PathVariable String id){
+    public ResponseEntity<?> getAlimentacionPorId(@PathVariable int id){
         Alimentacion alimentacion = alimentacionServicio.buscarAlimentacionPorId(id);
         if (Objects.isNull(alimentacion)){
             return ResponseEntity.badRequest().body("No existe una alimentacion con ese id");
@@ -57,7 +56,6 @@ public class AlimentacionControlador {
         if(Objects.isNull(ganadoServicio.buscarPorId(alimentacion.getGanado().getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
-        alimentacion.setAlimentacion_id(UUID.randomUUID().toString());
         alimentacionServicio.guardarAlimentacion(alimentacion);
         return ResponseEntity.ok(alimentacion);
     }
@@ -72,4 +70,5 @@ public class AlimentacionControlador {
         alimentacionServicio.actualizarAlimentacion(alimentacion);
         return ResponseEntity.ok(alimentacion);
     }
+
 }

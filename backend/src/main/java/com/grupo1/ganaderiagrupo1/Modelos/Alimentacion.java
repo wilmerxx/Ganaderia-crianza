@@ -1,9 +1,6 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,9 +14,10 @@ import java.util.Date;
 @Entity
 public class Alimentacion {
     @Id
-    private String alimentacion_id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int alimentacion_id;
     private String nombre_suplemento;
-    private String cantidad_suplemento;
+    private int cantidad_suplemento;
     private String fecha_alimentacion;
     private String estado;
     @ManyToOne(optional = false)

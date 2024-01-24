@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 public class Area {
     @Id
-    private String areaId;
+    private int areaId;
     private String nombreArea;
     private String tipoArea;
     private String tipoPasto;

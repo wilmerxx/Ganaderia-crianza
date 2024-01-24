@@ -18,7 +18,7 @@ import java.util.Date;
 @Entity
 public class ControlEnfermedades {
         @Id
-        private String control_id;
+        private int control_id;
         private String tipo_control;
         private double pesoActual;
         private String fechaControl;

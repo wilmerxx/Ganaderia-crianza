@@ -20,7 +20,7 @@ import java.util.List;
 @Entity
 public class Reproduccion {
     @Id
-    private String reproduccion_id;
+    private int reproduccion_id;
     private String fecha_parto;
     private String numero_crias;
     private String estado;

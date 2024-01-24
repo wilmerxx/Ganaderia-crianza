@@ -2,29 +2,25 @@ package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 
-import com.grupo1.ganaderiagrupo1.Servicios.ControlEnfermedadesServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.ControlEnfermedadesServicioImpl;
 
-import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import java.util.Objects;
 import java.util.UUID;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class ControlEnfermedadesControlador {
     @Autowired
-    ControlEnfermedadesServicio controlEnfermedadesServicio;
+    ControlEnfermedadesServicioImpl controlEnfermedadesServicio;
     @Autowired
-    GanadoServicio ganasoServicio;
+    GanadoServicioImpl ganasoServicio;
 
     @GetMapping("/controlEnfermedades")
     public ResponseEntity<?> getControlEnfermedades(){
@@ -44,7 +40,6 @@ public class ControlEnfermedadesControlador {
             if(Objects.isNull(ganasoServicio.buscarPorId(controlEnfermedades.getGanado().getGanado_id()))){
                 return ResponseEntity.badRequest().body("No existe un ganado con ese id");
             }
-            controlEnfermedades.setControl_id(UUID.randomUUID().toString());
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(controlEnfermedades);
 
@@ -55,7 +50,7 @@ public class ControlEnfermedadesControlador {
 
     // traer por id el control de enfermedades
     @GetMapping("/controlEnfermedades/{id}")
-    public ResponseEntity<?> getControlEnfermedadesPorId(@PathVariable String id){
+    public ResponseEntity<?> getControlEnfermedadesPorId(@PathVariable int id){
         ControlEnfermedades controlEnfermedades = controlEnfermedadesServicio.buscarControlEnfermedadesPorId(id);
         if(controlEnfermedadesServicio.listaControlEnfermedades().contains(controlEnfermedades)){
             return ResponseEntity.ok(controlEnfermedades);
