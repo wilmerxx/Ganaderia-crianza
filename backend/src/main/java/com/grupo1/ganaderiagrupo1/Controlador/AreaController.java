@@ -1,6 +1,9 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
-import com.grupo1.ganaderiagrupo1.Modelos.Area;
+import com.grupo1.ganaderiagrupo1.Dto.Area.AreaDto;
+import com.grupo1.ganaderiagrupo1.Dto.Area.AreaExisteDto;
+import com.grupo1.ganaderiagrupo1.Dto.Area.AreaNuevoDto;
+import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
 
 import com.grupo1.ganaderiagrupo1.Servicios.impl.AreaServiceImpl;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
@@ -9,8 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
-import java.util.UUID;
+
+import java.util.Date;
 
 @RestController
 @RequestMapping("/api/areas")
@@ -25,61 +28,50 @@ public class AreaController {
 
     @GetMapping
     public ResponseEntity<?> getAllAreas() {
-        List<Area> areas = areaService.getAllAreas();
-        if (areaService.getAllAreas().isEmpty()) {
-            return ResponseEntity.ok("No hay areas registradas");
-
+       try {
+         return ResponseEntity.ok(areaService.getAllAreas());
+        } catch (RuntimeException e) {
+           return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-234",e.getMessage(), HttpStatus.BAD_REQUEST));
         }
-
-        return new ResponseEntity<>(areas, HttpStatus.OK);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getAreaById(@PathVariable int id) {
-        Area area = areaService.getAreaById(id);
-        if (area != null) {
-            return ResponseEntity.ok(area);
-        } else {
-            return ResponseEntity.badRequest().body("No existe un area con ese id");
+        try {
+            return ResponseEntity.ok(areaService.getAreaById(id));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-234",e.getMessage(), HttpStatus.BAD_REQUEST));
         }
     }
 
 
     @PostMapping
-    public ResponseEntity<?> addArea(@RequestBody Area area) {
+    public ResponseEntity<?> addArea(@RequestBody AreaNuevoDto area) {
         try {
-
-            if (areaService.getAllAreas().contains(area)) {
-                return ResponseEntity.badRequest().body("Ya existe un area con ese id");
-            }
-            if (ganadoServicio.buscarPorId(area.getGanado().getGanado_id()) == null) {
-                return ResponseEntity.badRequest().body("No existe un ganado con ese id");
-            }
             areaService.addArea(area);
-            return new ResponseEntity<>("Area creada", HttpStatus.CREATED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.ok(area);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-234",e.getMessage(), HttpStatus.BAD_REQUEST));
         }
     }
 
     @PutMapping()
-    public ResponseEntity<Area> updateArea(@RequestBody Area updatedArea) {
+    public ResponseEntity<?> updateArea(@RequestBody AreaExisteDto updatedArea) {
         try {
             areaService.updateArea(updatedArea);
-            if (updatedArea != null) {
-                return new ResponseEntity<>(updatedArea, HttpStatus.OK);
-
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.ok(areaService.getAreaById(updatedArea.getAreaId()));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-234",e.getMessage(), HttpStatus.BAD_REQUEST));
         }
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteArea(@PathVariable int id) {
-        areaService.deleteArea(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<?> deleteArea(@PathVariable int id) {
+       try {
+            areaService.deleteArea(id);
+            return ResponseEntity.noContent().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-234",e.getMessage(), HttpStatus.BAD_REQUEST));
+        }
     }
 
 }

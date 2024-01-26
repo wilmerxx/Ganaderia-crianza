@@ -10,7 +10,8 @@ public class AlimentacionDto {
     private int cantidad_suplemento;
     private String fecha_alimentacion;
     private String estado;
-    private int ganado_id;
+    private String codigo;
+    private String nombre_ganado;
     private LocalDateTime creado;
     private LocalDateTime modificado;
 }

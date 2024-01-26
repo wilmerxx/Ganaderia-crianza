@@ -1,13 +1,13 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -16,6 +16,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 public class ControlEnfermedades {
         @Id
         private int control_id;
@@ -27,6 +28,8 @@ public class ControlEnfermedades {
         @JoinColumn(name = "ganado_id", referencedColumnName = "ganado_id")
         private Ganado ganado;
         private String estado;
+        @CreatedDate
         private LocalDateTime creado;
+        @LastModifiedDate
         private LocalDateTime modificado;
 }
