@@ -19,5 +19,4 @@ public interface GanadoRepositorio extends JpaRepository<Ganado, Integer> {
     @Query("SELECT g FROM Ganado g  ORDER BY g.ganado_id ASC")
     public List<Ganado> todosGanados();
 
-
 }

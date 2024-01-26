@@ -3,6 +3,7 @@ import * as Chartist from 'chartist';
 import { GanadoService } from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import {Chart, ChartDataset, ChartOptions, ChartType, Color, Colors, plugins} from "chart.js";
+
 import {ServicioService} from "../../service/servicio.service";
 
 @Component({
@@ -39,7 +40,6 @@ export class InicioComponent implements OnInit {
 
   //datos de grafica de pastel
   datosDoughnut(){
-
     this.ganadoService.getGanados().subscribe((res) =>{
       this.ganados = res as Ganado[];
       this.ganadoService.ganados = this.ganados;

@@ -8,11 +8,13 @@ import {Observable} from "rxjs";
 
 
 
+
 @Component({
   selector: 'ganado-registro',
   templateUrl: './ganado-registro.component.html',
   styleUrls: ['./ganado-registro.component.css']
 })
+
 export class GanadoRegistroComponent implements OnInit {
 
   ganado_id: string = '';
@@ -182,8 +184,6 @@ guardar(even: Event){
       window.location.reload();
     }
   }
-
-
 
 }
 
