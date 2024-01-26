@@ -1,51 +1,26 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
-import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
+
+import com.grupo1.ganaderiagrupo1.Dto.Ganado.GanadoDto;
+import com.grupo1.ganaderiagrupo1.Dto.Ganado.GanadoExisteDto;
+import com.grupo1.ganaderiagrupo1.Dto.Ganado.GanadoNuevoDto;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
-import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
-import com.grupo1.ganaderiagrupo1.Repositorios.ControlEnfermedadesRepositorio;
-
-import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
-@Service
-public class GanadoServicio {
 
-    @Autowired
-    private GanadoRepositorio ganadoRepositorio;
-
-    public List<Ganado> buscarTodos() {
-        return ganadoRepositorio.buscarTodos();
-    }
-    public void guardar(Ganado o) {
-        ganadoRepositorio.guardar(o);
-    }
-
-    public void cambiarEstado(Ganado o) {
-        ganadoRepositorio.cambiarEstado(o);
-    }
-
-    public void actualizar(Ganado o) {
-        ganadoRepositorio.actualizar(o);
-
-    }
-
-    public Ganado buscarPorId(String id) {
-        return ganadoRepositorio.buscarPorId(id);
-    }
-
-    public void eliminar(String id) {
-        ganadoRepositorio.eliminar(id);
-    }
-
+public interface GanadoServicio {
+    public List<GanadoDto> buscarTodos();
+    public void guardar(GanadoNuevoDto o);
+    public void cambiarEstado(Ganado o);
+    public void actualizar(GanadoExisteDto o);
+    public GanadoDto buscarPorId(int id);
+    public void eliminar(int id);
     //filtrar por tipo de vaca
-    public List<Ganado> buscarPorTipo(String tipo) {
-        return ganadoRepositorio.buscarPorTipo(tipo);
-    }
+    public List<GanadoDto> buscarPorTipo(String tipo);
+    public List<GanadoDto> buscarPorNombre(String nombre);
 
+    public void actualizarEstado(String estado, int id);
 
-    public List<Ganado> buscarPorNombre(String nombre) {
-        return ganadoRepositorio.buscarPorNombre(nombre);
-    }
+    List<GanadoDto> gandosPorEstadosAsc(String estado);
 }

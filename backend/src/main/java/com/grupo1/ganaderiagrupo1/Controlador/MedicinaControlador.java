@@ -1,33 +1,28 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
-import com.grupo1.ganaderiagrupo1.Servicios.MedicinaServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.MedicinaServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api")
 public class MedicinaControlador {
     @Autowired
-    MedicinaServicio medicinaServicio;
+    MedicinaServicioImpl medicinaServicio;
 
     @Autowired
-    GanadoServicio ganadoServicio;
+    GanadoServicioImpl ganadoServicio;
 
     @GetMapping("/medicina")
     public ResponseEntity<?> getMedicina(){
         if(medicinaServicio.listaMedicina().isEmpty()){
-            Date date = new Date();
-            Medicina medicina = new Medicina("", "", "", "", date, "");
-            return ResponseEntity.ok(medicina);
+            return ResponseEntity.ok("No hay medicinas registradas");
         }else {
 
             return ResponseEntity.ok(medicinaServicio.listaMedicina());
@@ -41,17 +36,16 @@ public class MedicinaControlador {
         if(medicinaServicio.listaMedicina().contains(medicina)){
             return ResponseEntity.badRequest().body("Ya existe una medicina con ese id");
         }
-        if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado_id()))){
+        if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado().getGanado_id()))){
             return ResponseEntity.badRequest().body("No existe un ganado con ese id");
         }
-        medicina.setMedicina_id(UUID.randomUUID().toString());
         medicinaServicio.guardarMedicina(medicina);
         return ResponseEntity.ok(medicina);
     }
 
     // traer por id la medicina
     @GetMapping("/medicina/{id}")
-    public ResponseEntity<?> getMedicinaPorId(@PathVariable String id){
+    public ResponseEntity<?> getMedicinaPorId(@PathVariable int id){
         Medicina medicina = medicinaServicio.buscarMedicinaPorId(id);
         if(medicinaServicio.listaMedicina().contains(medicina)){
             return ResponseEntity.ok(medicina);

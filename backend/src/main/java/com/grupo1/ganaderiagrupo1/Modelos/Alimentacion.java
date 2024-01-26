@@ -1,19 +1,34 @@
 package com.grupo1.ganaderiagrupo1.Modelos;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
+@EntityListeners(AuditingEntityListener.class)
 public class Alimentacion {
-    private String alimentacion_id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int alimentacion_id;
     private String nombre_suplemento;
-    private String cantidad_suplemento;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    private Date fecha_alimentacion;
-    private String ganado_id;
+    private int cantidad_suplemento;
+    private String fecha_alimentacion;
+    private String estado;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "ganado_id", referencedColumnName = "ganado_id")
+    private Ganado ganado;
+    @CreatedDate
+    private LocalDateTime creado;
+    @LastModifiedDate
+    private LocalDateTime modificado;
 }
