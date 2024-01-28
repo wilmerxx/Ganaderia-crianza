@@ -43,16 +43,8 @@ public class GanadoControlador {
             return new ResponseEntity<>(apiError,apiError.getStatus());
         }
     }
-    //busqueda por nombre
-    @GetMapping("/ganados/nombre/{nombre}")
-    public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre){
-        List<GanadoDto> ganado = ganadoServicio.buscarPorNombre(nombre);
-        if(Objects.isNull(ganado)){
-            return ResponseEntity.badRequest().body("No existe un ganado con ese nombre");
-        }else {
-            return ResponseEntity.ok(ganado);
-        }
-    }
+
+
     //filtrar por tipo de vaca
     @GetMapping("/ganados/tipo/{tipo}")
     public ResponseEntity<?> getGanadoPorTipo(@PathVariable String tipo){

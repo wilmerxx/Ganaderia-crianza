@@ -12,8 +12,11 @@ public interface AlimentacionServicio {
 
     public void actualizarAlimentacion(AlimentacionExisteDto alimentacion);
     public List<AlimentacionDto> listaAlimentacion();
+    public List<AlimentacionDto> listaAlimentacionPorEstado(String estado);
 
-    public void eliminarAlimentacion(Alimentacion alimentacion);
+    public void eliminarAlimentacion(int id);
 
     public AlimentacionDto buscarAlimentacionPorId(int id);
+
+    public void actualizarEstadoAlimentacion(int id, String estado);
 }
