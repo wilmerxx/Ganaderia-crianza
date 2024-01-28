@@ -1,28 +1,17 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
-
-import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlDto;
 import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlExisteDto;
 import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlNuevoDto;
 import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
 import com.grupo1.ganaderiagrupo1.Excepciones.MensajeExito;
 import com.grupo1.ganaderiagrupo1.Excepciones.ResourceNotFoundException;
-import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
-
 import com.grupo1.ganaderiagrupo1.Servicios.ControlEnfermedadesServicio;
-import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
-import com.grupo1.ganaderiagrupo1.Servicios.impl.ControlEnfermedadesServicioImpl;
-
-import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
-
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.UUID;
 
 
 @RestController
@@ -30,8 +19,6 @@ import java.util.UUID;
 public class ControlEnfermedadesControlador {
     @Autowired
     ControlEnfermedadesServicio controlEnfermedadesServicio;
-    @Autowired
-    GanadoServicio ganadoServicio;
 
     @GetMapping()
     public ResponseEntity<?> getControlEnfermedades(){
@@ -42,8 +29,17 @@ public class ControlEnfermedadesControlador {
       }
     }
 
+    @GetMapping("/estados/{estado}")
+    public ResponseEntity<?> getControlEnfermedadesPorEstado(@PathVariable String estado){
+      try{
+          return ResponseEntity.ok(controlEnfermedadesServicio.listaControlEnfermedadesPorEstado(estado));
+      }catch (ResourceNotFoundException e){
+          return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
+      }
+    }
+
     @PostMapping()
-    public ResponseEntity<?> postControlEnfermedades(@RequestBody ControlNuevoDto controlEnfermedades){
+    public ResponseEntity<?> postControlEnfermedades(@RequestBody @Valid ControlNuevoDto controlEnfermedades){
         try{
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
             return ResponseEntity.ok(new MensajeExito(new Date(), "Control de enfermedades guardado exitosamente", HttpStatus.OK ));
@@ -65,10 +61,32 @@ public class ControlEnfermedadesControlador {
 
     //actualizar control de enfermedades
     @PutMapping()
-    public ResponseEntity<?> putControlEnfermedades(@RequestBody ControlExisteDto controlEnfermedades){
+    public ResponseEntity<?> putControlEnfermedades(@RequestBody @Valid ControlExisteDto controlEnfermedades){
       try{
           controlEnfermedadesServicio.actualizarContolEnfermedades(controlEnfermedades);
           return ResponseEntity.ok(controlEnfermedades);
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
+      }
+    }
+
+    //actualizar estado control de enfermedades
+    @PutMapping("/{id}/{estado}")
+    public ResponseEntity<?> putEstadoControlEnfermedades(@PathVariable int id, @PathVariable String estado){
+      try{
+          controlEnfermedadesServicio.actualizarEstadoControlEnfermedades(id, estado);
+          return ResponseEntity.ok(new MensajeExito(new Date(), "Estado actualizado exitosamente", HttpStatus.OK ));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
+      }
+    }
+
+    //eliminar control de enfermedades
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteControlEnfermedades(@PathVariable int id){
+      try{
+          controlEnfermedadesServicio.eliminarControlEnfermedades(id);
+          return ResponseEntity.ok(new MensajeExito(new Date(), "Control de enfermedades eliminado exitosamente", HttpStatus.OK ));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
       }
