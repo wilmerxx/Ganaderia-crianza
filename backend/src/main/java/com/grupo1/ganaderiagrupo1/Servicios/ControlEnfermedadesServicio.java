@@ -1,18 +1,23 @@
 package com.grupo1.ganaderiagrupo1.Servicios;
 
+import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlDto;
+import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlExisteDto;
+import com.grupo1.ganaderiagrupo1.Dto.ControlEnfermedades.ControlNuevoDto;
 import com.grupo1.ganaderiagrupo1.Modelos.ControlEnfermedades;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 
 import java.util.List;
 
 public interface ControlEnfermedadesServicio {
-    public void guardarControlEnfermedades(ControlEnfermedades controlEnfermedades);
+     void guardarControlEnfermedades(ControlNuevoDto controlNuevoDto);
 
-    public void actualizarContolEnfermedades(ControlEnfermedades controlEnfermedades);
+     void actualizarContolEnfermedades(ControlExisteDto controlExisteDto);
 
-    public void eliminarControlEnfermedades(ControlEnfermedades controlEnfermedades);
+     void eliminarControlEnfermedades(int id);
 
-    public List<ControlEnfermedades> listaControlEnfermedades();
+     List<ControlDto> listaControlEnfermedades();
+     List<ControlDto> listaControlEnfermedadesPorEstado(String estado);
 
-    public ControlEnfermedades buscarControlEnfermedadesPorId(int id);
+     ControlDto buscarControlEnfermedadesPorId(int id);
+     void actualizarEstadoControlEnfermedades(int id, String estado);
 }

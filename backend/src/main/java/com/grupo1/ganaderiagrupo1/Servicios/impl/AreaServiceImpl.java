@@ -30,7 +30,7 @@ public class AreaServiceImpl implements AreaServicio {
            throw new RuntimeException("No hay areas registradas");
         }
         List<AreaDto> areasDto = new ArrayList<>();
-        List<Area> areas = areaRepository.findAll();
+        List<Area> areas = areaRepository.todosAreas();
         List<Ganado> ganados = ganadoRepositorio.findAll();
         for (Area area : areas) {
            for(Ganado ganado : ganados){
@@ -38,6 +38,7 @@ public class AreaServiceImpl implements AreaServicio {
                      AreaDto areaDto = new AreaDto();
                      areaDto.setAreaId(area.getAreaId());
                      areaDto.setNombreArea(area.getNombreArea());
+                     areaDto.setSuperficie(area.getSuperficie());
                      areaDto.setCodigoGanado(ganado.getCodigo());
                      areaDto.setTipoArea(area.getTipoArea());
                      areaDto.setTipoPasto(area.getTipoPasto());
@@ -52,6 +53,36 @@ public class AreaServiceImpl implements AreaServicio {
         return areasDto;
 
     }
+
+    @Override
+    public List<AreaDto> getAreasByEstado(String estado) {
+        if (areaRepository.areaPorEstadosAsc(estado).isEmpty()) {
+            throw new RuntimeException("No hay areas registradas");
+        }
+        List<AreaDto> areasDto = new ArrayList<>();
+        List<Area> areas = areaRepository.areaPorEstadosAsc(estado);
+        List<Ganado> ganados = ganadoRepositorio.findAll();
+        for (Area area : areas) {
+            for(Ganado ganado : ganados){
+                if(area.getGanado().getGanado_id()== ganado.getGanado_id()){
+                    AreaDto areaDto = new AreaDto();
+                    areaDto.setAreaId(area.getAreaId());
+                    areaDto.setNombreArea(area.getNombreArea());
+                    areaDto.setSuperficie(area.getSuperficie());
+                    areaDto.setCodigoGanado(ganado.getCodigo());
+                    areaDto.setTipoArea(area.getTipoArea());
+                    areaDto.setTipoPasto(area.getTipoPasto());
+                    areaDto.setNombreGanado(ganado.getNombre_ganado());
+                    areaDto.setEstado(area.getEstado());
+                    areaDto.setCreado(area.getCreado());
+                    areaDto.setModificado(area.getModificado());
+                    areasDto.add(areaDto);
+                }
+            }
+        }
+        return areasDto;
+    }
+
 
     @Override
     public void addArea(AreaNuevoDto area) {
@@ -73,16 +104,60 @@ public class AreaServiceImpl implements AreaServicio {
 
     @Override
     public AreaDto getAreaById(int id) {
-        return null;
+        Optional<Area> area = areaRepository.findById(id);
+        if (area.isEmpty()) {
+            throw new RuntimeException("No existe el area con el id: " + id);
+        }
+        AreaDto areaDto = new AreaDto();
+        areaDto.setAreaId(area.get().getAreaId());
+        areaDto.setNombreArea(area.get().getNombreArea());
+        areaDto.setSuperficie(area.get().getSuperficie());
+        areaDto.setCodigoGanado(area.get().getGanado().getCodigo());
+        areaDto.setTipoArea(area.get().getTipoArea());
+        areaDto.setTipoPasto(area.get().getTipoPasto());
+        areaDto.setNombreGanado(area.get().getGanado().getNombre_ganado());
+        areaDto.setEstado(area.get().getEstado());
+        areaDto.setCreado(area.get().getCreado());
+        areaDto.setModificado(area.get().getModificado());
+        return areaDto;
     }
 
     @Override
     public void updateArea(AreaExisteDto updatedArea) {
-
+        Optional<Area> area = areaRepository.findById(updatedArea.getAreaId());
+        if (area.isEmpty()) {
+            throw new RuntimeException("No existe el area con el id: " + updatedArea.getAreaId());
+        }
+        Optional<Ganado> ganado = ganadoRepositorio.findById(updatedArea.getGanadoId());
+        if (ganado.isEmpty()) {
+            throw new RuntimeException("No existe el ganado con el id: " + updatedArea.getGanadoId());
+        }
+        area.get().setNombreArea(updatedArea.getNombreArea());
+        area.get().setTipoArea(updatedArea.getTipoArea());
+        area.get().setTipoPasto(updatedArea.getTipoPasto());
+        area.get().setSuperficie(updatedArea.getSuperficie());
+        area.get().setEstado(updatedArea.getEstado());
+        area.get().setGanado(ganado.get());
+        areaRepository.save(area.get());
     }
 
     @Override
     public void deleteArea(int id) {
+        Optional<Area> area = areaRepository.findById(id);
+        if (area.isEmpty()) {
+            throw new RuntimeException("No existe el area con el id: " + id);
+        }
+        area.get().setEstado("Inactivo");
+        areaRepository.save(area.get());
+    }
 
+    @Override
+    public void acutualizarEstadoArea(int id, String estado) {
+        Optional<Area> area = areaRepository.findById(id);
+        if (area.isEmpty()) {
+            throw new RuntimeException("No existe el area con el id: " + id);
+        }
+        area.get().setEstado(estado);
+        areaRepository.save(area.get());
     }
 }

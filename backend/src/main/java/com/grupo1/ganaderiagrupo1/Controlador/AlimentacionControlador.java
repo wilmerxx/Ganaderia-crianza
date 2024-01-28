@@ -4,6 +4,8 @@ import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionExisteDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionNuevoDto;
 import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
+import com.grupo1.ganaderiagrupo1.Excepciones.ErrorDetails;
+import com.grupo1.ganaderiagrupo1.Excepciones.MensajeExito;
 import com.grupo1.ganaderiagrupo1.Excepciones.ResourceNotFoundException;
 import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 
@@ -21,7 +23,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/alimentacion")
 public class AlimentacionControlador {
 
     @Autowired
@@ -29,7 +31,7 @@ public class AlimentacionControlador {
     @Autowired
     GanadoServicio ganadoServicio;
 
-    @GetMapping("/alimentacion")
+    @GetMapping()
     public ResponseEntity<?> getAlimentacion(){
        try{
            return ResponseEntity.ok(alimentacionServicio.listaAlimentacion());
@@ -39,8 +41,19 @@ public class AlimentacionControlador {
        }
     }
 
+    // traer por estado la alimentacion
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<?> getAlimentacionPorEstados(@PathVariable String estado){
+       try{
+           return ResponseEntity.ok(alimentacionServicio.listaAlimentacionPorEstado(estado));
+         }catch (ResourceNotFoundException e){
+              return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
+
+       }
+    }
+
     // traer por id la alimentacion
-    @GetMapping("/alimentacion/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getAlimentacionPorId(@PathVariable int id){
        try{
               return ResponseEntity.ok(alimentacionServicio.buscarAlimentacionPorId(id));
@@ -49,24 +62,46 @@ public class AlimentacionControlador {
        }
     }
 
+    //actualizar estado
+    @PutMapping("/{id}/{estado}")
+    public ResponseEntity<?> getAlimentacionPorEstado(@PathVariable int id, @PathVariable String estado){
+       try{
+           alimentacionServicio.actualizarEstadoAlimentacion(id,estado);
+           return ResponseEntity.ok(new MensajeExito(new Date(),"Estado actualizado", HttpStatus.OK));
+         }catch (ResourceNotFoundException e){
+           return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
+       }
+    }
+
     //guardar
-    @PostMapping("/alimentacion")
+    @PostMapping()
     public ResponseEntity<?> postAlimentacion(@RequestBody AlimentacionNuevoDto alimentacion){
 
        try{
            alimentacionServicio.guardarAlimentacion(alimentacion);
-           return ResponseEntity.ok(alimentacion);
+           return ResponseEntity.ok(new MensajeExito(new Date(),"Alimentacion guardada", HttpStatus.OK));
          }catch (ResourceNotFoundException e){
            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
        }
     }
 
     //actualizar
-    @PutMapping("/alimentacion")
+    @PutMapping()
     public ResponseEntity<?> putAlimentacion(@RequestBody AlimentacionExisteDto alimentacion){
         try{
             alimentacionServicio.actualizarAlimentacion(alimentacion);
             return ResponseEntity.ok(alimentacion);
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
+        }
+    }
+
+    //eliminar
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteAlimentacion(@PathVariable int id){
+        try{
+            alimentacionServicio.eliminarAlimentacion(id);
+            return ResponseEntity.ok(new MensajeExito(new Date(),"Alimentacion eliminada", HttpStatus.OK));
         }catch (ResourceNotFoundException e){
             return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
         }

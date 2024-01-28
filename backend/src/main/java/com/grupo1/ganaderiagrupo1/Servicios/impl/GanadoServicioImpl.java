@@ -93,10 +93,6 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
 
     }
 
-    @Override
-    public void cambiarEstado(Ganado o) {
-
-    }
 
     @Override
     public void actualizar(GanadoExisteDto o) {
@@ -209,11 +205,6 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
         }
         //retornar dto
         return ganadoDtos;
-    }
-
-    @Override
-    public List<GanadoDto> buscarPorNombre(String nombre) {
-        return null;
     }
 
     @Override
