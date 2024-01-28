@@ -5,6 +5,8 @@ import com.grupo1.ganaderiagrupo1.Dto.Area.AreaNuevoDto;
 import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
 
 import com.grupo1.ganaderiagrupo1.Excepciones.MensajeExito;
+import com.grupo1.ganaderiagrupo1.Servicios.AreaServicio;
+import com.grupo1.ganaderiagrupo1.Servicios.GanadoServicio;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.AreaServiceImpl;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
@@ -20,11 +22,8 @@ import java.util.Date;
 public class AreaController {
 
     @Autowired
-    private AreaServiceImpl areaService;
+    private AreaServicio areaService;
 
-
-    @Autowired
-    private GanadoServicioImpl ganadoServicio;
 
     @GetMapping
     public ResponseEntity<?> getAllAreas() {
