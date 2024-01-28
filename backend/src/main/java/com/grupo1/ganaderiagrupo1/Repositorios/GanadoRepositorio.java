@@ -13,10 +13,10 @@ import java.util.List;
 public interface GanadoRepositorio extends JpaRepository<Ganado, Integer> {
 
     //realizar una consulta jpa para buscar por estado y ordenar por id de forma ascendente
-    @Query("SELECT g FROM Ganado g WHERE g.estado = ?1 ORDER BY g.ganado_id ASC")
+    @Query("SELECT g FROM Ganado g WHERE g.estado = ?1 ORDER BY g.ganado_id DESC")
     public List<Ganado> gandosPorEstadosAsc(String estado);
 
-    @Query("SELECT g FROM Ganado g  ORDER BY g.ganado_id ASC")
+    @Query("SELECT g FROM Ganado g  ORDER BY g.ganado_id DESC")
     public List<Ganado> todosGanados();
 
 }
