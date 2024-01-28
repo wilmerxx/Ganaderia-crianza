@@ -12,13 +12,11 @@ import java.util.List;
 public interface GanadoServicio {
     public List<GanadoDto> buscarTodos();
     public void guardar(GanadoNuevoDto o);
-    public void cambiarEstado(Ganado o);
     public void actualizar(GanadoExisteDto o);
     public GanadoDto buscarPorId(int id);
     public void eliminar(int id);
     //filtrar por tipo de vaca
     public List<GanadoDto> buscarPorTipo(String tipo);
-    public List<GanadoDto> buscarPorNombre(String nombre);
 
     public void actualizarEstado(String estado, int id);
 
