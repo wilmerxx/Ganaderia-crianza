@@ -28,8 +28,6 @@ public class AlimentacionControlador {
 
     @Autowired
     AlimentacionServicioImpl alimentacionServicio;
-    @Autowired
-    GanadoServicio ganadoServicio;
 
     @GetMapping()
     public ResponseEntity<?> getAlimentacion(){
@@ -57,6 +55,16 @@ public class AlimentacionControlador {
     public ResponseEntity<?> getAlimentacionPorId(@PathVariable int id){
        try{
               return ResponseEntity.ok(alimentacionServicio.buscarAlimentacionPorId(id));
+            }catch (ResourceNotFoundException e){
+              return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
+       }
+    }
+
+    // lista de total de cantidad de suplemento
+    @GetMapping("/total")
+    public ResponseEntity<?> getAlimentacionTotalCantidad(){
+       try{
+              return ResponseEntity.ok(alimentacionServicio.listaAlimentacionTotalCantidad());
             }catch (ResourceNotFoundException e){
               return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
        }

@@ -13,7 +13,9 @@ import java.time.LocalDateTime;
 public class ReproduccionDto {
     private int reproduccion_id;
     private String fecha_parto;
-    private String numero_crias;
+    private String estado_parto;
+    private String observaciones;
+    private int numero_crias;
     private String estado;
     private String codigoGanado;
     private String nombreGanado;

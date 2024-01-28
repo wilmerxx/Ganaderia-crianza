@@ -3,6 +3,7 @@ package com.grupo1.ganaderiagrupo1.Servicios;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionExisteDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionNuevoDto;
+import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionTotalConsumoDto;
 import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 
 import java.util.List;
@@ -19,4 +20,6 @@ public interface AlimentacionServicio {
     public AlimentacionDto buscarAlimentacionPorId(int id);
 
     public void actualizarEstadoAlimentacion(int id, String estado);
+
+    public List<AlimentacionTotalConsumoDto> listaAlimentacionTotalCantidad();
 }
