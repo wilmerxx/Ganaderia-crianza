@@ -21,9 +21,12 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class Reproduccion {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int reproduccion_id;
     private String fecha_parto;
-    private String numero_crias;
+    private String estado_parto;
+    private String observaciones;
+    private int numero_crias;
     private String estado;
     @CreatedDate
     private LocalDateTime creado;
