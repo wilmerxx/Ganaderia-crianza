@@ -19,6 +19,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class Medicina {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int medicina_id;
     private String sintomas;
     private String diagnostico;

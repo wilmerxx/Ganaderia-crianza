@@ -19,15 +19,16 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class ControlEnfermedades {
         @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         private int control_id;
         private String tipo_control;
         private double pesoActual;
         private String fechaControl;
         private String observaciones;
+        private String estado;
         @ManyToOne(optional = false)
         @JoinColumn(name = "ganado_id", referencedColumnName = "ganado_id")
         private Ganado ganado;
-        private String estado;
         @CreatedDate
         private LocalDateTime creado;
         @LastModifiedDate

@@ -3,6 +3,7 @@ package com.grupo1.ganaderiagrupo1.Servicios.impl;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionExisteDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionNuevoDto;
+import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionTotalConsumoDto;
 import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import com.grupo1.ganaderiagrupo1.Repositorios.AlimentacionRepositorio;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -161,5 +163,19 @@ public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Serv
         }
         Alimentacion alimentacion = alimentacionBuscada.get();
         alimentacion.setEstado(estado);
+    }
+
+    @Override
+    public List<AlimentacionTotalConsumoDto> listaAlimentacionTotalCantidad() {
+        List<AlimentacionTotalConsumoDto> alimentacionTotalConsumoDtos = new ArrayList<>();
+        List<Object> alimentacionTotalConsumo = alimentacionRepositorio.listaAlimentacionTotalCantidad();
+        for (Object alimentacionTotalConsumo1 : alimentacionTotalConsumo) {
+            Object[] alimentacionTotalConsumo2 = (Object[]) alimentacionTotalConsumo1;
+            AlimentacionTotalConsumoDto alimentacionTotalConsumoDto = new AlimentacionTotalConsumoDto();
+            alimentacionTotalConsumoDto.setNombre_suplemento(Objects.toString(alimentacionTotalConsumo2[0], null));
+            alimentacionTotalConsumoDto.setTotal_consumo(Integer.parseInt(Objects.toString(alimentacionTotalConsumo2[1], null)));
+            alimentacionTotalConsumoDtos.add(alimentacionTotalConsumoDto);
+        }
+        return alimentacionTotalConsumoDtos;
     }
 }

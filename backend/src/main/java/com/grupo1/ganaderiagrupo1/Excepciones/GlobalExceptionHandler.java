@@ -62,6 +62,6 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public ApiError handleResourceNotFoundException(RuntimeException ex) {
-        return new ApiError(new Date(),"p-233", ex.getMessage(),HttpStatus.NOT_FOUND);
+        return new ApiError(new Date(),"p-223", ex.getMessage(),HttpStatus.NOT_FOUND);
     }
 }
