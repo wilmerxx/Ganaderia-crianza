@@ -114,7 +114,4 @@ public class AlimentacionControlador {
             return ResponseEntity.badRequest().body(new ApiError(new Date(),"p-a12",e.getMessage(), HttpStatus.BAD_REQUEST));
         }
     }
-
-
-
 }
