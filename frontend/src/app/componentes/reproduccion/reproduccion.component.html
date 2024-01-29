@@ -1,10 +1,25 @@
-<div>
-  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+<div class="row">
+  <div class="text-end col-lg-6 mb-1">
+    <div class="row">
+      <div class="col-lg-10">
+        <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" name="textoBusquedo">
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-primary" >Buscar</button>
+      </div>
+
+    </div>
+  </div>
+  <div class=" text-end col-lg-5 mb-2 ">
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+  </div>
+
 </div>
 <table class="table">
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
+    <th scope="col">Nombre Ganado</th>
     <th scope="col">Fecha de parto</th>
     <th scope="col">Estado Salud</th>
     <th scope="col">Numero de crias</th>
@@ -14,14 +29,13 @@
   <tbody>
   <tr *ngFor="let reproducciones of reproduccionService.reproducciones; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td hidden="hidden">{{ reproducciones.reproduccion_id  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.fecha_parto  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.estado_salud  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.numero_crias  }}</td>
+    <td>{{ reproducciones.ganado_id}}</td>
+    <td>{{ reproducciones.fecha_parto  }}</td>
+    <td>{{ reproducciones.estado_salud  }}</td>
+    <td>{{ reproducciones.numero_crias  }}</td>
     <td>
-      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)" >Editar</button>
-      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
-      <button class="btn btn-success btn-sm" (click)="deleteReproduccion(reproducciones.reproduccion_id)"  style=" margin-right: 80px">Eliminar</button>
+      <button class="btn btn-primary btn-sm">Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteReproduccion(reproducciones.reproduccion_id)">Eliminar</button>
     </td>
 
   </tr>

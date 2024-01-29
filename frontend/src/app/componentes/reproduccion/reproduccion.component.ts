@@ -1,8 +1,10 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ReproduccionService} from "../../service/reproduccion.service";
 import {Reproduccion} from "../../models/reproduccion.model";
-import {NgForm} from "@angular/forms";
+import {FormControl, FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import Swal from 'sweetalert2';
+import {Ganado} from "../../models/ganado";
+import {GanadoService} from "../../service/ganado.service";
 
 @Component({
   selector: 'app-reproduccion',
@@ -11,30 +13,27 @@ import Swal from 'sweetalert2';
 })
 export class ReproduccionComponent implements OnInit {
 
+  textoBusqueda: string = '';
+  form!: FormGroup;
 
-  editingRow: number | null = null;
 
-  @ViewChild('exampleModal') exampleModal!: ElementRef;
-
-  validador: boolean;
-
-  constructor(public reproduccionService: ReproduccionService){
-    this.validador = false;
+  constructor(public reproduccionService: ReproduccionService, public ganadoService: GanadoService,         private formBuilder: FormBuilder
+  ) {
   }
 
   ngOnInit(): void {
     this.getReproduccion();
+    this.formularioNuevoReproduccion();
   }
 
-
-
-  openModal() {
-    if (this.exampleModal) {
-      const modalElement = this.exampleModal.nativeElement;
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
+  buscarGanado() {
+    if (this.textoBusqueda !== '') {
+      this.ganadoService.busquedaGanado(this.textoBusqueda).subscribe((res) => {
+        this.ganadoService.ganados = res as Ganado[];
+      });
     }
   }
+  //modal de guardar
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -42,22 +41,30 @@ export class ReproduccionComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
-  startEditing(rowId: number) {
-    this.editingRow = rowId;
+  @ViewChild('exampleModal') exampleModal!: ElementRef;
+  openModal() {
+    if (this.exampleModal) {
+      const modalElement = this.exampleModal.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+    }
   }
 
-  stopEditing() {
-    this.editingRow = null;
-  }
 
-  isEditing(rowId: number): boolean {
-    return this.editingRow === rowId;
-  }
   getReproduccion(){
     this.reproduccionService.getReproduccion().subscribe((res) =>{
       this.reproduccionService.reproducciones = res as Reproduccion[];
       console.log(res);
     })
+  }
+  private formularioNuevoReproduccion() {
+    this.form = this.formBuilder.group({
+      ganado: new FormControl('', [Validators.required]),
+      fecha_parto: new FormControl('', [Validators.required]),
+      estado_parto: new FormControl('', [Validators.required]),
+      observaciones: new FormControl('', [Validators.required]),
+      numero_crias: new FormControl('', [Validators.required])
+    });
   }
   crearReproduccion(from: NgForm){
     console.log(from.value);

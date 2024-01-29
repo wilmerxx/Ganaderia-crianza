@@ -36,7 +36,7 @@
     <td>{{ medicina.fecha_vacuna }}</td>
     <td>
       <button class="btn btn-primary btn-sm" (click)="openModalEdit(medicina)">Editar</button>
-      <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina.medicinaId)">Eliminar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina)">Eliminar</button>
     </td>
   </tr>
   </tbody>
@@ -56,9 +56,15 @@
         <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
           <div class="form-group">
             <label for="ganado.nombre_ganado">Selecciona el nombre</label>
-            <select class="form-control" id="ganado.nombre_ganado" formControlName="ganado.nombre_ganado" >
+            <select class="form-control" id="ganado.nombre_ganado" formControlName="ganado" >
               <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.nombre_ganado">{{ ganado.nombre_ganado }}</option>
             </select>
+            <!-- Mostrar el mensaje de error para el control ganado -->
+            <div *ngIf="form.get('ganado')?.errors && (form.get('ganado')?.dirty || form.get('ganado')?.touched)" class="alert">
+              <div *ngIf="form.get('ganado')?.hasError('required')" class="text-danger">
+                <b>*</b> El ganado es requerido
+              </div>
+            </div>
           </div>
 
           <div class="form-group">

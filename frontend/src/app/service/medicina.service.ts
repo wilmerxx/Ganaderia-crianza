@@ -10,7 +10,6 @@ import { environment } from "../../environments/environment";
   providedIn: 'root'
 })
 export class MedicinaService {
-  [x: string]: any;
   selectedMedicina: Medicina;
   medicinas: Medicina[] = [];
 
@@ -25,8 +24,8 @@ export class MedicinaService {
     return this.http.get<Medicina[]>(this.URL_API);
   }
 
-  postMedicina(medicina: Medicina): Observable<any> {
-    return this.http.post(this.URL_API, medicina);
+  postMedicina(medicina: Medicina): Observable<Medicina> {
+    return this.http.post<Medicina>(this.URL_API, medicina);
   }
 
   putMedicina(medicina: Medicina): Observable<any> {
