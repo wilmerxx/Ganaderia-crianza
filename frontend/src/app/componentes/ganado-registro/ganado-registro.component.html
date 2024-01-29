@@ -35,7 +35,7 @@
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let ganado of ganadoService.ganados.slice(0, 15); let i = index ">
+    <tr *ngFor="let ganado of ganadoService.ganados.slice(0, 20); let i = index ">
       <th scope="row">{{ i + 1 }}</th>
       <td >{{ ganado.codigo }}</td>
       <td >{{ ganado.nombre_ganado  }}</td>
@@ -57,7 +57,6 @@
     </tr>
     </tbody>
   </table>
-
 <!-- Modal -->
 <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -123,31 +122,6 @@
                 <input type="date" class="form-control" id="fechaNacimiento" format="dd/mm/yyyy" formControlName="fechaNacimiento" [ngModel]="ganadoService.selectedGanado.fechaNacimiento" name="fechaNacimiento"  [max]="getCurrentDate()">
                 <div *ngIf="form.get('fechaNacimiento')?.errors && (form.get('fechaNacimiento')?.dirty || form.get('fechaNacimiento')?.touched)" class="alert">
                   <div *ngIf="form.get('fechaNacimiento')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="tipo">Seleciona el tipo</label>
-                <select class="form-control" id="tipo"  formControlName="tipo" name="tipo">
-                  <option>Vaca</option>
-                  <option>Toro</option>
-                  <option>Ternero</option>
-                </select>
-                <div *ngIf="form.get('tipo')?.errors && (form.get('tipo')?.dirty || form.get('tipo')?.touched)" class="alert">
-                  <div *ngIf="form.get('tipo')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="estado">Estado</label>
-                <select class="form-control" id="estado"  formControlName="estado" name="estado">
-                  <option>Activo</option>
-                  <option>Inactivo</option>
-                </select>
-                <div *ngIf="form.get('estado')?.errors && (form.get('estado')?.dirty || form.get('estado')?.touched)" class="alert">
-                  <div *ngIf="form.get('estado')?.hasError('required')" class="text-danger">
                     <b>*</b> El nombre es requerido
                   </div>
                 </div>

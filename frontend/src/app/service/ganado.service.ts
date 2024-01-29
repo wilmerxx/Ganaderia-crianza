@@ -60,7 +60,6 @@ export class GanadoService {
         this.ganadosToro = res as Ganado[];
       }else if(tipo == 'Ternero'){
         this.ganadosTernero = res as Ganado[];
-
       }
     });
   }

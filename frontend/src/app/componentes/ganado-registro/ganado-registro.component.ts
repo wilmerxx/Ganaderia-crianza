@@ -5,10 +5,6 @@ import {FormGroup, FormBuilder, FormControl, Validator, Validators, NgForm} from
 import {MAT_DATEPICKER_VALIDATORS} from "@angular/material/datepicker";
 import {Observable} from "rxjs";
 
-
-
-
-
 @Component({
   selector: 'ganado-registro',
   templateUrl: './ganado-registro.component.html',
@@ -70,15 +66,16 @@ export class GanadoRegistroComponent implements OnInit {
       peso: new FormControl('', [Validators.required]),
       sexo: new FormControl('', [Validators.required]),
       fechaNacimiento: new FormControl('', [Validators.required]),
-      tipo: new FormControl('', [Validators.required]),
+      tipo: new FormControl(''),
       madre_id: new FormControl(''),
       padre_id: new FormControl(''),
-      estado: new FormControl('', [Validators.required])
+      estado: new FormControl('')
     });
   }
 
 guardar(even: Event){
   even.preventDefault();
+
     const value = this.form.value;
     console.log(value);
     this.ganadoService.postGanado(this.form.value).subscribe((res) => {
@@ -106,6 +103,7 @@ guardar(even: Event){
   limpiarFormulario(form: NgForm){
     form.reset();
   }
+
 
 
   getGanados() {

@@ -1,34 +1,46 @@
-<div>
-  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+<div class="row">
+  <div class="text-end col-lg-6 mb-1">
+    <div class="row">
+      <div class="col-lg-10">
+        <input class="align-self-end form-control" type="text" placeholder="Búsqueda inteligente" [(ngModel)]="textoBusqueda">
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-primary" (click)="buscarGanado()">Buscar</button>
+      </div>
+    </div>
+  </div>
+  <div class="text-end col-lg-5 mb-2">
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+  </div>
 </div>
-<table class="table">
+
+<table class="table table-responsive">
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Sintoma</th>
-    <th scope="col">Diagnostico</th>
+    <th scope="col">Nombre Ganado</th>
+    <th scope="col">Síntoma</th>
+    <th scope="col">Diagnóstico</th>
     <th scope="col">Tratamiento</th>
     <th scope="col">Fecha Vacuna</th>
     <th scope="col">Acciones</th>
   </tr>
   </thead>
   <tbody>
-
-  <tr *ngFor="let medicina of medicinaService.medicina; let i = index">
+  <tr *ngFor="let medicina of medicinaService.medicinas; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.sintomas }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.diagnostico }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.tratamiento }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ medicina.fecha_vacuna }}</td>
+    <td>{{ medicina.ganado}}</td>
+    <td>{{ medicina.sintomas }}</td>
+    <td>{{ medicina.diagnostico }}</td>
+    <td>{{ medicina.tratamiento }}</td>
+    <td>{{ medicina.fecha_vacuna }}</td>
     <td>
-      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
-      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
+      <button class="btn btn-primary btn-sm" (click)="openModalEdit(medicina)">Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina.medicinaId)">Eliminar</button>
     </td>
   </tr>
   </tbody>
 </table>
-
-
 
 <!-- Modal -->
 <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -41,32 +53,58 @@
         </button>
       </div>
       <div class="modal-body">
-        <form #mediFrom = "ngForm">
+        <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
           <div class="form-group">
-            <label for="ganado_id">Selecciona el nombre</label>
-            <select class="form-control" id="ganado_id" name="ganado_id" [(ngModel)]="ganadoService.selectedGanado.ganado_id">
-              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            <label for="ganado.nombre_ganado">Selecciona el nombre</label>
+            <select class="form-control" id="ganado.nombre_ganado" formControlName="ganado.nombre_ganado" >
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.nombre_ganado">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
 
           <div class="form-group">
-            <label for="sintoma">Sintoma</label>
-            <textarea class="form-control" id="sintoma" rows="3" name="sintomas" [ngModel]="medicinaService.selectedMedicina.sintomas" ></textarea>
+            <label for="sintomas">Sintoma</label>
+            <textarea class="form-control" id="sintomas" rows="3" formControlName="sintomas" required></textarea>
+            <div *ngIf="form.get('sintomas')?.errors && (form.get('sintomas')?.dirty || form.get('sintomas')?.touched)" class="alert">
+              <div *ngIf="form.get('sintomas')?.hasError('required')" class="text-danger">
+                <b>*</b> El sintoma es requerido
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="diagnostico">Diagnostico</label>
-            <textarea class="form-control" id="diagnostico" rows="3" name="diagnostico" [ngModel]="medicinaService.selectedMedicina.diagnostico" ></textarea>
+            <textarea class="form-control" id="diagnostico" rows="3" formControlName="diagnostico"></textarea>
+            <div *ngIf="form.get('diagnostico')?.errors && (form.get('diagnostico')?.dirty || form.get('diagnostico')?.touched)" class="alert">
+              <div *ngIf="form.get('diagnostico')?.hasError('required')" class="text-danger">
+                <b>*</b> El diagnostico es requerido
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="tratamiento">Tratamiento</label>
-            <textarea class="form-control" id="tratamiento" rows="3" name="tratamiento" [ngModel]="medicinaService.selectedMedicina.tratamiento"></textarea>
+            <textarea class="form-control" id="tratamiento" rows="3" formControlName="tratamiento"></textarea>
+            <div *ngIf="form.get('tratamiento')?.errors && (form.get('tratamiento')?.dirty || form.get('tratamiento')?.touched)" class="alert">
+              <div *ngIf="form.get('tratamiento')?.hasError('required')" class="text-danger">
+                <b>*</b> El tratamiento es requerido
+              </div>
+            </div>
           </div>
           <div class="form-group">
-            <label for="fecha-vacuna">Fecha Vacuna</label>
-            <input type="date" class="form-control" id="fecha-vacuna" name="fecha_vacuna" [ngModel]="medicinaService.selectedMedicina.fecha_vacuna">
+            <label for="fecha_vacuna">Fecha Vacuna</label>
+            <input type="date" class="form-control" id="fecha_vacuna" formControlName="fecha_vacuna">
+            <div *ngIf="form.get('fecha_vacuna')?.errors && (form.get('fecha_vacuna')?.dirty || form.get('fecha_vacuna')?.touched)" class="alert">
+              <div *ngIf="form.get('fecha_vacuna')?.hasError('required')" class="text-danger">
+                <b>*</b> El fecha_vacuna es requerido
+              </div>
+            </div>
+          </div>
+          <!-- Mostrar errores generales del formulario -->
+          <div *ngIf="form.errors" class="alert">
+            <div class="text-danger">
+              <b>*</b> {{ form.errors | json }}
+            </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-primary" (click)="crearMedicina(mediFrom)">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           </div>
         </form>
@@ -74,4 +112,5 @@
     </div>
   </div>
 </div>
+<!-- Modal para editar-->
 
