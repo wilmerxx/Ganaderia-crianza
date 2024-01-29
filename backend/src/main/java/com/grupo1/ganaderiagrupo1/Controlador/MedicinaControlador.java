@@ -1,68 +1,97 @@
 package com.grupo1.ganaderiagrupo1.Controlador;
 
+import com.grupo1.ganaderiagrupo1.Dto.Medicina.MedicinaExisteDto;
+import com.grupo1.ganaderiagrupo1.Dto.Medicina.MedicinaNuevoDto;
+import com.grupo1.ganaderiagrupo1.Excepciones.ApiError;
+import com.grupo1.ganaderiagrupo1.Excepciones.MensajeExito;
+import com.grupo1.ganaderiagrupo1.Excepciones.ResourceNotFoundException;
 import com.grupo1.ganaderiagrupo1.Modelos.Medicina;
+import com.grupo1.ganaderiagrupo1.Servicios.MedicinaServicio;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.MedicinaServicioImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
+import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/medicina")
 public class MedicinaControlador {
     @Autowired
-    MedicinaServicioImpl medicinaServicio;
+    MedicinaServicio medicinaServicio;
 
-    @Autowired
-    GanadoServicioImpl ganadoServicio;
-
-    @GetMapping("/medicina")
-    public ResponseEntity<?> getMedicina(){
-        if(medicinaServicio.listaMedicina().isEmpty()){
-            return ResponseEntity.ok("No hay medicinas registradas");
-        }else {
-
+    @GetMapping()
+    public ResponseEntity<?> getMedicinas(){
+        try{
             return ResponseEntity.ok(medicinaServicio.listaMedicina());
-
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
         }
     }
 
-    @PostMapping("/medicina")
-    public ResponseEntity<?> postMedicina(@RequestBody Medicina medicina){
-
-        if(medicinaServicio.listaMedicina().contains(medicina)){
-            return ResponseEntity.badRequest().body("Ya existe una medicina con ese id");
+    @GetMapping("/estados/{estado}")
+    public ResponseEntity<?> getMedicinaPorEstado(@PathVariable String estado){
+        try{
+            return ResponseEntity.ok(medicinaServicio.listaMedicinaPorEstado(estado));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
         }
-        if(Objects.isNull(ganadoServicio.buscarPorId(medicina.getGanado().getGanado_id()))){
-            return ResponseEntity.badRequest().body("No existe un ganado con ese id");
-        }
-        medicinaServicio.guardarMedicina(medicina);
-        return ResponseEntity.ok(medicina);
     }
 
     // traer por id la medicina
-    @GetMapping("/medicina/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getMedicinaPorId(@PathVariable int id){
-        Medicina medicina = medicinaServicio.buscarMedicinaPorId(id);
-        if(medicinaServicio.listaMedicina().contains(medicina)){
-            return ResponseEntity.ok(medicina);
-        }else {
-            return ResponseEntity.badRequest().body("No existe una medicina con ese id");
+        try{
+            return ResponseEntity.ok(medicinaServicio.buscarMedicinaPorId(id));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<?> postMedicina(@RequestBody @Valid MedicinaNuevoDto medicina){
+        try{
+            medicinaServicio.guardarMedicina(medicina);
+            return ResponseEntity.ok(new MensajeExito(new Date(), "Medicina guardada exitosamente", HttpStatus.OK));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(),e.getCode(), e.getMessage(), e.getStatus()));
+        }
+    }
+
+    //actualizar estado medicina
+    @PutMapping("/{id}/{estado}")
+    public ResponseEntity<?> putMedicinaEstado(@PathVariable int id, @PathVariable String estado){
+        try{
+            medicinaServicio.actualizarEstadoMedicina(id, estado);
+            return ResponseEntity.ok(new MensajeExito(new Date(), "Estado de medicina actualizado exitosamente", HttpStatus.OK));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
         }
     }
 
     //actualizar medicina OJO
-    @PutMapping("/medicina")
-    public ResponseEntity<?> putMedicina(@RequestBody Medicina medicina){
-        if(!medicinaServicio.listaMedicina().contains(medicina)){
+    @PutMapping()
+    public ResponseEntity<?> putMedicina(@RequestBody @Valid MedicinaExisteDto medicina){
+        try{
             medicinaServicio.actualizarMedicina(medicina);
-            return ResponseEntity.ok(medicina);
-        }else {
-            return ResponseEntity.badRequest().body("No existe una medicina con ese id");
+            return ResponseEntity.ok(new MensajeExito(new Date(), "Medicina actualizada exitosamente", HttpStatus.OK));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMedicina(@PathVariable int id){
+        try{
+            medicinaServicio.elimnarMedicina(id);
+            return ResponseEntity.ok(new MensajeExito(new Date(), "Medicina eliminada exitosamente", HttpStatus.OK));
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.badRequest().body(new ApiError(new Date(), e.getCode(), e.getMessage(), e.getStatus()));
+        }
+    }
 }
