@@ -20,10 +20,8 @@ import java.util.Date;
 @RestController
 @RequestMapping("/api/areas")
 public class AreaController {
-
     @Autowired
     private AreaServicio areaService;
-
 
     @GetMapping
     public ResponseEntity<?> getAllAreas() {

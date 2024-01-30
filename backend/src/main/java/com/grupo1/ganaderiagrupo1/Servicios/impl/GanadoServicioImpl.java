@@ -262,4 +262,9 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
         //retornar dto
         return ganadoDtos;
     }
+
+    @Override
+    public List<GanadoDto> buscarPorNombre(String nombre) {
+        return null;
+    }
 }
