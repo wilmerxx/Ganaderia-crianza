@@ -111,4 +111,14 @@ public class GanadoControlador {
             return new ResponseEntity<>(new ApiError(new Date(),e.getCode(),e.getMessage(),e.getStatus()),e.getStatus());
         }
     }
+
+    @GetMapping("/ganados/nombre/{nombre}/{estado}/{page}/{size}")
+    public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre, @PathVariable String estado, @PathVariable int page, @PathVariable int size){
+        try {
+            return ResponseEntity.ok(ganadoServicio.buscarPorNombre(nombre,estado,page,size));
+        }catch (ResourceNotFoundException e){
+            ApiError apiError = new ApiError(new Date(),e.getCode(),e.getMessage(),e.getStatus());
+            return new ResponseEntity<>(apiError,apiError.getStatus());
+        }
+    }
 }

@@ -16,8 +16,9 @@ public interface GanadoRepositorio extends JpaRepository<Ganado, Integer> {
     @Query("SELECT g FROM Ganado g  ORDER BY g.ganado_id DESC")
     public List<Ganado> todosGanados();
 
-    //buscar por el nombre del ganado comenzando con cualquier letra y ordenar por id de forma ascendente
-    @Query("SELECT g FROM Ganado g WHERE g.nombre_ganado LIKE %?1% ORDER BY g.ganado_id DESC")
-    public List<Ganado> buscarPorNombre(String nombre);
+    //buscar por el nombre del ganado comenzando con cualquier letra y ordenar por id de forma ascendente maximo 10 registros por pagina y por estado
+    @Query("SELECT g FROM Ganado g WHERE g.nombre_ganado LIKE %?1% AND g.estado=?2 ORDER BY g.ganado_id DESC")
+    public Page<Ganado> buscarPorNombre(String nombre, String estado, Pageable pageable);
+
 
 }

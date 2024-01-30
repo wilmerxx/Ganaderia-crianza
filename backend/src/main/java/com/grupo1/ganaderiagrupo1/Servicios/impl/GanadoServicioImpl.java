@@ -7,6 +7,10 @@ import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -264,7 +268,47 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
     }
 
     @Override
-    public List<GanadoDto> buscarPorNombre(String nombre) {
-        return null;
+    public List<GanadoDto> buscarPorNombre(String nombre, String estado, int page, int size) {
+        Pageable pegaable = PageRequest.of(page, size, Sort.by("ganado_id").descending());
+        //buscar por nombre
+        Page<Ganado> ganados = ganadoRepositorio.buscarPorNombre(nombre, estado, pegaable);
+        if(ganados.isEmpty()){
+            throw new ResourceNotFoundException("p-222","No existe un ganado con ese nombre", HttpStatus.NOT_FOUND);
+        }
+        //convertir a dto
+        List<GanadoDto> ganadoDtos = new ArrayList<>();
+        if(!ganados.isEmpty()){
+            for(Ganado ganado : ganados){
+                GanadoDto ganadoDto = new GanadoDto();
+                if(ganado.getMadre() != null){
+                    ganadoDto.setNombre_madre(ganado.getMadre().getNombre_ganado());
+
+                }else {
+                    ganadoDto.setNombre_madre("No tiene madre");
+                }
+                if(ganado.getPadre() != null){
+                    ganadoDto.setNombre_padre(ganado.getPadre().getNombre_ganado());
+                }else{
+                    ganadoDto.setNombre_padre("No tiene padre");
+                }
+                ganadoDto.setGanado_id(ganado.getGanado_id());
+                ganadoDto.setCodigo(ganado.getCodigo());
+                ganadoDto.setNombre_ganado(ganado.getNombre_ganado());
+                ganadoDto.setRaza(ganado.getRaza());
+                ganadoDto.setPeso(ganado.getPeso());
+                ganadoDto.setSexo(ganado.getSexo());
+                ganadoDto.setTipo(ganado.getTipo());
+                ganadoDto.setFechaNacimiento(ganado.getFechaNacimiento());
+                ganadoDto.setEstado(ganado.getEstado());
+                ganadoDto.setEdad(ganado.getEdad());
+                ganadoDto.setCreado(ganado.getCreado());
+                ganadoDto.setModificado(ganado.getModificado());
+                ganadoDtos.add(ganadoDto);
+            }
+        }
+        //retornar dto
+        return ganadoDtos;
+
+
     }
 }

@@ -22,5 +22,5 @@ public interface GanadoServicio {
 
     List<GanadoDto> gandosPorEstadosAsc(String estado);
 
-    public List<GanadoDto> buscarPorNombre(String nombre);
+    public List<GanadoDto> buscarPorNombre(String nombre, String estado,int page, int size);
 }
