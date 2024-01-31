@@ -268,10 +268,10 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
     }
 
     @Override
-    public List<GanadoDto> buscarPorNombre(String nombre, String estado, int page, int size) {
+    public List<GanadoDto> buscarPorNombre(String nombre, int page, int size) {
         Pageable pegaable = PageRequest.of(page, size, Sort.by("ganado_id").descending());
         //buscar por nombre
-        Page<Ganado> ganados = ganadoRepositorio.buscarPorNombre(nombre, estado, pegaable);
+        Page<Ganado> ganados = ganadoRepositorio.buscarPorNombre(nombre, pegaable);
         if(ganados.isEmpty()){
             throw new ResourceNotFoundException("p-222","No existe un ganado con ese nombre", HttpStatus.NOT_FOUND);
         }

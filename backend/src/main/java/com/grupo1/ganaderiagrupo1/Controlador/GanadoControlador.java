@@ -44,6 +44,16 @@ public class GanadoControlador {
         }
     }
 
+    @GetMapping("/ganados/nombre/{nombre}/{page}/{size}")
+    public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre,@PathVariable int page, @PathVariable int size){
+        try {
+            return ResponseEntity.ok(ganadoServicio.buscarPorNombre(nombre,page,size));
+        }catch (ResourceNotFoundException e){
+            ApiError apiError = new ApiError(new Date(),e.getCode(),e.getMessage(),e.getStatus());
+            return new ResponseEntity<>(apiError,apiError.getStatus());
+        }
+    }
+
 
     //filtrar por tipo de vaca
     @GetMapping("/ganados/tipo/{tipo}")
@@ -112,13 +122,5 @@ public class GanadoControlador {
         }
     }
 
-    @GetMapping("/ganados/nombre/{nombre}/{estado}/{page}/{size}")
-    public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre, @PathVariable String estado, @PathVariable int page, @PathVariable int size){
-        try {
-            return ResponseEntity.ok(ganadoServicio.buscarPorNombre(nombre,estado,page,size));
-        }catch (ResourceNotFoundException e){
-            ApiError apiError = new ApiError(new Date(),e.getCode(),e.getMessage(),e.getStatus());
-            return new ResponseEntity<>(apiError,apiError.getStatus());
-        }
-    }
+
 }
