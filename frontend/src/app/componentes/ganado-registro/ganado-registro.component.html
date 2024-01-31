@@ -2,10 +2,10 @@
   <div class="text-end col-lg-6 mb-1">
      <div class="row">
        <div class="col-lg-10">
-         <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" (keyup.enter)="buscarGanado(textoBusquedo)" [(ngModel)]="textoBusquedo" name="textoBusquedo">
+         <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" >
        </div>
        <div class="col-lg-2">
-         <button class="btn btn-primary" (click)="buscarGanado(textoBusquedo)">Buscar</button>
+         <button class="btn btn-primary" >Buscar</button>
        </div>
      </div>
   </div>
@@ -26,7 +26,6 @@
         <th scope="col">Sexo</th>
         <th scope="col">Fecha nacimiento</th>
         <th scope="col">Edad en meses</th>
-        <th scope="col">Tipo</th>
         <th scope="col">Nombre de madre</th>
         <th scope="col">Nombre de padre</th>
         <th scope="col">Estado</th>
@@ -43,15 +42,14 @@
       <td  >{{ ganado.sexo }}</td>
       <td >{{ ganado.fechaNacimiento}}</td>
       <td >{{ ganado.edad}}</td>
-      <td >{{ ganado.tipo  }}</td>
-      <td *ngIf="ganado.nombreMadre !=null" >{{ ganado.nombreMadre  }}</td>
-      <td *ngIf="ganado.nombrePadre !=null">{{ ganado.nombrePadre }}</td>
-      <td *ngIf="ganado.nombreMadre ==null" >No tiene madre</td>
-      <td *ngIf="ganado.nombrePadre ==null">No tiene padre</td>
+      <td *ngIf="ganado.nombre_madre !=null" >{{ ganado.nombre_madre  }}</td>
+      <td *ngIf="ganado.nombre_padre !=null">{{ ganado.nombre_padre }}</td>
+      <td *ngIf="ganado.nombre_madre ==null" >No tiene madre</td>
+      <td *ngIf="ganado.nombre_padre ==null">No tiene padre</td>
       <td >{{ ganado.estado }}</td>
       <td>
         <button  class="btn btn-primary btn-sm" (click)="openModalEdit(ganado)">Editar</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado.ganado_id)">Eliminar</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado)">Eliminar</button>
       </td>
     </tr>
     </tbody>
@@ -67,7 +65,7 @@
         </button>
       </div>
       <div class="modal-body" >
-          <form #fromGanado = "ngForm" [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
+          <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
             <div class="form-group">
               <label for="codigo">Codigo</label>
               <input type="text" class="form-control" id="codigo"  formControlName="codigo">
@@ -78,8 +76,8 @@
               </div>
             </div>
               <div class="form-group">
-                <label for="nombre">Nombre Ganado</label>
-                <input type="text" class="form-control" id="nombre" formControlName="nombre_ganado"  name="nombre_ganado">
+                <label for="nombre_ganado">Nombre Ganado</label>
+                <input type="text" class="form-control" id="nombre_ganado" formControlName="nombre_ganado"  name="nombre_ganado">
                 <div *ngIf="form.get('nombre_ganado')?.errors && (form.get('nombre_ganado')?.dirty || form.get('nombre_ganado')?.touched)" class="alert">
                   <div *ngIf="form.get('nombre_ganado')?.hasError('required')" class="text-danger">
                     <b>*</b> El nombre es requerido
@@ -118,7 +116,7 @@
               </div>
               <div class="form-group">
                 <label for="fechaNacimiento">Fecha Nacimiento</label>
-                <input type="date" class="form-control" id="fechaNacimiento" format="dd/mm/yyyy" formControlName="fechaNacimiento" [ngModel]="ganadoService.selectedGanado.fechaNacimiento" name="fechaNacimiento"  [max]="getCurrentDate()">
+                <input type="date" class="form-control" id="fechaNacimiento" format="dd/mm/yyyy" formControlName="fechaNacimiento" name="fechaNacimiento"  [max]="getCurrentDate()">
                 <div *ngIf="form.get('fechaNacimiento')?.errors && (form.get('fechaNacimiento')?.dirty || form.get('fechaNacimiento')?.touched)" class="alert">
                   <div *ngIf="form.get('fechaNacimiento')?.hasError('required')" class="text-danger">
                     <b>*</b> El nombre es requerido
@@ -127,15 +125,15 @@
               </div>
               <!-- Selecionar el id de la madre-->
               <div class="form-group">
-                <label for="madre_id">Madre</label>
-                <select class="form-control" id="madre_id" formControlName="madre_id" name="madre_id">
+                <label for="ganado_madre_id">Madre</label>
+                <select class="form-control" id="ganado_madre_id" formControlName="ganado_madre_id" name="ganado_madre_id">
                   <option *ngFor="let ganado of ganadoService.ganadosVaca" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
                 </select>
               </div>
               <!-- Selecionar el id del padre-->
               <div class="form-group">
-                <label for="padre_id">Padre</label>
-                <select class="form-control" formControlName="padre_id" name="padre_id" id="padre_id">
+                <label for="ganado_padre_id">Padre</label>
+                <select class="form-control" formControlName="ganado_padre_id" name="ganado_padre_id" id="ganado_padre_id">
                   <option *ngFor="let ganado of ganadoService.ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
                 </select>
               </div>
@@ -192,14 +190,6 @@
             <input type="date" class="form-control" id="fechaNacimientoEdit" format="dd/mm/yyyy" [value]="ganado.fechaNacimiento" [(ngModel)]="ganado.fechaNacimiento"  name="fechaNacimiento"  [max]="getCurrentDate()">
           </div>
           <div class="form-group">
-            <label for="tipoEdit">Seleciona el tipo</label>
-            <select class="form-control" id="tipoEdit" (select)="ganado.tipo" [value]="ganado.tipo" [ngModel]="ganado.tipo"  name="tipo">
-              <option>Vaca</option>
-              <option>Toro</option>
-              <option>Ternero</option>
-            </select>
-          </div>
-          <div class="form-group">
             <label for="estadoEdit">Estado</label>
             <select class="form-control" id="estadoEdit" [ngModel]="ganado.estado" [value]="ganado.estado" name="estado">
               <option>Activo</option>
@@ -209,14 +199,14 @@
           <!-- Selecionar el id de la madre-->
           <div class="form-group">
             <label for="madre_idEdit">Madre</label>
-            <select class="form-control" id="madre_idEdit" [value]="ganado.madre_id" (select)="ganado.madre_id" [ngModel]="ganado.madre_id" name="madre_id">
+            <select class="form-control" id="madre_idEdit" [value]="ganado.ganado_madre_id" (select)="ganado.ganado_madre_id" [ngModel]="ganado.ganado_madre_id" name="madre_id">
               <option *ngFor="let ganado of ganadoService.ganadosVaca"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <!-- Selecionar el id del padre-->
           <div class="form-group">
             <label for="padre_idEdit">Padre</label>
-            <select class="form-control" [value]="ganado.padre_id" (select)="ganado.padre_id" [ngModel]="ganado.padre_id" name="padre_id" id="padre_idEdit">
+            <select class="form-control" [value]="ganado.ganado_padre_id" (select)="ganado.ganado_padre_id" [ngModel]="ganado.ganado_padre_id" name="padre_id" id="padre_idEdit">
               <option *ngFor="let ganado of ganadoService.ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>

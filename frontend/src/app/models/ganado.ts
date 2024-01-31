@@ -7,16 +7,15 @@ export class Ganado {
   raza?: string ;
   peso?: number;
   sexo?: string;
-  fechaNacimiento?: string;
-  tipo?: string;
-  madre_id?: string ;
-  padre_id?: string;
-  estado?: string;
-  nombreMadre?: string;
-  nombrePadre?: string;
   edad?: number;
+  fechaNacimiento?: string;
+  ganado_madre_id?: string ;
+  ganado_padre_id?: string;
+  estado?: string;
+  nombre_madre?: string;
+  nombre_padre?: string;
 
-  public Ganado(){
+  constructor(){
     this.ganado_id = "";
     this.codigo = "";
     this.nombre_ganado = "";
@@ -24,9 +23,8 @@ export class Ganado {
     this.peso = 0;
     this.sexo = "";
     this.fechaNacimiento = "";
-    this.tipo = "";
-    this.madre_id = "";
-    this.padre_id = "";
+    this.nombre_madre = "";
+    this.nombre_padre = "";
     this.estado = "";
   }
 }

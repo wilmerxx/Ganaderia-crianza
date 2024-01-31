@@ -21,23 +21,22 @@ export class MedicinaService {
   readonly URL_GANADO_API = environment.baseUrl + '/ganados';
 
   getMedicinas(): Observable<Medicina[]> {
-    return this.http.get<Medicina[]>(this.URL_API);
+    return this.http.get<Medicina[]>(this.URL_API+ '/estados/Activo');
   }
 
   postMedicina(medicina: Medicina): Observable<Medicina> {
     return this.http.post<Medicina>(this.URL_API, medicina);
   }
 
-  putMedicina(medicina: Medicina): Observable<any> {
-    return this.http.put(this.URL_API + `/${medicina.medicinaId}`, medicina);
+  putMedicina(medicina: Medicina): Observable<Medicina> {
+    return this.http.put<Medicina>(this.URL_API, medicina);
   }
 
-  getMedicinaID(id: string): Observable<any> {
-    return this.http.get<Medicina>(this.URL_API + '/' + id).pipe(
-      catchError(this.handleError)
+  getMedicinaID(id: string): Observable<Medicina> {
+    return this.http.get<Medicina>(`${this.URL_API}/${id}`).pipe(
+        catchError(this.handleError)
     );
   }
-
 
   private getGanadoID(ganadoId: string): Observable<Ganado> {
     return this.http.get<Ganado>(this.URL_GANADO_API + '/' + ganadoId);
@@ -48,7 +47,7 @@ export class MedicinaService {
     return throwError('Algo salió mal');
   }
 
-  deleteMedicina(medicinaId: string): Observable<any> {
-    return this.http.delete(`${this.URL_API}/${medicinaId}`);
+  deleteMedicina(medicina_id: string): Observable<any> {
+    return this.http.delete(`${this.URL_API}/${medicina_id}`);
   }
 }

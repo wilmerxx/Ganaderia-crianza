@@ -5,7 +5,7 @@
         <input class="align-self-end form-control" type="text" placeholder="Búsqueda inteligente" [(ngModel)]="textoBusqueda">
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-primary" (click)="buscarGanado()">Buscar</button>
+        <button class="btn btn-primary">Buscar</button>
       </div>
     </div>
   </div>
@@ -18,6 +18,7 @@
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
+    <th scope="col">Codigo Ganado</th>
     <th scope="col">Nombre Ganado</th>
     <th scope="col">Síntoma</th>
     <th scope="col">Diagnóstico</th>
@@ -29,7 +30,8 @@
   <tbody>
   <tr *ngFor="let medicina of medicinaService.medicinas; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td>{{ medicina.ganado}}</td>
+    <td>{{ medicina.codigoGanado}}</td>
+    <td>{{ medicina.nombreGanado}}</td>
     <td>{{ medicina.sintomas }}</td>
     <td>{{ medicina.diagnostico }}</td>
     <td>{{ medicina.tratamiento }}</td>
@@ -43,11 +45,11 @@
 </table>
 
 <!-- Modal -->
-<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Añadir Medicina</h5>
+        <h5 class="modal-title" id="exampleModal">Añadir Medicina</h5>
         <button type="button" class="close" (click)="closeModal()" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -55,13 +57,13 @@
       <div class="modal-body">
         <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
           <div class="form-group">
-            <label for="ganado.nombre_ganado">Selecciona el nombre</label>
-            <select class="form-control" id="ganado.nombre_ganado" formControlName="ganado" >
-              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.nombre_ganado">{{ ganado.nombre_ganado }}</option>
+            <label for="ganado_id">Selecciona el nombre</label>
+            <select class="form-control" id="ganado_id" formControlName="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
             <!-- Mostrar el mensaje de error para el control ganado -->
-            <div *ngIf="form.get('ganado')?.errors && (form.get('ganado')?.dirty || form.get('ganado')?.touched)" class="alert">
-              <div *ngIf="form.get('ganado')?.hasError('required')" class="text-danger">
+            <div *ngIf="form.get('ganado_id')?.errors && (form.get('ganado_id')?.dirty || form.get('ganado_id')?.touched)" class="alert">
+              <div *ngIf="form.get('ganado_id')?.hasError('required')" class="text-danger">
                 <b>*</b> El ganado es requerido
               </div>
             </div>
@@ -103,12 +105,6 @@
               </div>
             </div>
           </div>
-          <!-- Mostrar errores generales del formulario -->
-          <div *ngIf="form.errors" class="alert">
-            <div class="text-danger">
-              <b>*</b> {{ form.errors | json }}
-            </div>
-          </div>
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
@@ -119,4 +115,50 @@
   </div>
 </div>
 <!-- Modal para editar-->
+<div class="modal fade" #exampleModalEdit tabindex="-1" role="dialog" aria-labelledby="exampleModalEdit" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="align-self-center">
+          <h3 class="modal-title" id="exampleModalEdit">Actualizar Medicina</h3>
+        </div>
+        <button type="button" class="close" (click)="closeModalEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #medicinaFromEdit ="ngForm">
+          <input type="hidden" class="form-control" id="medicina_idEdit" value="{{medicina.medicina_id}}" [(ngModel)]="medicina.medicina_id" name="medicina_id">
 
+          <div class="form-group">
+            <label for="madre_idEdit">Nombre Ganado</label>
+            <select class="form-control" id="madre_idEdit" [value]="medicina.ganado_id" (select)="medicina.ganado_id" [ngModel]="medicina.ganado_id" name="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sintomasEdit">Sintomas</label>
+            <input type="text" class="form-control" id="sintomasEdit"   value="{{medicina.sintomas}}"  [(ngModel)] = "medicina.sintomas" name="sintomas" >
+          </div>
+          <div class="form-group">
+            <label for="diagnosticoEdit">diagnostico</label>
+            <input type="text" class="form-control" id="diagnosticoEdit" value="{{medicina.diagnostico}}" [(ngModel)]="medicina.diagnostico" name="diagnostico">
+          </div>
+          <div class="form-group">
+            <label for="tratamientoEdit">Tratamiento</label>
+            <input type="text" class="form-control" id="tratamientoEdit" value="{{medicina.tratamiento}}" [(ngModel)]="medicina.tratamiento" name="tratamiento">
+          </div>
+
+          <div class="form-group">
+            <label for="fecha_vacunaEdit">Fecha Nacimiento</label>
+            <input type="date" class="form-control" id="fecha_vacunaEdit" format="dd/mm/yyyy" [value]="medicina.fecha_vacuna" [(ngModel)]="medicina.fecha_vacuna"  name="fecha_vacuna"  [max]="getCurrentDate()">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="putMedicina(medicinaFromEdit)">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModalEdit()">Cerrar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

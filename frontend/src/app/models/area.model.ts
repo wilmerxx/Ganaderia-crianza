@@ -1,16 +1,22 @@
 export class Area {
-  constructor(areaId= '', nombreArea='', tipoArea='', tipoPasto='', superficie= 0.0, ganado_id=''){
-    this.areaId = areaId;
-    this.nombreArea = nombreArea;
-    this.tipoArea = tipoArea;
-    this.tipoPasto = tipoPasto;
-    this.superficie = superficie;
-    this.ganado_id = ganado_id;
+  areaId?: number;
+  ganado_id: number;
+  nombreGanado?: string;
+  nombre_ganado?: string;
+  codigoGanado?: string;
+  nombreArea?: string;
+  tipoArea?: string;
+  tipoPasto?: string;
+  superficie?:number;
+
+  constructor() {
+    this.areaId = 0;
+    this.ganado_id = 0;
+    this.nombre_ganado = "";
+    this.codigoGanado= "";
+    this.nombreArea = "";
+    this.tipoArea = "";
+    this.tipoPasto = "";
+    this.superficie = 0;
   }
-  areaId: string;
-  nombreArea: string;
-  tipoArea: string;
-  tipoPasto: string;
-  superficie:number;
-  ganado_id: string;
 }

@@ -17,14 +17,16 @@ export class EnfermedadesService {
     this.selectedEnfermedades = new Enfermedad();
   }
 
-  readonly URL_API = environment.baseUrl + '/enfermedades';
+  readonly URL_API = environment.baseUrl + '/controlEnfermedades';
+  readonly URL_GANADO_API = environment.baseUrl + '/ganados';
+
 
   getEnfermedad(): Observable<Enfermedad[]> {
-    return this.http.get<Enfermedad[]>(this.URL_API);
+    return this.http.get<Enfermedad[]>(this.URL_API+'/estados/Activo');
   }
 
   postEnfermedad(enfermedades: Enfermedad): Observable<any> {
-    return this.http.post(this.URL_API, enfermedades);
+    return this.http.post<Enfermedad>(this.URL_API, enfermedades);
   }
 
   putEnfermedades(enfermedades: Enfermedad): Observable<any> {

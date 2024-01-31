@@ -4,6 +4,8 @@ import {Ganado} from "../../models/ganado";
 import {FormGroup, FormBuilder, FormControl, Validator, Validators, NgForm} from '@angular/forms';
 import {MAT_DATEPICKER_VALIDATORS} from "@angular/material/datepicker";
 import {Observable} from "rxjs";
+import {Medicina} from "../../models/medicina.model";
+import {catchError} from "rxjs/operators";
 
 @Component({
   selector: 'ganado-registro',
@@ -20,9 +22,9 @@ export class GanadoRegistroComponent implements OnInit {
   ganados: Ganado[] = [];
   textoBusquedo: string = '';
 
-  constructor(protected ganadoService: GanadoService, private formBuilder: FormBuilder) {
+  constructor(protected ganadoService: GanadoService,
+              private formBuilder: FormBuilder) {
     //validaciones
-    this.buscarGanado(this.textoBusquedo);
   }
 
   ngOnInit(): void {
@@ -30,32 +32,12 @@ export class GanadoRegistroComponent implements OnInit {
     this.ganadoService.getGanadoTipo('Vaca');
     this.ganadoService.getGanadoTipo('Toro');
     this.formularioNuevoGanado();
+    this.getGanados();
     console.log(this.form.value);
 
     this.resultados$ = this.ganadoService.busquedaGanado(this.textoBusquedo);
-    this.buscarGanado('');
   }
 
-  buscarGanado(query: string){
-    if(query != ''){
-     this.ganadoService.busquedaGanado(query).subscribe((res) =>{
-        this.ganadoService.ganados = res as Ganado[];
-        for(let i = 0; i < res.length; i++){
-          this.ganadoService.ganados[i] = res[i];
-          //calcular edad del ganado en meses
-          this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento??'');
-          this.ganadoService.getGanadoID(res[i].madre_id??'').subscribe((res2) =>{
-            this.ganadoService.ganados[i].nombreMadre = res2.nombre_ganado;
-          });
-          this.ganadoService.getGanadoID(res[i].padre_id??'').subscribe((res3) =>{
-            this.ganadoService.ganados[i].nombrePadre = res3.nombre_ganado;
-          });
-        }
-      });
-    }else if(query == ''){
-      this.getGanados();
-    }
-  }
 
 
   private formularioNuevoGanado() {
@@ -66,23 +48,19 @@ export class GanadoRegistroComponent implements OnInit {
       peso: new FormControl('', [Validators.required]),
       sexo: new FormControl('', [Validators.required]),
       fechaNacimiento: new FormControl('', [Validators.required]),
-      tipo: new FormControl(''),
-      madre_id: new FormControl(''),
-      padre_id: new FormControl(''),
-      estado: new FormControl('')
+        ganado_madre_id: new FormControl(''),
+      ganado_padre_id: new FormControl(''),
     });
   }
 
 guardar(even: Event){
   even.preventDefault();
-
     const value = this.form.value;
     console.log(value);
     this.ganadoService.postGanado(this.form.value).subscribe((res) => {
       console.log(res);
-      this.buscarGanado(this.textoBusquedo);
       this.closeModal();
-      this.limpiarFormulario(this.form.value);
+      this.limpiarFormulario();
     });
 }
 
@@ -100,23 +78,24 @@ guardar(even: Event){
   }
 
 
-  limpiarFormulario(form: NgForm){
-    form.reset();
-  }
+    limpiarFormulario() {
+        // Reiniciar el formulario reactivo
+        this.form.reset();
+    }
 
 
 
-  getGanados() {
-  this.ganadoService.getGanados().subscribe((res) =>{
+
+    getGanados() {this.ganadoService.getGanados().subscribe((res) =>{
       for(let i = 0; i < res.length; i++){
         this.ganadoService.ganados[i] = res[i];
         //calcular edad del ganado en meses
         this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento??'');
-        this.ganadoService.getGanadoID(res[i].madre_id??'').subscribe((res2) =>{
-          this.ganadoService.ganados[i].nombreMadre = res2.nombre_ganado;
+        this.ganadoService.getGanadoID(res[i].ganado_madre_id??'').subscribe((res2) =>{
+          this.ganadoService.ganados[i].nombre_madre = res2.nombre_ganado;
         });
-        this.ganadoService.getGanadoID(res[i].padre_id??'').subscribe((res3) =>{
-          this.ganadoService.ganados[i].nombrePadre = res3.nombre_ganado;
+        this.ganadoService.getGanadoID(res[i].ganado_padre_id??'').subscribe((res3) =>{
+          this.ganadoService.ganados[i].nombre_padre = res3.nombre_ganado;
         });
       }
 
@@ -128,7 +107,6 @@ guardar(even: Event){
     console.log(form.value);
     this.ganadoService.putGanado(form.value).subscribe((res) => {
       console.log(res);
-      this.buscarGanado(this.textoBusquedo);
       this.closeModalEdit();
     });
     console.log(form.value);
@@ -175,11 +153,20 @@ guardar(even: Event){
     }
   }
 
-  deleteGanado(ganado_id: string | undefined) {
-    if (ganado_id) {
-      this.ganadoService.deleteGanado(ganado_id).subscribe((res) => { });
-      this.getGanados();
-      window.location.reload();
+  deleteGanado(ganado: Ganado | undefined) {
+    if (ganado && ganado.ganado_id) {
+      this.ganadoService.deleteGanado(ganado.ganado_id)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la ganado:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getGanados();
+          });
+    } else {
+      console.error('Error: ganado o medicina.ganado_id es undefined');
     }
   }
 

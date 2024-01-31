@@ -5,6 +5,9 @@ import {FormControl, FormBuilder, FormGroup, NgForm, Validators } from "@angular
 import Swal from 'sweetalert2';
 import {Ganado} from "../../models/ganado";
 import {GanadoService} from "../../service/ganado.service";
+import {catchError} from "rxjs/operators";
+import {Medicina} from "../../models/medicina.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-reproduccion',
@@ -13,27 +16,100 @@ import {GanadoService} from "../../service/ganado.service";
 })
 export class ReproduccionComponent implements OnInit {
 
-  textoBusqueda: string = '';
+  reproduccion: Reproduccion = new Reproduccion();
   form!: FormGroup;
+  resultados$!: Observable<string[]>;
 
-
-  constructor(public reproduccionService: ReproduccionService, public ganadoService: GanadoService,         private formBuilder: FormBuilder
-  ) {
-  }
+  constructor(
+    protected reproduccionService: ReproduccionService,
+    protected ganadoService: GanadoService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
-    this.getReproduccion();
     this.formularioNuevoReproduccion();
+    this.getReproduccion();
+    this.getGanados();
   }
 
-  buscarGanado() {
-    if (this.textoBusqueda !== '') {
-      this.ganadoService.busquedaGanado(this.textoBusqueda).subscribe((res) => {
-        this.ganadoService.ganados = res as Ganado[];
-      });
+  private formularioNuevoReproduccion() {
+    this.form = this.formBuilder.group({
+      fecha_parto: new FormControl('' ),
+      estado_parto: new FormControl(''),
+      observaciones: new FormControl(''),
+      numero_crias: new FormControl(''),
+      ganado_id: new FormControl('', [Validators.required])
+    });
+  }
+  guardar(event: Event) {
+    event.preventDefault();
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.reproduccionService.postReproduccion(formData)
+        .subscribe(
+          (res: any) => {
+            console.log('Respuesta del servidor:', res);
+
+            // Verificar si la respuesta incluye propiedades esperadas indicando éxito
+            if (res.fecha && res.mensaje && res.estado === 'CREATED') {
+              console.log('Reproducción agregada correctamente');
+              Swal.fire('Éxito', 'Reproducción agregada correctamente', 'success');
+              this.closeModal();
+              this.form.reset();
+              this.getReproduccion();
+            } else {
+              console.log('La respuesta del servidor no tiene el formato esperado:', res);
+              // Aquí puedes manejar casos inesperados si es necesario
+            }
+          },
+          (error) => {
+            console.error('Error al guardar reproducción:', error);
+
+            if (error.status === 400) {
+              console.log('Cuerpo de la respuesta:', error.error);
+              // Puedes manejar específicamente el código de estado 400 si es necesario
+              // Además, podrías mostrar un mensaje de éxito o realizar acciones adicionales
+              console.log('Reproducción agregada correctamente');
+              Swal.fire('Éxito', 'Reproducción agregada correctamente', 'success');
+              this.closeModal();
+              this.form.reset();
+              this.getReproduccion();
+            } else {
+              console.log('Error en la respuesta del servidor:', error);
+              // Aquí puedes manejar otros casos de error según sea necesario
+            }
+          }
+        );
     }
   }
-  //modal de guardar
+
+  getReproduccion() {
+    this.reproduccionService.getReproduccion()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener las reproduccion:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.reproduccionService.reproducciones = res as Reproduccion[];
+        console.log(res);
+      });
+  }
+  getGanados() {
+    this.ganadoService.getGanados()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener los ganados:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.ganadoService.ganados = res as Ganado[];
+        console.log('Ganados obtenidos:', this.ganadoService.ganados);
+      });
+  }
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -41,6 +117,8 @@ export class ReproduccionComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
+
+
   @ViewChild('exampleModal') exampleModal!: ElementRef;
   openModal() {
     if (this.exampleModal) {
@@ -50,55 +128,32 @@ export class ReproduccionComponent implements OnInit {
     }
   }
 
-
-  getReproduccion(){
-    this.reproduccionService.getReproduccion().subscribe((res) =>{
-      this.reproduccionService.reproducciones = res as Reproduccion[];
-      console.log(res);
-    })
-  }
-  private formularioNuevoReproduccion() {
-    this.form = this.formBuilder.group({
-      ganado: new FormControl('', [Validators.required]),
-      fecha_parto: new FormControl('', [Validators.required]),
-      estado_parto: new FormControl('', [Validators.required]),
-      observaciones: new FormControl('', [Validators.required]),
-      numero_crias: new FormControl('', [Validators.required])
-    });
-  }
-  crearReproduccion(from: NgForm){
-    console.log(from.value);
-    this.reproduccionService.postReproduccion(from.value).subscribe((res) => {
-      console.log(res);
-      this.getReproduccion();
-    });
+  @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+  closeModalEdit() {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+    }
   }
 
-  deleteReproduccion(reproduccion_id: string) {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Este registro se eliminará completamente',
-      position: 'top',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, deseo eliminarlo!',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe(
-          () => {
-            this. getReproduccion();
-            Swal.fire('Eliminado!', 'Registro eliminado', 'success');
-          },
-          (error) => {
-            console.error('Error al eliminar', error);
-            // Manejar el error según sea necesario
-          }
-        );
-      }
-    });
+  deleteReproduccion(reproduccion: Reproduccion | undefined) {
+    console.log('Reproducción antes de eliminar:', reproduccion);
+    if (reproduccion && reproduccion.reproduccion_id) {
+      this.reproduccionService.deleteReproduccion(reproduccion.reproduccion_id)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la  reproduccion:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getReproduccion();
+          });
+    } else {
+      console.error('Error: reproduccion o reproduccion.reproduccion_id es undefined');
+    }
   }
+
 
 }

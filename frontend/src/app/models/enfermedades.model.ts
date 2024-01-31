@@ -1,27 +1,26 @@
 export class Enfermedad {
-  control_id?: string | undefined;
-  tipo_control: string | undefined;
-  pesoActual: number | undefined;
-  fechaControl: string | undefined;
-  observaciones: string | undefined;
-  ganado_id: string | undefined;
-  estado: string | undefined;
+  control_id?: string;
+  ganado_id: number;
+  nombreGanado?: string;
+  nombre_ganado?: string;
+  codigoGanado?: string;
+  tipo_control: string;
+  pesoActual: number;
+  fechaControl: string;
+  observaciones: string;
+  creado:string;
+  modificado:string;
 
-  constructor(
-    control_id = '',
-    tipo_control = '',
-    pesoActual = 0.0,
-    fechaControl = '',
-    observaciones = '',
-    ganado_id = '',
-    estado = ''
-  ) {
-    this.control_id = control_id;
-    this.tipo_control = tipo_control;
-    this.pesoActual = pesoActual;
-    this.fechaControl = fechaControl;
-    this.observaciones = observaciones;
-    this.ganado_id = ganado_id;
-    this.estado = estado;
+  constructor() {
+    this.control_id = "";
+    this.ganado_id = 0;
+    this.nombre_ganado = "";
+    this.codigoGanado= "";
+    this.tipo_control = "";
+    this.pesoActual = 0;
+    this.fechaControl = "";
+    this.observaciones = "";
+    this.creado = "";
+    this.modificado = "";
   }
 }

@@ -1,8 +1,8 @@
 
 // area.service.ts
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {catchError, Observable} from 'rxjs';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {catchError, Observable, throwError} from 'rxjs';
 import {Area} from "../models/area.model";
 import {Ganado} from "../models/ganado";
 import {environment} from "../../environments/environment";
@@ -12,32 +12,33 @@ import {environment} from "../../environments/environment";
 })
 export class AreaService {
   selectedArea: Area;
-  areas!: Area[];
-
-  readonly URL_API = environment.baseUrl + '/area';
+  areas: Area[] = [];
 
   constructor(private http: HttpClient) {
     this.selectedArea = new Area();
   }
 
+  readonly URL_API = environment.baseUrl + '/areas';
+  readonly URL_GANADO_API = environment.baseUrl + '/ganados';
+
   getAreas(): Observable<Area[]> {
-    return this.http.get<Area[]>(this.URL_API);
+    return this.http.get<Area[]>(this.URL_API + '/estados/Activo');
   }
-  postArea(area: Area): Observable<any> {
-    return this.http.post(this.URL_API, area);
+  postArea(area: Area): Observable<Area> {
+    return this.http.post<Area>(this.URL_API, area);
   }
-
-  editar(area: Area): Observable<any> {
-    const url = `${this.URL_API}/${area.areaId}`;
-
-    return this.http.put(url, area).pipe(
-      catchError((error) => {
-        console.error('Error updating area:', error);
-        throw error; // Rethrow the error to propagate it to the calling code
-      })
+  putArea(areaId: string, area: Area): Observable<any> {
+    const areaUrl = `${this.URL_API}/${areaId}`;
+    return this.http.put(areaUrl, area).pipe(catchError(this.handleError)
     );
   }
-  deleteArea(areaId: string): Observable<any> {
-    return this.http.delete(this.URL_API + `/${areaId}`);
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    return throwError('Algo salió mal');
+  }
+
+  deleteArea(areaId: number | undefined): Observable<any> {
+    return this.http.delete(`${this.URL_API}/${areaId}`);
   }
 }
