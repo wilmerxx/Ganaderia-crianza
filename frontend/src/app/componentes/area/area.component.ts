@@ -2,8 +2,12 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {AreaService} from "../../service/area.service";
 import {Area} from "../../models/area.model";
 import { HttpClient } from '@angular/common/http';
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import Swal from 'sweetalert2';
+import {GanadoService} from "../../service/ganado.service";
+import {catchError} from "rxjs/operators";
+import {Medicina} from "../../models/medicina.model";
+import {Observable} from "rxjs";
 
 
 @Component({
@@ -12,34 +16,83 @@ import Swal from 'sweetalert2';
   styleUrls: ['./area.component.css']
 })
 export class AreaComponent implements OnInit {
-  validador: boolean;
-  editarAreaIndex: number | null = null;
 
-  constructor(public areaService: AreaService) {
-    this.validador = false;
-  }
+  area: Area = new Area();
+  resultados$!: Observable<string[]>;
+  form!: FormGroup;
+
+  constructor(protected areaService: AreaService,
+              protected ganadoService: GanadoService,
+              private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
+    this.formularioNuevaArea();
     this.getAreas();
   }
 
-  areaData: any[] = [
-    { nombre: 'La palmera',tipo_terreno:'plano', tipo_pasto: 'Gramalote', superficie: '3 hectareas',total_ganado:'23' },
+  private formularioNuevaArea() {
+    this.form = this.formBuilder.group({
+      nombreArea: new FormControl('', [Validators.required]),
+      tipoArea: new FormControl(''),
+      tipoPasto: new FormControl(''),
+      superficie: new FormControl('', [Validators.required]),
+      ganadoId: new FormControl('', [Validators.required]),
+    });
+  }
 
-  ];
+  guardar(event: Event) {
+    event.preventDefault();
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.areaService.postArea(formData)
+        .subscribe(
+          (res) => {
+            console.log('Respuesta del servidor:', res);
+            this.closeModal();
+            this.form.reset();
+            this.getAreas();
+          },
+          (error) => {
+            console.error('Error al guardar area:', error);
+          }
+        );
 
-  editingRow: number | null = null;
-
-  @ViewChild('exampleModal') exampleModal!: ElementRef;
-
-
-  openModal() {
-    if (this.exampleModal) {
-      const modalElement = this.exampleModal.nativeElement;
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
+    } else {
+      console.log('Formulario no válido');
     }
   }
+  getAreas() {
+    this.areaService.getAreas()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener las areas:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.areaService.areas = res as Area[];
+        console.log(res);
+      });
+  }
+  deleteArea(areaId:number | undefined) {
+    if (areaId!=0) {
+      this.areaService.deleteArea(areaId)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la area:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getAreas();
+          });
+    } else {
+      console.error('No se puede eliminar el area');
+    }
+  }
+
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -47,71 +100,18 @@ export class AreaComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
-  startEditing(rowId: number) {
-    this.editingRow = rowId;
-  }
 
-  stopEditing() {
-    this.editingRow = null;
-  }
 
-  isEditing(rowId: number): boolean {
-    return this.editingRow === rowId;
-  }
-     //OBTENER TODAS LAS AREAS
-  getAreas(){
-    this.areaService.getAreas().subscribe((res) =>{
-      this.areaService.areas = res as Area[];
-      console.log(res);
-    })
-  }
-  //agregar areas
-  crearArea(from: NgForm){
-    console.log(from.value);
-    this.areaService.postArea(from.value).subscribe((res) => {
-      this.getAreas();
-    });
+  @ViewChild('exampleModal') exampleModal!: ElementRef;
+  openModal() {
+    if (this.exampleModal) {
+      const modalElement = this.exampleModal.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+    }
   }
 
 
-  resetForm(form: NgForm) {
-    form.reset();
-    Swal.fire({
-      position: 'top',
-      icon: 'success',
-      title: 'Formulario limpiado',
-      showConfirmButton: false,
-      timer: 2000,
-    });
-  }
-
-
-  deleteArea(areaId: string) {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Este registro se eliminará completamente',
-      position: 'top',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, deseo eliminarlo!',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.areaService.deleteArea(areaId).subscribe(
-          () => {
-            this.getAreas();
-            Swal.fire('Eliminado!', 'Registro eliminado', 'success');
-          },
-          (error) => {
-            console.error('Error al eliminar el área', error);
-            // Manejar el error según sea necesario
-          }
-        );
-      }
-    });
-  }
 
 
 

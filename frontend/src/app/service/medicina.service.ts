@@ -1,52 +1,53 @@
-
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
-import {Medicina} from "../models/medicina.model";
-import { map, catchError } from 'rxjs/operators';
-import {environment} from "../../environments/environment";
-
+import { Medicina } from "../models/medicina.model";
+import { Ganado } from "../models/ganado";
+import { map, catchError, switchMap } from 'rxjs/operators';
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class MedicinaService {
   selectedMedicina: Medicina;
-  medicina!: Medicina[];
-
-  readonly URL_API = environment.baseUrl + '/medicinas';
-  readonly URL_GANADO_API = environment.baseUrl + '/ganado';
+  medicinas: Medicina[] = [];
 
   constructor(private http: HttpClient) {
     this.selectedMedicina = new Medicina();
   }
 
+  readonly URL_API = environment.baseUrl + '/medicina';
+  readonly URL_GANADO_API = environment.baseUrl + '/ganados';
+
   getMedicinas(): Observable<Medicina[]> {
-    return this.http.get<Medicina[]>(this.URL_API);
+    return this.http.get<Medicina[]>(this.URL_API+ '/estados/Activo');
   }
 
-  postMedicina(medicina: Medicina): Observable<any> {
-    return this.http.post(this.URL_API, medicina);
-  }
-    getGanadoNombre(ganadoId: string): Observable<string> {
-        const url = `${this.URL_GANADO_API}/${ganadoId}`;
-        return this.http.get<any>(url).pipe(
-            map((ganado: any) => ganado.nombre_ganado),
-            catchError(this.handleError)
-        );
-    }
-
-
-    private handleError(error: HttpErrorResponse) {
-        console.error('Error en la solicitud:', error);
-        return throwError('Error en la solicitud. Por favor, inténtalo de nuevo más tarde.');
-    }
-
-  putMedicina(medicina: Medicina): Observable<any> {
-    return this.http.put(this.URL_API + `/${medicina.medicinaId}`, medicina);
+  postMedicina(medicina: Medicina): Observable<Medicina> {
+    return this.http.post<Medicina>(this.URL_API, medicina);
   }
 
-  deleteMedicina(medicinaId: string): Observable<any> {
-    return this.http.delete(this.URL_API + `/${medicinaId}`);
+  putMedicina(medicina: Medicina): Observable<Medicina> {
+    return this.http.put<Medicina>(this.URL_API, medicina);
+  }
+
+  getMedicinaID(id: string): Observable<Medicina> {
+    return this.http.get<Medicina>(`${this.URL_API}/${id}`).pipe(
+        catchError(this.handleError)
+    );
+  }
+
+  private getGanadoID(ganadoId: string): Observable<Ganado> {
+    return this.http.get<Ganado>(this.URL_GANADO_API + '/' + ganadoId);
+  }
+
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    return throwError('Algo salió mal');
+  }
+
+  deleteMedicina(medicina_id: string): Observable<any> {
+    return this.http.delete(`${this.URL_API}/${medicina_id}`);
   }
 }

@@ -1,8 +1,13 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ReproduccionService} from "../../service/reproduccion.service";
 import {Reproduccion} from "../../models/reproduccion.model";
-import {NgForm} from "@angular/forms";
+import {FormControl, FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
 import Swal from 'sweetalert2';
+import {Ganado} from "../../models/ganado";
+import {GanadoService} from "../../service/ganado.service";
+import {catchError} from "rxjs/operators";
+import {Medicina} from "../../models/medicina.model";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-reproduccion',
@@ -11,29 +16,82 @@ import Swal from 'sweetalert2';
 })
 export class ReproduccionComponent implements OnInit {
 
+  reproduccion: Reproduccion = new Reproduccion();
+  form!: FormGroup;
+  resultados$!: Observable<string[]>;
 
-  editingRow: number | null = null;
-
-  @ViewChild('exampleModal') exampleModal!: ElementRef;
-
-  validador: boolean;
-
-  constructor(public reproduccionService: ReproduccionService){
-    this.validador = false;
-  }
+  constructor(
+    protected reproduccionService: ReproduccionService,
+    protected ganadoService: GanadoService,
+    private formBuilder: FormBuilder
+  ) {}
 
   ngOnInit(): void {
+    this.formularioNuevoReproduccion();
     this.getReproduccion();
+    this.getGanados();
   }
 
+  private formularioNuevoReproduccion() {
+    this.form = this.formBuilder.group({
+      fecha_parto: new FormControl('' ),
+      estado_parto: new FormControl(''),
+      observaciones: new FormControl(''),
+      numero_crias: new FormControl(''),
+      ganado_id: new FormControl('', [Validators.required])
+    });
+  }
+  guardar(event: Event) {
+    event.preventDefault();
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.reproduccionService.postReproduccion(formData)
+          .subscribe(
+              (res) => {
+                console.log('Respuesta del servidor:', res);
+                this.closeModal();
+                this.form.reset();
+                this.getReproduccion();
+              },
+              (error) => {
+                console.error('Error al guardar medicina:', error);
+              }
+          );
 
-
-  openModal() {
-    if (this.exampleModal) {
-      const modalElement = this.exampleModal.nativeElement;
-      modalElement.classList.add('show');
-      modalElement.style.display = 'block';
+    } else {
+      console.log('Formulario no válido');
     }
+  }
+  getCurrentDate() {
+    return new Date().toISOString().split('T')[0];
+  }
+
+  getReproduccion() {
+    this.reproduccionService.getReproduccion()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener las reproduccion:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.reproduccionService.reproducciones = res as Reproduccion[];
+        console.log(res);
+      });
+  }
+  getGanados() {
+    this.ganadoService.getGanados()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener los ganados:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.ganadoService.ganados = res as Ganado[];
+        console.log('Ganados obtenidos:', this.ganadoService.ganados);
+      });
   }
   closeModal() {
     if (this.exampleModal) {
@@ -42,56 +100,43 @@ export class ReproduccionComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
-  startEditing(rowId: number) {
-    this.editingRow = rowId;
+
+
+  @ViewChild('exampleModal') exampleModal!: ElementRef;
+  openModal() {
+    if (this.exampleModal) {
+      const modalElement = this.exampleModal.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+    }
   }
 
-  stopEditing() {
-    this.editingRow = null;
+  @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+  closeModalEdit() {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+    }
   }
 
-  isEditing(rowId: number): boolean {
-    return this.editingRow === rowId;
-  }
-  getReproduccion(){
-    this.reproduccionService.getReproduccion().subscribe((res) =>{
-      this.reproduccionService.reproducciones = res as Reproduccion[];
-      console.log(res);
-    })
-  }
-  crearReproduccion(from: NgForm){
-    console.log(from.value);
-    this.reproduccionService.postReproduccion(from.value).subscribe((res) => {
-      console.log(res);
-      this.getReproduccion();
-    });
+  deleteReproduccion(reproduccion: Reproduccion | undefined) {
+    console.log('Reproducción antes de eliminar:', reproduccion);
+    if (reproduccion && reproduccion.reproduccion_id) {
+      this.reproduccionService.deleteReproduccion(reproduccion.reproduccion_id)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la  reproduccion:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getReproduccion();
+          });
+    } else {
+      console.error('Error: reproduccion o reproduccion.reproduccion_id es undefined');
+    }
   }
 
-  deleteReproduccion(reproduccion_id: string) {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Este registro se eliminará completamente',
-      position: 'top',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, deseo eliminarlo!',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe(
-          () => {
-            this. getReproduccion();
-            Swal.fire('Eliminado!', 'Registro eliminado', 'success');
-          },
-          (error) => {
-            console.error('Error al eliminar', error);
-            // Manejar el error según sea necesario
-          }
-        );
-      }
-    });
-  }
 
 }

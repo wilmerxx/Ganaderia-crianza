@@ -20,5 +20,4 @@ public interface AreaServicio {
 
     public void acutualizarEstadoArea(int id, String estado);
 
-
 }

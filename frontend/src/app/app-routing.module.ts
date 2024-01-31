@@ -8,6 +8,8 @@ import {AreaComponent} from "./componentes/area/area.component";
 import {EnfermedadesComponent} from "./componentes/enfermedades/enfermedades.component";
 import {MedicinaComponent} from "./componentes/medicina/medicina.component";
 import {NavegacionComponent} from "./navegacion/navegacion.component";
+import {BodegaComponent} from "./componentes/bodega/bodega.component";
+import {ConsumoComponent} from "./componentes/consumo/consumo.component";
 
 const routes: Routes = [
   {path: '', component: NavegacionComponent, children: [
@@ -18,7 +20,9 @@ const routes: Routes = [
       {path: 'area', component: AreaComponent},
       {path: 'enfermedades', component: EnfermedadesComponent},
       {path: 'medicina', component: MedicinaComponent},
-      {path: '', redirectTo: '/inicio', pathMatch: 'full' }
+          {path: 'bodega', component: BodegaComponent},
+          {path: 'consumo', component: ConsumoComponent},
+          {path: '', redirectTo: '/inicio', pathMatch: 'full' }
     ]},
 ];
 

@@ -20,32 +20,25 @@ export class GanadoService {
   }
 
   readonly URL_API = environment.baseUrl + '/ganados';
-  // @ts-ignore
 
   getGanados(): Observable<Ganado[]> {
-    try {
       return this.http.get<Ganado[]>(this.URL_API);
-    }catch (e) {
-      console.log(e);
-    }
   }
 
-  postGanado(ganado: Ganado): Observable<any> {
-    return this.http.post(this.URL_API, ganado);
+  postGanado(ganado: Ganado): Observable<Ganado> {
+    return this.http.post<Ganado>(this.URL_API, ganado);
   }
 
   putGanado(ganado: Ganado): Observable<any> {
     return this.http.put(this.URL_API ,ganado);
   }
 
+
   //obtener ganado por id
   getGanadoID(id: string): Observable<any>{
     return this.http.get(this.URL_API + '/' + id);
   }
 
-  deleteGanado(id: string): Observable<any> {
-    return this.http.delete(this.URL_API + '/' + id);
-  }
 
   getGanadosTipo(tipo: string): Observable<any> {
     return this.http.get(this.URL_API + '/tipo/' + tipo);
@@ -60,7 +53,6 @@ export class GanadoService {
         this.ganadosToro = res as Ganado[];
       }else if(tipo == 'Ternero'){
         this.ganadosTernero = res as Ganado[];
-
       }
     });
   }
@@ -76,5 +68,7 @@ export class GanadoService {
   busquedaGanado(busqueda: string): Observable<any>{
     return this.http.get(this.URL_API + '/nombre/' + busqueda);
   }
-
+  deleteGanado(ganado_id: number | undefined): Observable<any> {
+    return this.http.delete(`${this.URL_API}/${ganado_id}`);
+  }
 }

@@ -2,9 +2,11 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from "../../service/ganado.service";
 import {Ganado} from "../../models/ganado";
 import {EnfermedadesService} from "../../service/enfermedades.service";
-import {NgForm} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, NgForm, Validators} from "@angular/forms";
 import {Enfermedad} from "../../models/enfermedades.model";
 import Swal from "sweetalert2";
+import {catchError} from "rxjs/operators";
+import {Medicina} from "../../models/medicina.model";
 
 @Component({
   selector: 'app-enfermedades',
@@ -13,41 +15,95 @@ import Swal from "sweetalert2";
 })
 export class EnfermedadesComponent implements OnInit {
 
-  validador: boolean;
-  constructor(protected enfermedadesService: EnfermedadesService) {
-    this.validador = false;
-  }
-  ganado: Ganado = new Ganado();
-  searchText = ''
-  editingRow: number | null = null;
-  ngOnInit(): void {
-    this.getEnfermedad()
-  }
+  controlEnfermedades: Enfermedad = new Enfermedad();
+  form!: FormGroup;
+  textoBusqueda: string = '';
 
-  crearEnfermedad(from: NgForm){
-    console.log(from.value);
-    this.enfermedadesService.postEnfermedad(from.value).subscribe((res) => {
-      console.log(res);
-      this.getEnfermedad();
+  constructor(
+    protected enfermedadesService: EnfermedadesService,
+    protected ganadoService: GanadoService,
+    private formBuilder: FormBuilder
+  ){}
+  ngOnInit(): void {
+    this.formularioNuevaEnfermedad();
+    this.getEnfermedad();
+    this.getGanados();
+  }
+  private formularioNuevaEnfermedad() {
+    this.form = this.formBuilder.group({
+      tipo_control: new FormControl('', [Validators.required]),
+      pesoActual: new FormControl(''),
+      fechaControl: new FormControl(''),
+      observaciones: new FormControl('', [Validators.required]),
+      ganadoId: new FormControl('', [Validators.required]),
+
     });
   }
+
+  guardar(event: Event) {
+    event.preventDefault();
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.enfermedadesService.postEnfermedad(formData)
+        .subscribe(
+          (res) => {
+            console.log('Respuesta del servidor:', res);
+            this.closeModal();
+            this.form.reset();
+            this.getEnfermedad();
+          },
+          (error) => {
+            console.error('Error al guardar enfermedad:', error);
+          }
+        );
+
+    } else {
+      console.log('Formulario no válido');
+    }
+  }
   getEnfermedad() {
-    this.enfermedadesService.getEnfermedad().subscribe((res) =>{
-      this.enfermedadesService.enfermedades = res as Enfermedad[];
-      console.log(res);
-    })
+    this.enfermedadesService.getEnfermedad()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener las enfermedad:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.enfermedadesService.enfermedades = res as Enfermedad[];
+        console.log(res);
+      });
+  }
+  getGanados() {
+    this.ganadoService.getGanados()
+      .pipe(
+        catchError((error) => {
+          console.error('Error al obtener los ganados:', error);
+          throw error;
+        })
+      )
+      .subscribe((res) => {
+        this.ganadoService.ganados = res as Ganado[];
+        console.log('Ganados obtenidos:', this.ganadoService.ganados);
+      });
   }
 
-  isEditing(rowId: number) {
-    return this.editingRow === rowId;
-  }
-
-  startEditing(rowId: number) {
-    this.editingRow = rowId;
-  }
-
-  stopEditing() {
-    this.editingRow = null;
+  deleteEnfermedades(enfermedades: Enfermedad | undefined) {
+    if (enfermedades && enfermedades.control_id) {
+      this.enfermedadesService.deleteEnfermedades(enfermedades.control_id)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la enfermedad:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getEnfermedad();
+          });
+    } else {
+      console.error('Error: medicina o medicina.medicinaId es undefined');
+    }
   }
 
   closeModal() {
@@ -66,33 +122,5 @@ export class EnfermedadesComponent implements OnInit {
     }
   }
 
-  protected readonly onsubmit = onsubmit;
-  delete(control_id: string | undefined) {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Este registro se eliminará completamente',
-      position: 'top',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: 'Sí, deseo eliminarlo!',
-      cancelButtonText: 'Cancelar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.enfermedadesService.deleteEnfermedades(control_id).subscribe( (res) => {
-          () => {
-            this. getEnfermedad();
-          }
-        }
-        );
-        Swal.fire(
-          '¡Eliminado!',
-          'El registro ha sido eliminado.',
-          'success'
-        );
-      }
-    });
-  }
 
 }

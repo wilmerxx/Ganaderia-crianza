@@ -1,121 +1,184 @@
-
-import { Component, ElementRef, ViewChild, OnInit } from '@angular/core';
-import {MedicinaService} from "../../service/medicina.service";
-import {Medicina} from "../../models/medicina.model";
-import {GanadoService} from "../../service/ganado.service";
-import {NgForm} from "@angular/forms";
-import {Ganado} from "../../models/ganado";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { MedicinaService } from "../../service/medicina.service";
+import { Medicina } from "../../models/medicina.model";
+import { GanadoService } from "../../service/ganado.service";
+import { FormControl, FormBuilder, FormGroup, NgForm, Validators } from "@angular/forms";
+import { Ganado } from "../../models/ganado";
+import { Observable } from "rxjs";
+import { catchError } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-medicina',
-  templateUrl: './medicina.component.html',
-  styleUrls: ['./medicina.component.css']
+    selector: 'app-medicina',
+    templateUrl: './medicina.component.html',
+    styleUrls: ['./medicina.component.css']
 })
 export class MedicinaComponent implements OnInit {
 
-  validador: boolean;
+    medicina: Medicina = new Medicina();
+    form!: FormGroup;
+    resultados$!: Observable<string[]>;
+    textoBusqueda: string = '';
 
 
-  constructor(public medicinaService: MedicinaService, public ganadoService: GanadoService) {
-    this.validador = false;
-  }
-  ngOnInit(): void {
-    this.getGanados();
-    this.getMedicinas();
-  }
+    constructor(
+        protected medicinaService: MedicinaService,
+        protected ganadoService: GanadoService,
+        private formBuilder: FormBuilder
+    ) {}
+
+    ngOnInit(): void {
+        this.formularioNuevaMedicina();
+        this.getMedicinas();
+        this.getGanados();
+    }
 
 
-  editingRow: number | null = null;
-  @ViewChild('exampleModal') exampleModal!: ElementRef;
+    private formularioNuevaMedicina() {
+        this.form = this.formBuilder.group({
+            sintomas: new FormControl('', [Validators.required]),
+            diagnostico: new FormControl(''),
+            tratamiento: new FormControl(''),
+            fecha_vacuna: new FormControl('', [Validators.required]),
+            ganado_id: new FormControl('', [Validators.required]),
 
-  crearMedicina(from: NgForm) {
-    console.log(from.value);
-    this.medicinaService.postMedicina(from.value).subscribe((res) => {
-      console.log(res);
-      this.getMedicinas();
-      this.closeModal();
-      this.limpiarFormulario(from);
-    });
-  }
+        });
+    }
+    guardar(event: Event) {
+        event.preventDefault();
+      console.log(this.form.value);
+      if (this.form.valid) {
+            const formData = this.form.value;
+                this.medicinaService.postMedicina(formData)
+                    .subscribe(
+                        (res) => {
+                            console.log('Respuesta del servidor:', res);
+                            this.closeModal();
+                            this.form.reset();
+                            this.getMedicinas();
+                        },
+                        (error) => {
+                            console.error('Error al guardar medicina:', error);
+                        }
+                    );
 
-  limpiarFormulario(from: NgForm) {
-    from.resetForm();
-  }
+        } else {
+            console.log('Formulario no válido');
+        }
+    }
+    getCurrentDate() {
+        return new Date().toISOString().split('T')[0];
+    }
+
+    getMedicinas() {
+        this.medicinaService.getMedicinas()
+            .pipe(
+                catchError((error) => {
+                    console.error('Error al obtener las medicinas:', error);
+                    throw error;
+                })
+            )
+            .subscribe((res) => {
+                this.medicinaService.medicinas = res as Medicina[];
+                console.log(res);
+            });
+    }
 
 
+    getGanados() {
+        this.ganadoService.getGanados()
+            .pipe(
+                catchError((error) => {
+                    console.error('Error al obtener los ganados:', error);
+                    throw error;
+                })
+            )
+            .subscribe((res) => {
+                this.ganadoService.ganados = res as Ganado[];
+                console.log('Ganados obtenidos:', this.ganadoService.ganados);
+            });
+    }
 
-  getMedicinas(){
-    this.medicinaService.getMedicinas().subscribe((res) =>{
-      this.medicinaService.medicina = res as Medicina[];
-      this.getGanados();
-      console.log(res);
-    })
-  }
-/*
-    obtenerNombreDatos() {
-        for (const medicina of this.medicinaService.medicina) {
-            this.medicinaService.getGanadoNombre(medicina.ganado_id).subscribe(
-                (nombreGanado) => {
-                    medicina.nombre_ganado= nombreGanado;
+    // Método para actualizar todos los datos de la medicina
+    putMedicina(form: NgForm) {
+        console.log(form.value);
+
+        if (form.valid) {
+          const medicina = form.value;
+          medicina.ganado_id = form.controls['ganado_id'].value;
+            // Envía la solicitud PUT al servicio
+            this.medicinaService.putMedicina(medicina).subscribe(
+                response => {
+                    // Manejar la respuesta según sea necesario
+                    console.log('Medicina actualizada con éxito:', response);
+                  this.getMedicinas();
+                  this.closeModalEdit();
                 },
-                (error) => {
-                    console.error(`Error al obtener el nombre del ganado (${medicina.ganado_id}):`, error);
+                error => {
+                    console.error('Error al actualizar la medicina:', error);
+                    // Manejar el error
                 }
             );
+        } else {
+            console.error('Error: formulario no válido');
         }
-    }*/
-  getGanados() {
-    this.ganadoService.getGanados().subscribe((res) =>{
-      this.ganadoService.ganados = res as Ganado[];
-      console.log(res);
-    })
-  }
+    }
 
 
+    deleteMedicina(medicina: Medicina | undefined) {
+        if (medicina && medicina.medicina_id) {
+            this.medicinaService.deleteMedicina(medicina.medicina_id)
+                .pipe(
+                    catchError((error) => {
+                        console.error('Error al eliminar la medicina:', error);
+                        throw error;
+                    })
+                )
+                .subscribe(() => {
+                    this.getMedicinas();
+                });
+        } else {
+            console.error('Error: medicina o medicina.medicinaId es undefined');
+        }
+    }
 
 
-
-
+    @ViewChild('exampleModal') exampleModal!: ElementRef;
     openModal() {
-    if (this.exampleModal) {
-      const modalElement = this.exampleModal.nativeElement;
+        if (this.exampleModal) {
+            const modalElement = this.exampleModal.nativeElement;
+            modalElement.classList.add('show');
+            modalElement.style.display = 'block';
+            this.form.reset(); // Restablecer el formulario
+        }
+    }
+
+    closeModal() {
+        if (this.exampleModal) {
+            const modalElement = this.exampleModal.nativeElement;
+            modalElement.classList.remove('show');
+            modalElement.style.display = 'none';
+        }
+    }
+    @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+    closeModalEdit() {
+        if (this.exampleModalEdit) {
+            const modalElement = this.exampleModalEdit.nativeElement;
+            modalElement.classList.remove('show');
+            modalElement.style.display = 'none';
+        }
+    }
+
+  openModalEdit(medicina: any) {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
       modalElement.classList.add('show');
-      modalElement.style.display = 'block';  // Asegúrate de que el modal se muestre
-    }
-  }
-
-
-
-  closeModal() {
-    if (this.exampleModal) {
-      const modalElement = this.exampleModal.nativeElement;
-      modalElement.classList.remove('show');
-      modalElement.style.display = 'none';  // Asegúrate de que el modal se oculte
-    }
-  }
-
-  // Método para activar el modo de edición
-  startEditing(rowId: number) {
-    this.editingRow = rowId;
-  }
-
-  stopEditing() {
-    this.editingRow = null;
-  }
-
-
-  // Método para determinar si la fila actual está en modo de edición
-  isEditing(rowId: number): boolean {
-    return this.editingRow === rowId;
-  }
-
-  crearGanado(from: NgForm){
-    console.log(from.value);
-    this.medicinaService.postMedicina(from.value).subscribe((res) => {
-      console.log(res);
+      modalElement.style.display = 'block';
       this.getGanados();
-    });
+      this.medicinaService.getMedicinaID(medicina.medicina_id).subscribe(res =>{
+        this.medicina = res;
+        console.log("Funcion OpenModalEdit");
+        console.log(this.medicina);
+      });
+    }
   }
-
-
 }

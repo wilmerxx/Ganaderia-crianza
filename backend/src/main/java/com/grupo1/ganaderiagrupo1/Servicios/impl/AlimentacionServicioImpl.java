@@ -178,5 +178,4 @@ public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Serv
         }
         return alimentacionTotalConsumoDtos;
     }
-
 }

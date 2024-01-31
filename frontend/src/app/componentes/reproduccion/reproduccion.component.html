@@ -1,12 +1,29 @@
-<div>
-  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+<div class="row">
+  <div class="text-end col-lg-6 mb-1">
+    <div class="row">
+      <div class="col-lg-10">
+        <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" name="textoBusquedo">
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-primary" >Buscar</button>
+      </div>
+
+    </div>
+  </div>
+  <div class=" text-end col-lg-5 mb-2 ">
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+  </div>
+
 </div>
 <table class="table">
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
+    <th scope="col">Codigo Ganado</th>
+    <th scope="col">Nombre Ganado</th>
     <th scope="col">Fecha de parto</th>
-    <th scope="col">Estado Salud</th>
+    <th scope="col">Estado parto</th>
+    <th scope="col">Observaciones</th>
     <th scope="col">Numero de crias</th>
     <th scope="col">Acciones</th>
   </tr>
@@ -14,14 +31,15 @@
   <tbody>
   <tr *ngFor="let reproducciones of reproduccionService.reproducciones; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td hidden="hidden">{{ reproducciones.reproduccion_id  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.fecha_parto  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.estado_salud  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ reproducciones.numero_crias  }}</td>
+    <td>{{ reproducciones.codigoGanado}}</td>
+    <td>{{ reproducciones.nombreGanado}}</td>
+    <td>{{ reproducciones.fecha_parto  }}</td>
+    <td>{{ reproducciones.estado_parto  }}</td>
+    <td>{{ reproducciones.observaciones  }}</td>
+    <td>{{ reproducciones.numero_crias  }}</td>
     <td>
-      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)" >Editar</button>
-      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)="stopEditing()">Guardar</button>
-      <button class="btn btn-success btn-sm" (click)="deleteReproduccion(reproducciones.reproduccion_id)"  style=" margin-right: 80px">Eliminar</button>
+      <button class="btn btn-primary btn-sm">Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteReproduccion(reproducciones)">Eliminar</button>
     </td>
 
   </tr>
@@ -40,33 +58,45 @@
       </div>
 
       <div class="modal-body">
-        <form #reproduccionFrom ="ngForm">
+        <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
+
           <div class="form-group">
-            <label for="fecha_parto">Fecha Nacimiento</label>
-            <input type="date" class="form-control" id="fecha_parto" [ngModel]="reproduccionService.selectedReproduccion.fecha_parto" name="fecha_parto">
+            <label for="ganado_id">Selecciona el nombre</label>
+            <select class="form-control" id="ganado_id" formControlName="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+            <!-- Mostrar el mensaje de error para el control ganado -->
+            <div *ngIf="form.get('ganado_id')?.errors && (form.get('ganado_id')?.dirty || form.get('ganado_id')?.touched)" class="alert">
+              <div *ngIf="form.get('ganado_id')?.hasError('required')" class="text-danger">
+                <b>*</b> El ganado es requerido
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="fecha_parto">Fecha parto</label>
+            <input type="date" class="form-control" id="fecha_parto" formControlName="fecha_parto">
           </div>
           <div class="form-group">
-            <label for="estado_salud">Estado Salud</label>
-            <select class="form-control" id="estado_salud" [ngModel]="reproduccionService.selectedReproduccion.estado_salud" name="estado_salud">
-              <option selected >Selecciona</option>
+            <label for="estado_parto">Estado Parto</label>
+            <select class="form-control" id="estado_parto" formControlName="estado_parto">
+              <option selected>Selecciona</option>
               <option>Saludable</option>
               <option>Enfermo</option>
             </select>
           </div>
-
           <div class="form-group">
-            <label for="numero_crias">Raza</label>
-            <input type="text" class="form-control" id="numero_crias" [ngModel]="reproduccionService.selectedReproduccion.numero_crias" name="numero_crias">
+            <label for="observaciones">Observaciones</label>
+            <textarea class="form-control" id="observaciones" rows="3" formControlName="observaciones"></textarea>
           </div>
 
           <div class="form-group">
-            <label >ID GANADO</label>
-            <input type="text" class="form-control" id="ganado_id" [ngModel]="reproduccionService.selectedReproduccion.ganado_id" name="ganado_id">
+            <label for="numero_crias">Numero de crías</label>
+            <input type="number" class="form-control" id="numero_crias" formControlName="numero_crias">
           </div>
-
 
           <div class="modal-footer">
-            <button class="btn btn-primary" (click)="crearReproduccion(reproduccionFrom)" (click)="closeModal()">Guardar</button>
+            <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           </div>
         </form>

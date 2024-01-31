@@ -1,12 +1,24 @@
-
-<div>
-  <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
-</div>
+<div class="row">
+  <div class="text-end col-lg-6 mb-1">
+    <div class="row">
+      <div class="col-lg-10">
+        <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" name="textoBusquedo">
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-primary" >Buscar</button>
+      </div>
+    </div>
+  </div>
+  <div class=" text-end col-lg-5 mb-2 ">
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
+  </div>
 <table class="table">
   <thead class="table-dark">
   <tr>
     <th scope="col">#</th>
-    <th scope="col">Nombre</th>
+    <th scope="col">Codigo Ganado</th>
+    <th scope="col">Nombre Ganado</th>
+    <th scope="col">Nombre Area</th>
     <th scope="col">Tipo de terreno</th>
     <th scope="col">Tipo de pasto</th>
     <th scope="col">Superficie</th>
@@ -17,24 +29,17 @@
   <tbody>
   <tr *ngFor="let areas of areaService.areas; let i = index">
     <th scope="row">{{ i + 1 }}</th>
-    <td hidden="hidden">{{ areas.areaId  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ areas.nombreArea  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ areas.tipoArea  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ areas.tipoPasto  }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ areas.superficie }}</td>
-    <td [attr.contentEditable]="isEditing(i) ? true : null" class="editable-cell">{{ areas.ganado_id }}</td>
+    <td>{{ areas.codigoGanado}}</td>
+    <td>{{ areas.nombreGanado}}</td>
+    <td>{{ areas.nombreArea  }}</td>
+    <td>{{ areas.tipoArea  }}</td>
+    <td>{{ areas.tipoPasto  }}</td>
+    <td>{{ areas.superficie }}</td>
+    <td>{{ areas.ganado_id }}</td>
 
     <td>
-      <button *ngIf="!isEditing(i)" class="btn btn-primary btn-sm" (click)="startEditing(i)">Editar</button>
-      <button *ngIf="isEditing(i)" class="btn btn-success btn-sm" (click)=" stopEditing()">Guardar</button>
-
-    </td>
-    <td>
-      <a
-        (click)="deleteArea(areas.areaId)"
-        style="cursor: pointer"
-      ><i class="material-icons">delete</i></a
-      >
+      <button class="btn btn-primary btn-sm" >Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteArea(areas.areaId)">Eliminar</button>
     </td>
   </tr>
   </tbody>
@@ -53,16 +58,27 @@
         </button>
       </div>
       <div class="modal-body">
-        <form #areaForm="ngForm">
+        <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
           <div class="form-group">
-            <label >Nombre</label>
-
-            <input type="text" class="form-control" id="nombre" [ngModel]="areaService.selectedArea.nombreArea" name="nombreArea">
+            <label for="ganadoId">Selecciona el nombre</label>
+            <select class="form-control" id="ganadoId" formControlName="ganadoId">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+            <!-- Mostrar el mensaje de error para el control ganado -->
+            <div *ngIf="form.get('ganadoId')?.errors && (form.get('ganadoId')?.dirty || form.get('ganadoId')?.touched)" class="alert">
+              <div *ngIf="form.get('ganadoId')?.hasError('required')" class="text-danger">
+                <b>*</b> El ganado es requerido
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nombreArea">Nombre Area</label>
+            <input type="text" class="form-control" id="nombreArea" formControlName="nombreArea">
           </div>
 
           <div class="form-group">
-            <label>Tipo de terreno</label>
-            <select class="form-control" id="tipoArea" [ngModel]="areaService.selectedArea.tipoArea" name="tipoArea">
+            <label for="tipoArea">Tipo de terreno</label>
+            <select class="form-control" id="tipoArea" formControlName="tipoArea">
               <option selected >Selecciona</option>
               <option value="plano">Plano</option>
               <option value="laderoso">Laderoso</option>
@@ -71,33 +87,22 @@
           </div>
 
           <div class="form-group">
-            <label>Tipo de pasto</label>
-            <select class="form-control" id="tipoPasto" [ngModel]="areaService.selectedArea.tipoPasto" name="tipoPasto">
+            <label for="tipoPasto">Tipo de pasto</label>
+            <select class="form-control" id="tipoPasto" formControlName="tipoPasto">
               <option value="pastomiel">pastomiel</option>
               <option value="tundilla">tundilla</option>
               <option value="picuyo">picuyo</option>
             </select>
           </div>
           <div class="form-group">
-            <label >Superficie</label>
-            <input type="text" class="form-control" id="superficie" [ngModel]="areaService.selectedArea.superficie" name="superficie">
+            <label for="superficie">Superficie</label>
+            <input type="text" class="form-control" id="superficie" formControlName="superficie">
           </div>
-          <div class="form-group">
-            <label >ID GANADO</label>
-            <input type="text" class="form-control" id="ganado_id" [ngModel]="areaService.selectedArea.ganado_id" name="ganado_id">
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           </div>
-
         </form>
-
-      </div>
-      <div class="modal-footer">
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
-            Cancelar
-          </button>
-          <button class="btn btn-primary" (click)="crearArea(areaForm)">Guardar</button>
-        </div>
-
       </div>
     </div>
   </div>
