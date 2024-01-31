@@ -115,21 +115,21 @@
 
 .sidebar-content .logo-container img {
   max-width: 100%;
-  max-height: 150px;
+  max-height: 130px;
   height: auto;
   margin-bottom: 10px;
 }
 
 .sidebar-content .logo-text {
   color: white;
-  font-size: 24px;
+  font-size: 20px;
   font-weight: bold;
 }
 
 /* Divi del logo y opciones */
 .sidebar-content .divider {
   border-top: 2px solid rgb(24, 47, 5);
-  margin-bottom: 20px;
+  margin-bottom: 15px;
   height: 0;
   width: 100%;
   margin-top: 10px;
@@ -142,7 +142,7 @@
   background-color: #1e5511;
   color: white;
   text-align: center;
-  padding: 10px;
+  padding: 5px;
 }
 main {
   margin-left: 200px;
@@ -201,14 +201,14 @@ main {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 70px;
+    height: 60px;
     border-bottom: 1px solid #1e5511;
     padding: 0 1rem;
   }
 
   .sidebar .logo-content img {
-    height: 60px;
-    width: 60px;
+    height: 50px;
+    width: 50px;
     object-fit: contain;
     cursor: pointer;
   }

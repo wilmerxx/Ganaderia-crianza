@@ -8,6 +8,8 @@ export class Medicina {
   diagnostico?: string;
   tratamiento?: string;
   fecha_vacuna?: string;
+  creado?:string;
+  modificado?:string;
 
   constructor() {
     this.medicina_id = "";

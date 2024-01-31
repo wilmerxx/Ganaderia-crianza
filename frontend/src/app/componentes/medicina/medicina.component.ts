@@ -19,6 +19,7 @@ export class MedicinaComponent implements OnInit {
     resultados$!: Observable<string[]>;
     textoBusqueda: string = '';
 
+
     constructor(
         protected medicinaService: MedicinaService,
         protected ganadoService: GanadoService,
@@ -100,13 +101,17 @@ export class MedicinaComponent implements OnInit {
     // Método para actualizar todos los datos de la medicina
     putMedicina(form: NgForm) {
         console.log(form.value);
+
         if (form.valid) {
-            this.medicinaService.putMedicina(form.value).subscribe(
+          const medicina = form.value;
+          medicina.ganado_id = form.controls['ganado_id'].value;
+            // Envía la solicitud PUT al servicio
+            this.medicinaService.putMedicina(medicina).subscribe(
                 response => {
                     // Manejar la respuesta según sea necesario
                     console.log('Medicina actualizada con éxito:', response);
-                    this.closeModalEdit();
-                    this.getMedicinas();
+                  this.getMedicinas();
+                  this.closeModalEdit();
                 },
                 error => {
                     console.error('Error al actualizar la medicina:', error);
@@ -114,9 +119,10 @@ export class MedicinaComponent implements OnInit {
                 }
             );
         } else {
-            console.error('Error: medicinaId es undefined');
+            console.error('Error: formulario no válido');
         }
     }
+
 
     deleteMedicina(medicina: Medicina | undefined) {
         if (medicina && medicina.medicina_id) {
@@ -162,18 +168,17 @@ export class MedicinaComponent implements OnInit {
         }
     }
 
-    openModalEdit(medicina: any) {
-        if (this.exampleModalEdit) {
-            const modalElement = this.exampleModalEdit.nativeElement;
-            modalElement.classList.add('show');
-            modalElement.style.display = 'block';
-            this.medicinaService.getMedicinaID(medicina.medicina_id).subscribe(res =>{
-                this.medicina = res;
-                console.log("Funcion OpenModalEdit");
-                console.log(this.medicina);
-            });
-        }
+  openModalEdit(medicina: any) {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      this.getGanados();
+      this.medicinaService.getMedicinaID(medicina.medicina_id).subscribe(res =>{
+        this.medicina = res;
+        console.log("Funcion OpenModalEdit");
+        console.log(this.medicina);
+      });
     }
-
-
+  }
 }

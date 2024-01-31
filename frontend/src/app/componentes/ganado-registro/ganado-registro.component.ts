@@ -39,7 +39,6 @@ export class GanadoRegistroComponent implements OnInit {
   }
 
 
-
   private formularioNuevoGanado() {
     this.form = this.formBuilder.group({
       codigo: new FormControl('', [Validators.required]),
@@ -48,53 +47,63 @@ export class GanadoRegistroComponent implements OnInit {
       peso: new FormControl('', [Validators.required]),
       sexo: new FormControl('', [Validators.required]),
       fechaNacimiento: new FormControl('', [Validators.required]),
-        ganado_madre_id: new FormControl(''),
+      ganado_madre_id: new FormControl(''),
       ganado_padre_id: new FormControl(''),
     });
   }
 
-guardar(even: Event){
-  even.preventDefault();
-    const value = this.form.value;
-    console.log(value);
-    this.ganadoService.postGanado(this.form.value).subscribe((res) => {
-      console.log(res);
-      this.closeModal();
-      this.limpiarFormulario();
-    });
-}
+  guardar(event: Event) {
+    event.preventDefault();
+    console.log(this.form.value);
+    if (this.form.valid) {
+      const formData = this.form.value;
+      this.ganadoService.postGanado(formData)
+          .subscribe(
+              (res) => {
+                console.log('Respuesta del servidor:', res);
+                this.closeModal();
+                this.form.reset();
+                this.getGanados();
+              },
+              (error) => {
+                console.error('Error al guardar medicina:', error);
+              }
+          );
+
+    } else {
+      console.log('Formulario no válido');
+    }
+  }
 
   getCurrentDate() {
     return new Date().toISOString().split('T')[0];
   }
 
 
-
   //obtener ganado por id
-  buscarGanadoID(id: string){
-    return this.ganadoService.getGanadoID(id).subscribe((res) =>{
+  buscarGanadoID(id: string) {
+    return this.ganadoService.getGanadoID(id).subscribe((res) => {
       this.ganadoService.selectedGanado = res as Ganado;
     });
   }
 
 
-    limpiarFormulario() {
-        // Reiniciar el formulario reactivo
-        this.form.reset();
-    }
+  limpiarFormulario() {
+    // Reiniciar el formulario reactivo
+    this.form.reset();
+  }
 
 
-
-
-    getGanados() {this.ganadoService.getGanados().subscribe((res) =>{
-      for(let i = 0; i < res.length; i++){
+  getGanados() {
+    this.ganadoService.getGanados().subscribe((res) => {
+      for (let i = 0; i < res.length; i++) {
         this.ganadoService.ganados[i] = res[i];
         //calcular edad del ganado en meses
-        this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento??'');
-        this.ganadoService.getGanadoID(res[i].ganado_madre_id??'').subscribe((res2) =>{
+        this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento ?? '');
+        this.ganadoService.getGanadoID(res[i].ganado_madre_id ?? '').subscribe((res2) => {
           this.ganadoService.ganados[i].nombre_madre = res2.nombre_ganado;
         });
-        this.ganadoService.getGanadoID(res[i].ganado_padre_id??'').subscribe((res3) =>{
+        this.ganadoService.getGanadoID(res[i].ganado_padre_id ?? '').subscribe((res3) => {
           this.ganadoService.ganados[i].nombre_padre = res3.nombre_ganado;
         });
       }
@@ -103,7 +112,7 @@ guardar(even: Event){
   }
 
   // Método para determinar si la fila actual está en modo de edición
-  putGanado(form: NgForm){
+  putGanado(form: NgForm) {
     console.log(form.value);
     this.ganadoService.putGanado(form.value).subscribe((res) => {
       console.log(res);
@@ -121,7 +130,9 @@ guardar(even: Event){
       modalElement.style.display = 'none';
     }
   }
+
   @ViewChild('exampleModal') exampleModal!: ElementRef;
+
   openModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -132,6 +143,7 @@ guardar(even: Event){
 
   //modal de editar
   @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+
   closeModalEdit() {
     if (this.exampleModalEdit) {
       const modalElement = this.exampleModalEdit.nativeElement;
@@ -145,7 +157,7 @@ guardar(even: Event){
       const modalElement = this.exampleModalEdit.nativeElement;
       modalElement.classList.add('show');
       modalElement.style.display = 'block';
-      this.ganadoService.getGanadoID(ganado.ganado_id).subscribe(res =>{
+      this.ganadoService.getGanadoID(ganado.ganado_id).subscribe(res => {
         this.ganado = res;
         console.log("Funcion OpenModalEdit");
         console.log(this.ganado);
@@ -153,12 +165,12 @@ guardar(even: Event){
     }
   }
 
-  deleteGanado(ganado: Ganado | undefined) {
-    if (ganado && ganado.ganado_id) {
-      this.ganadoService.deleteGanado(ganado.ganado_id)
+  deleteGanado(ganado_id: number | undefined) {
+    if (ganado_id != 0) {
+      this.ganadoService.deleteGanado(ganado_id)
           .pipe(
               catchError((error) => {
-                console.error('Error al eliminar la ganado:', error);
+                console.error('Error al eliminar la area:', error);
                 throw error;
               })
           )
@@ -166,11 +178,8 @@ guardar(even: Event){
             this.getGanados();
           });
     } else {
-      console.error('Error: ganado o medicina.ganado_id es undefined');
+      console.error('No se puede eliminar el area');
     }
   }
-
 }
-
-
 

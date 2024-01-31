@@ -28,7 +28,6 @@
         <th scope="col">Edad en meses</th>
         <th scope="col">Nombre de madre</th>
         <th scope="col">Nombre de padre</th>
-        <th scope="col">Estado</th>
         <th scope="col">Acciones</th>
       </tr>
     </thead>
@@ -46,10 +45,9 @@
       <td *ngIf="ganado.nombre_padre !=null">{{ ganado.nombre_padre }}</td>
       <td *ngIf="ganado.nombre_madre ==null" >No tiene madre</td>
       <td *ngIf="ganado.nombre_padre ==null">No tiene padre</td>
-      <td >{{ ganado.estado }}</td>
       <td>
         <button  class="btn btn-primary btn-sm" (click)="openModalEdit(ganado)">Editar</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado)">Eliminar</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado.ganado_id)">Eliminar</button>
       </td>
     </tr>
     </tbody>

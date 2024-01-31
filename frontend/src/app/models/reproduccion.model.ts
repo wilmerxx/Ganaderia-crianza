@@ -10,13 +10,11 @@ export class Reproduccion {
   numero_crias?: number;
 
   constructor() {
-    this.reproduccion_id="";
-    this.ganado_id=0;
-    this.nombre_ganado = "";
-    this.codigoGanado= "";
+    this.reproduccion_id = "";
     this.fecha_parto= "";
     this.estado_parto= "";
     this.observaciones= "";
     this.numero_crias= 0;
+    this.ganado_id=0;
   }
 }

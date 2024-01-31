@@ -47,41 +47,24 @@ export class ReproduccionComponent implements OnInit {
     if (this.form.valid) {
       const formData = this.form.value;
       this.reproduccionService.postReproduccion(formData)
-        .subscribe(
-          (res: any) => {
-            console.log('Respuesta del servidor:', res);
+          .subscribe(
+              (res) => {
+                console.log('Respuesta del servidor:', res);
+                this.closeModal();
+                this.form.reset();
+                this.getReproduccion();
+              },
+              (error) => {
+                console.error('Error al guardar medicina:', error);
+              }
+          );
 
-            // Verificar si la respuesta incluye propiedades esperadas indicando éxito
-            if (res.fecha && res.mensaje && res.estado === 'CREATED') {
-              console.log('Reproducción agregada correctamente');
-              Swal.fire('Éxito', 'Reproducción agregada correctamente', 'success');
-              this.closeModal();
-              this.form.reset();
-              this.getReproduccion();
-            } else {
-              console.log('La respuesta del servidor no tiene el formato esperado:', res);
-              // Aquí puedes manejar casos inesperados si es necesario
-            }
-          },
-          (error) => {
-            console.error('Error al guardar reproducción:', error);
-
-            if (error.status === 400) {
-              console.log('Cuerpo de la respuesta:', error.error);
-              // Puedes manejar específicamente el código de estado 400 si es necesario
-              // Además, podrías mostrar un mensaje de éxito o realizar acciones adicionales
-              console.log('Reproducción agregada correctamente');
-              Swal.fire('Éxito', 'Reproducción agregada correctamente', 'success');
-              this.closeModal();
-              this.form.reset();
-              this.getReproduccion();
-            } else {
-              console.log('Error en la respuesta del servidor:', error);
-              // Aquí puedes manejar otros casos de error según sea necesario
-            }
-          }
-        );
+    } else {
+      console.log('Formulario no válido');
     }
+  }
+  getCurrentDate() {
+    return new Date().toISOString().split('T')[0];
   }
 
   getReproduccion() {

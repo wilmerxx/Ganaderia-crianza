@@ -98,7 +98,7 @@
           </div>
           <div class="form-group">
             <label for="fecha_vacuna">Fecha Vacuna</label>
-            <input type="date" class="form-control" id="fecha_vacuna" formControlName="fecha_vacuna">
+            <input type="date" class="form-control" id="fecha_vacuna" formControlName="fecha_vacuna" format="dd/mm/yyyy" name="fecha_vacuna" [max]="getCurrentDate()">
             <div *ngIf="form.get('fecha_vacuna')?.errors && (form.get('fecha_vacuna')?.dirty || form.get('fecha_vacuna')?.touched)" class="alert">
               <div *ngIf="form.get('fecha_vacuna')?.hasError('required')" class="text-danger">
                 <b>*</b> El fecha_vacuna es requerido
@@ -132,8 +132,8 @@
 
           <div class="form-group">
             <label for="madre_idEdit">Nombre Ganado</label>
-            <select class="form-control" id="madre_idEdit" [value]="medicina.ganado_id" (select)="medicina.ganado_id" [ngModel]="medicina.ganado_id" name="ganado_id">
-              <option *ngFor="let ganado of ganadoService.ganados"  value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+            <select class="form-control" id="madre_idEdit" [(ngModel)]="medicina.ganado_id" name="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id" [selected]="ganado.ganado_id == medicina.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
           <div class="form-group">
@@ -152,6 +152,12 @@
           <div class="form-group">
             <label for="fecha_vacunaEdit">Fecha Nacimiento</label>
             <input type="date" class="form-control" id="fecha_vacunaEdit" format="dd/mm/yyyy" [value]="medicina.fecha_vacuna" [(ngModel)]="medicina.fecha_vacuna"  name="fecha_vacuna"  [max]="getCurrentDate()">
+          </div>
+          <div class="form-group">
+            <label>Creado: {{medicina.creado | date:'short'}}</label>
+          </div>
+          <div class="form-group">
+            <label>Actualizado: {{medicina.modificado | date:'short'}}</label>
           </div>
           <div class="modal-footer">
             <button class="btn btn-primary" (click)="putMedicina(medicinaFromEdit)">Guardar</button>

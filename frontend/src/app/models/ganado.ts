@@ -1,7 +1,7 @@
 import {Area} from "./area.model";
 
 export class Ganado {
-  ganado_id?: string;
+  ganado_id?: number;
   codigo?: string ;
   nombre_ganado?: string;
   raza?: string ;
@@ -16,15 +16,14 @@ export class Ganado {
   nombre_padre?: string;
 
   constructor(){
-    this.ganado_id = "";
+    this.ganado_id = 0;
     this.codigo = "";
     this.nombre_ganado = "";
     this.raza = "";
     this.peso = 0;
     this.sexo = "";
     this.fechaNacimiento = "";
-    this.nombre_madre = "";
-    this.nombre_padre = "";
-    this.estado = "";
+    this.ganado_madre_id = "";
+    this.ganado_madre_id = "";
   }
 }

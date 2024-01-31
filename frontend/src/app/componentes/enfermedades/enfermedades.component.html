@@ -1,3 +1,4 @@
+<script src="../ganado-registro/ganado-registro.component.ts"></script>
 <div class="row">
   <div class="text-end col-lg-6 mb-1">
     <div class="row">
@@ -37,7 +38,7 @@
     <td>{{ enfermedades.observaciones  }}</td>
     <td>
       <button class="btn btn-primary btn-sm">Editar</button>
-      <button class="btn btn-danger btn-sm">Eliminar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteEnfermedades(enfermedades)" >Eliminar</button>
     </td>
   </tr>
   </tbody>
@@ -87,16 +88,6 @@
             <label for="observaciones">Observaciones</label>
             <input type="text" class="form-control" id="observaciones" formControlName="observaciones">
           </div>
-
-          <div *ngFor="let enfermedad of enfermedadesService.enfermedades">
-            <div class="form-group">
-              <label>Creado: {{enfermedad.creado | date:'short'}}</label>
-            </div>
-            <div class="form-group">
-              <label>Modificado: {{enfermedad.modificado | date:'short'}}</label>
-            </div>
-          </div>
-
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>

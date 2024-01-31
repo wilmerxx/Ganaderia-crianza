@@ -17,6 +17,8 @@ import { ReproduccionComponent } from './componentes/reproduccion/reproduccion.c
 import { GanadoRoutingModule } from './app-routing.module';
 import { NgChartsModule} from 'ng2-charts';
 import { NgxChartsModule} from "@swimlane/ngx-charts";
+import { BodegaComponent } from './componentes/bodega/bodega.component';
+import { ConsumoComponent } from './componentes/consumo/consumo.component';
 
 
 @NgModule({
@@ -29,7 +31,9 @@ import { NgxChartsModule} from "@swimlane/ngx-charts";
     EnfermedadesComponent,
     GanadoRegistroComponent,
     MedicinaComponent,
-    ReproduccionComponent
+    ReproduccionComponent,
+    BodegaComponent,
+    ConsumoComponent
 
     ],
     imports: [

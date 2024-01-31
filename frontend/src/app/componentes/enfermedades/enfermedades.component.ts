@@ -89,6 +89,23 @@ export class EnfermedadesComponent implements OnInit {
       });
   }
 
+  deleteEnfermedades(enfermedades: Enfermedad | undefined) {
+    if (enfermedades && enfermedades.control_id) {
+      this.enfermedadesService.deleteEnfermedades(enfermedades.control_id)
+          .pipe(
+              catchError((error) => {
+                console.error('Error al eliminar la enfermedad:', error);
+                throw error;
+              })
+          )
+          .subscribe(() => {
+            this.getEnfermedad();
+          });
+    } else {
+      console.error('Error: medicina o medicina.medicinaId es undefined');
+    }
+  }
+
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;

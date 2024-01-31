@@ -50,6 +50,18 @@
             <i class="fas fa-file-alt"></i> <span class="link-text">Medicina</span>
           </a>
         </li>
+        <li>
+          <a class="text-white" routerLink="./bodega" (click)="cambiarEnlaceActivo('./bodega')"
+             [class.active]="enlaceActivo === './bodega'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Bodega</span>
+          </a>
+        </li>
+        <li>
+          <a class="text-white" routerLink="./consumo" (click)="cambiarEnlaceActivo('./consumo')"
+             [class.active]="enlaceActivo === './consumo'">
+            <i class="fas fa-file-alt"></i> <span class="link-text">Consumo</span>
+          </a>
+        </li>
       </ul>
     </div>
   </aside>
