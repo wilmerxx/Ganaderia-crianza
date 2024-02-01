@@ -17,6 +17,7 @@ public class ControlDto {
     private String estado;
     private String codigoGanado;
     private String nombreGanado;
+    private String estado_salud;
     private LocalDateTime creado;
     private LocalDateTime modificado;
 }

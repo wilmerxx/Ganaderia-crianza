@@ -93,6 +93,7 @@ public class ControlEnfermedadesServicioImpl implements ControlEnfermedadesServi
                     controlDto.setCodigoGanado(ganado.getCodigo());
                     controlDto.setNombreGanado(ganado.getNombre_ganado());
                     controlDto.setEstado(controlEnfermedades1.getEstado());
+                    controlDto.setEstado_salud(controlEnfermedades1.getGanado().getEstado());
                     controlDto.setCreado(controlEnfermedades1.getCreado());
                     controlDto.setModificado(controlEnfermedades1.getModificado());
                     controlDtos.add(controlDto);
@@ -124,6 +125,7 @@ public class ControlEnfermedadesServicioImpl implements ControlEnfermedadesServi
                     controlDto.setCodigoGanado(ganado.getCodigo());
                     controlDto.setNombreGanado(ganado.getNombre_ganado());
                     controlDto.setEstado(controlEnfermedades1.getEstado());
+                    controlDto.setEstado_salud(controlEnfermedades1.getGanado().getEstado());
                     controlDto.setCreado(controlEnfermedades1.getCreado());
                     controlDto.setModificado(controlEnfermedades1.getModificado());
                     controlDtos.add(controlDto);
@@ -150,6 +152,7 @@ public class ControlEnfermedadesServicioImpl implements ControlEnfermedadesServi
         controlDto.setCodigoGanado(ganado.get().getCodigo());
         controlDto.setNombreGanado(ganado.get().getNombre_ganado());
         controlDto.setEstado(controlEnfermedades.get().getEstado());
+        controlDto.setEstado_salud(controlEnfermedades.get().getGanado().getEstado());
         controlDto.setCreado(controlEnfermedades.get().getCreado());
         controlDto.setModificado(controlEnfermedades.get().getModificado());
         return controlDto;
