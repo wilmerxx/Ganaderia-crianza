@@ -8,6 +8,7 @@ export class Medicina {
   diagnostico?: string;
   tratamiento?: string;
   fecha_vacuna?: string;
+  estado?: string;
   creado?:string;
   modificado?:string;
 

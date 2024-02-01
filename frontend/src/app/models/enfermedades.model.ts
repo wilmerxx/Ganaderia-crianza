@@ -8,6 +8,7 @@ export class Enfermedad {
   pesoActual: number;
   fechaControl: string;
   observaciones: string;
+  estado?: string;
   creado:string;
   modificado:string;
 

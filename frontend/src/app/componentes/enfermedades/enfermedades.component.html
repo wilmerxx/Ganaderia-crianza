@@ -24,6 +24,7 @@
     <th scope="col">Peso</th>
     <th scope="col">Fecha de control</th>
     <th scope="col">Observaciones</th>
+    <th scope="col">Estado</th>
     <th scope="col">Acciones</th>
   </tr>
   </thead>
@@ -36,6 +37,7 @@
     <td>{{ enfermedades.pesoActual  }}</td>
     <td>{{ enfermedades.fechaControl}}</td>
     <td>{{ enfermedades.observaciones  }}</td>
+    <td>{{ enfermedades.estado}}</td>
     <td>
       <button class="btn btn-primary btn-sm">Editar</button>
       <button class="btn btn-danger btn-sm" (click)="deleteEnfermedades(enfermedades)" >Eliminar</button>
