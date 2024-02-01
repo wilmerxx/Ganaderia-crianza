@@ -8,8 +8,8 @@ import {AreaComponent} from "./componentes/area/area.component";
 import {EnfermedadesComponent} from "./componentes/enfermedades/enfermedades.component";
 import {MedicinaComponent} from "./componentes/medicina/medicina.component";
 import {NavegacionComponent} from "./navegacion/navegacion.component";
-import {BodegaComponent} from "./componentes/bodega/bodega.component";
-import {ConsumoComponent} from "./componentes/consumo/consumo.component";
+import {BodegaComponent} from "./componentes/producto/bodega.component";
+import {ConsumoComponent} from "./componentes/inventario/consumo.component";
 
 const routes: Routes = [
   {path: '', component: NavegacionComponent, children: [

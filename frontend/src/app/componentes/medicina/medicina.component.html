@@ -24,6 +24,7 @@
     <th scope="col">Diagnóstico</th>
     <th scope="col">Tratamiento</th>
     <th scope="col">Fecha Vacuna</th>
+    <th scope="col">Estado</th>
     <th scope="col">Acciones</th>
   </tr>
   </thead>
@@ -36,6 +37,7 @@
     <td>{{ medicina.diagnostico }}</td>
     <td>{{ medicina.tratamiento }}</td>
     <td>{{ medicina.fecha_vacuna }}</td>
+    <td>{{ medicina.estado }}</td>
     <td>
       <button class="btn btn-primary btn-sm" (click)="openModalEdit(medicina)">Editar</button>
       <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina)">Eliminar</button>

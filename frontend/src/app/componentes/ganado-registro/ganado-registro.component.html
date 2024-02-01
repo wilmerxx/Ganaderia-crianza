@@ -1,13 +1,13 @@
 <div class="row">
   <div class="text-end col-lg-6 mb-1">
-     <div class="row">
-       <div class="col-lg-10">
-         <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" >
-       </div>
-       <div class="col-lg-2">
-         <button class="btn btn-primary" >Buscar</button>
-       </div>
-     </div>
+    <div class="row">
+      <div class="col-lg-10">
+        <input class="align-self-end form-control"   type="text" [(ngModel)]="textoBuscado" (keydown)="getGanadosPaginacion(textoBuscado,0,10)"  placeholder="busqueda inteligente" name="textoBuscado">
+      </div>
+      <div class="col-lg-2">
+        <button class="btn btn-primary" (click)="getGanadosPaginacion(textoBuscado,0,10)" >Buscar</button>
+      </div>
+    </div>
   </div>
   <div class=" text-end col-lg-5 mb-2 ">
     <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
@@ -16,42 +16,46 @@
 </div>
 
 <table class="table table-responsive">
-    <thead class="table-dark">
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Codigo</th>
-        <th scope="col">Nombre</th>
-        <th scope="col">Raza</th>
-        <th scope="col">Peso</th>
-        <th scope="col">Sexo</th>
-        <th scope="col">Fecha nacimiento</th>
-        <th scope="col">Edad en meses</th>
-        <th scope="col">Nombre de madre</th>
-        <th scope="col">Nombre de padre</th>
-        <th scope="col">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let ganado of ganadoService.ganados.slice(0, 20); let i = index ">
-      <th scope="row">{{ i + 1 }}</th>
-      <td >{{ ganado.codigo }}</td>
-      <td >{{ ganado.nombre_ganado  }}</td>
-      <td >{{ ganado.raza}}</td>
-      <td >{{ ganado.peso  }}</td>
-      <td  >{{ ganado.sexo }}</td>
-      <td >{{ ganado.fechaNacimiento}}</td>
-      <td >{{ ganado.edad}}</td>
-      <td *ngIf="ganado.nombre_madre !=null" >{{ ganado.nombre_madre  }}</td>
-      <td *ngIf="ganado.nombre_padre !=null">{{ ganado.nombre_padre }}</td>
-      <td *ngIf="ganado.nombre_madre ==null" >No tiene madre</td>
-      <td *ngIf="ganado.nombre_padre ==null">No tiene padre</td>
-      <td>
-        <button  class="btn btn-primary btn-sm" (click)="openModalEdit(ganado)">Editar</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado.ganado_id)">Eliminar</button>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <thead class="table-dark">
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Codigo</th>
+    <th scope="col">Nombre</th>
+    <th scope="col">Raza</th>
+    <th scope="col">Peso</th>
+    <th scope="col">Sexo</th>
+    <th scope="col">Tipo</th>
+    <th scope="col">Fecha nacimiento</th>
+    <th scope="col">Edad en meses</th>
+    <th scope="col">Nombre de madre</th>
+    <th scope="col">Nombre de padre</th>
+    <th scope="col">Estado</th>
+    <th scope="col">Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let ganado of ganadoService.ganados; let i = index ">
+    <th scope="row">{{ i + 1 }}</th>
+    <td >{{ ganado.codigo }}</td>
+    <td >{{ ganado.nombre_ganado  }}</td>
+    <td >{{ ganado.raza}}</td>
+    <td >{{ ganado.peso  }}</td>
+    <td  >{{ ganado.sexo }}</td>
+    <td>{{ganado.tipo}}</td>
+    <td >{{ ganado.fechaNacimiento}}</td>
+    <td >{{ ganado.edad}}</td>
+    <td *ngIf="ganado.nombre_madre !=null" >{{ ganado.nombre_madre  }}</td>
+    <td *ngIf="ganado.nombre_padre !=null">{{ ganado.nombre_padre }}</td>
+    <td *ngIf="ganado.nombre_madre ==null" >No tiene madre</td>
+    <td *ngIf="ganado.nombre_padre ==null">No tiene padre</td>
+    <td>{{ganado.estado}}</td>
+    <td>
+      <button  class="btn btn-primary btn-sm" (click)="openModalEdit(ganado)">Editar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteGanado(ganado.ganado_id)">Eliminar</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
 <!-- Modal -->
 <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -63,85 +67,85 @@
         </button>
       </div>
       <div class="modal-body" >
-          <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
-            <div class="form-group">
-              <label for="codigo">Codigo</label>
-              <input type="text" class="form-control" id="codigo"  formControlName="codigo">
-              <div *ngIf="form.get('codigo')?.errors && (form.get('codigo')?.dirty || form.get('codigo')?.touched)" class="alert">
-                <div *ngIf="form.get('codigo')?.hasError('required')" class="text-danger">
-                  <b>*</b> El codigo es requerido
-                </div>
+        <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
+          <div class="form-group">
+            <label for="codigo">Codigo</label>
+            <input type="text" class="form-control" id="codigo"  formControlName="codigo">
+            <div *ngIf="form.get('codigo')?.errors && (form.get('codigo')?.dirty || form.get('codigo')?.touched)" class="alert">
+              <div *ngIf="form.get('codigo')?.hasError('required')" class="text-danger">
+                <b>*</b> El codigo es requerido
               </div>
             </div>
-              <div class="form-group">
-                <label for="nombre_ganado">Nombre Ganado</label>
-                <input type="text" class="form-control" id="nombre_ganado" formControlName="nombre_ganado"  name="nombre_ganado">
-                <div *ngIf="form.get('nombre_ganado')?.errors && (form.get('nombre_ganado')?.dirty || form.get('nombre_ganado')?.touched)" class="alert">
-                  <div *ngIf="form.get('nombre_ganado')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
+          </div>
+          <div class="form-group">
+            <label for="nombre_ganado">Nombre Ganado</label>
+            <input type="text" class="form-control" id="nombre_ganado" formControlName="nombre_ganado"  name="nombre_ganado">
+            <div *ngIf="form.get('nombre_ganado')?.errors && (form.get('nombre_ganado')?.dirty || form.get('nombre_ganado')?.touched)" class="alert">
+              <div *ngIf="form.get('nombre_ganado')?.hasError('required')" class="text-danger">
+                <b>*</b> El nombre es requerido
               </div>
-              <div class="form-group">
-                <label for="raza">Raza</label>
-                <input type="text" class="form-control" id="raza" formControlName="raza"  name="raza">
-                <div *ngIf="form.get('raza')?.errors && (form.get('raza')?.dirty || form.get('raza')?.touched)" class="alert">
-                  <div *ngIf="form.get('raza')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="raza">Raza</label>
+            <input type="text" class="form-control" id="raza" formControlName="raza"  name="raza">
+            <div *ngIf="form.get('raza')?.errors && (form.get('raza')?.dirty || form.get('raza')?.touched)" class="alert">
+              <div *ngIf="form.get('raza')?.hasError('required')" class="text-danger">
+                <b>*</b> El nombre es requerido
               </div>
-              <div class="form-group">
-                <label for="peso">Peso</label>
-                <input type="number" class="form-control" id="peso" formControlName="peso"  name="peso">
-                <div *ngIf="form.get('peso')?.errors && (form.get('peso')?.dirty || form.get('peso')?.touched)" class="alert">
-                  <div *ngIf="form.get('peso')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="peso">Peso</label>
+            <input type="number" class="form-control" id="peso" formControlName="peso"  name="peso">
+            <div *ngIf="form.get('peso')?.errors && (form.get('peso')?.dirty || form.get('peso')?.touched)" class="alert">
+              <div *ngIf="form.get('peso')?.hasError('required')" class="text-danger">
+                <b>*</b> El nombre es requerido
               </div>
-              <div class="form-group">
-                <label for="sexo">Sexo</label>
-                <select class="form-control" id="sexo"  formControlName="sexo" name="sexo">
-                  <option>Macho</option>
-                  <option>Hembra</option>
-                </select>
-                <div *ngIf="form.get('sexo')?.errors && (form.get('sexo')?.dirty || form.get('sexo')?.touched)" class="alert">
-                  <div *ngIf="form.get('sexo')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="sexo">Sexo</label>
+            <select class="form-control" id="sexo"  formControlName="sexo" name="sexo">
+              <option>Macho</option>
+              <option>Hembra</option>
+            </select>
+            <div *ngIf="form.get('sexo')?.errors && (form.get('sexo')?.dirty || form.get('sexo')?.touched)" class="alert">
+              <div *ngIf="form.get('sexo')?.hasError('required')" class="text-danger">
+                <b>*</b> El nombre es requerido
               </div>
-              <div class="form-group">
-                <label for="fechaNacimiento">Fecha Nacimiento</label>
-                <input type="date" class="form-control" id="fechaNacimiento" format="dd/mm/yyyy" formControlName="fechaNacimiento" name="fechaNacimiento"  [max]="getCurrentDate()">
-                <div *ngIf="form.get('fechaNacimiento')?.errors && (form.get('fechaNacimiento')?.dirty || form.get('fechaNacimiento')?.touched)" class="alert">
-                  <div *ngIf="form.get('fechaNacimiento')?.hasError('required')" class="text-danger">
-                    <b>*</b> El nombre es requerido
-                  </div>
-                </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimiento">Fecha Nacimiento</label>
+            <input type="date" class="form-control" id="fechaNacimiento" format="dd/mm/yyyy" formControlName="fechaNacimiento" name="fechaNacimiento"  [max]="getCurrentDate()">
+            <div *ngIf="form.get('fechaNacimiento')?.errors && (form.get('fechaNacimiento')?.dirty || form.get('fechaNacimiento')?.touched)" class="alert">
+              <div *ngIf="form.get('fechaNacimiento')?.hasError('required')" class="text-danger">
+                <b>*</b> El nombre es requerido
               </div>
-              <!-- Selecionar el id de la madre-->
-              <div class="form-group">
-                <label for="ganado_madre_id">Madre</label>
-                <select class="form-control" id="ganado_madre_id" formControlName="ganado_madre_id" name="ganado_madre_id">
-                  <option *ngFor="let ganado of ganadoService.ganadosVaca" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
-                </select>
-              </div>
-              <!-- Selecionar el id del padre-->
-              <div class="form-group">
-                <label for="ganado_padre_id">Padre</label>
-                <select class="form-control" formControlName="ganado_padre_id" name="ganado_padre_id" id="ganado_padre_id">
-                  <option *ngFor="let ganado of ganadoService.ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
-                </select>
-              </div>
-              <div class="modal-footer">
-                <button class="btn btn-primary" type="submit" [disabled]="form.invalid" >Guardar</button>
-                <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
-              </div>
-          </form>
+            </div>
+          </div>
+          <!-- Selecionar el id de la madre-->
+          <div class="form-group">
+            <label for="ganado_madre_id">Madre</label>
+            <select class="form-control" id="ganado_madre_id" formControlName="ganado_madre_id" name="ganado_madre_id">
+              <option *ngFor="let ganado of ganadoService.ganadosVaca" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <!-- Selecionar el id del padre-->
+          <div class="form-group">
+            <label for="ganado_padre_id">Padre</label>
+            <select class="form-control" formControlName="ganado_padre_id" name="ganado_padre_id" id="ganado_padre_id">
+              <option *ngFor="let ganado of ganadoService.ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" type="submit" [disabled]="form.invalid" >Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Cerrar</button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   </div>
 </div>
 
@@ -217,4 +221,3 @@
     </div>
   </div>
 </div>
-

@@ -22,7 +22,11 @@ export class GanadoService {
   readonly URL_API = environment.baseUrl + '/ganados';
 
   getGanados(): Observable<Ganado[]> {
-      return this.http.get<Ganado[]>(this.URL_API);
+    return this.http.get<Ganado[]>(this.URL_API);
+  }
+
+  getGanadosPaginacion(texto:string,page:number,size:number): Observable<any> {
+    return this.http.get<Ganado[]>(`${this.URL_API}/nombre/${texto}/${page}/${size}`);
   }
 
   postGanado(ganado: Ganado): Observable<Ganado> {
@@ -57,17 +61,6 @@ export class GanadoService {
     });
   }
 
-  //calcular edad del ganado en meses
-  calcularEdad(fechaNacimiento: string): number{
-    let fechaActual = new Date();
-    let fechaNac = new Date(fechaNacimiento);
-    let edad = fechaActual.getMonth() - fechaNac.getMonth() + (12 * (fechaActual.getFullYear() - fechaNac.getFullYear()));
-    return edad;
-  }
-
-  busquedaGanado(busqueda: string): Observable<any>{
-    return this.http.get(this.URL_API + '/nombre/' + busqueda);
-  }
   deleteGanado(ganado_id: number | undefined): Observable<any> {
     return this.http.delete(`${this.URL_API}/${ganado_id}`);
   }

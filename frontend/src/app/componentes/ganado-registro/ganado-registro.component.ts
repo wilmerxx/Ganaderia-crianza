@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {GanadoService} from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import {FormGroup, FormBuilder, FormControl, Validator, Validators, NgForm} from '@angular/forms';
@@ -6,6 +6,7 @@ import {MAT_DATEPICKER_VALIDATORS} from "@angular/material/datepicker";
 import {Observable} from "rxjs";
 import {Medicina} from "../../models/medicina.model";
 import {catchError} from "rxjs/operators";
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'ganado-registro',
@@ -18,12 +19,12 @@ export class GanadoRegistroComponent implements OnInit {
   ganado_id: string = '';
   ganado: Ganado = new Ganado();
   form!: FormGroup;
-  resultados$!: Observable<string[]>;
   ganados: Ganado[] = [];
-  textoBusquedo: string = '';
+  textoBuscado: string = '';
 
   constructor(protected ganadoService: GanadoService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder
+  ) {
     //validaciones
   }
 
@@ -33,9 +34,6 @@ export class GanadoRegistroComponent implements OnInit {
     this.ganadoService.getGanadoTipo('Toro');
     this.formularioNuevoGanado();
     this.getGanados();
-    console.log(this.form.value);
-
-    this.resultados$ = this.ganadoService.busquedaGanado(this.textoBusquedo);
   }
 
 
@@ -60,6 +58,13 @@ export class GanadoRegistroComponent implements OnInit {
       this.ganadoService.postGanado(formData)
           .subscribe(
               (res) => {
+                Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Ganado guardado con exito',
+                  showConfirmButton: false,
+                  timer: 1500
+                });
                 console.log('Respuesta del servidor:', res);
                 this.closeModal();
                 this.form.reset();
@@ -87,28 +92,25 @@ export class GanadoRegistroComponent implements OnInit {
     });
   }
 
-
-  limpiarFormulario() {
-    // Reiniciar el formulario reactivo
-    this.form.reset();
-  }
-
-
   getGanados() {
     this.ganadoService.getGanados().subscribe((res) => {
-      for (let i = 0; i < res.length; i++) {
-        this.ganadoService.ganados[i] = res[i];
-        //calcular edad del ganado en meses
-        this.ganadoService.ganados[i].edad = this.ganadoService.calcularEdad(res[i].fechaNacimiento ?? '');
-        this.ganadoService.getGanadoID(res[i].ganado_madre_id ?? '').subscribe((res2) => {
-          this.ganadoService.ganados[i].nombre_madre = res2.nombre_ganado;
-        });
-        this.ganadoService.getGanadoID(res[i].ganado_padre_id ?? '').subscribe((res3) => {
-          this.ganadoService.ganados[i].nombre_padre = res3.nombre_ganado;
-        });
-      }
-
+      this.ganadoService.ganados = res;
+      // console.log(this.ganadoService.ganados);
     })
+  }
+
+  getGanadosPaginacion(texto:string, page:number, size:number){
+    console.log("Texto: " + texto);
+    console.log("Page: " + page);
+    console.log("Size: " + size);
+    if(texto == ''){
+      this.getGanados();
+    }else{
+      this.ganadoService.getGanadosPaginacion(texto, page, size).subscribe((res) => {
+        this.ganadoService.ganados = res;
+        console.log(this.ganadoService.ganados);
+      });
+    }
   }
 
   // Método para determinar si la fila actual está en modo de edición
@@ -167,19 +169,24 @@ export class GanadoRegistroComponent implements OnInit {
 
   deleteGanado(ganado_id: number | undefined) {
     if (ganado_id != 0) {
-      this.ganadoService.deleteGanado(ganado_id)
-          .pipe(
-              catchError((error) => {
-                console.error('Error al eliminar la area:', error);
-                throw error;
-              })
-          )
-          .subscribe(() => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminarlo'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.ganadoService.deleteGanado(ganado_id).subscribe((res) => {
+            console.log(res);
             this.getGanados();
           });
+        }
+      });
     } else {
       console.error('No se puede eliminar el area');
     }
   }
 }
-
