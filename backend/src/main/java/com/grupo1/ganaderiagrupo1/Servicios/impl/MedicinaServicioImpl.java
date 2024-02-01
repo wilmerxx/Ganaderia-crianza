@@ -102,6 +102,7 @@ public class MedicinaServicioImpl implements MedicinaServicio {
                     medicinaDto.setEstado(medicina.getEstado());
                     medicinaDto.setCodigoGanado(ganado.getCodigo());
                     medicinaDto.setNombreGanado(ganado.getNombre_ganado());
+                    medicinaDto.setEstado_salud(medicina.getGanado().getEstado());
                     medicinaDto.setCreado(medicina.getCreado());
                     medicinaDto.setModificado(medicina.getModificado());
                     medicinasDto.add(medicinaDto);
@@ -130,6 +131,7 @@ public class MedicinaServicioImpl implements MedicinaServicio {
                     medicinaDto.setEstado(medicina.getEstado());
                     medicinaDto.setCodigoGanado(ganado.getCodigo());
                     medicinaDto.setNombreGanado(ganado.getNombre_ganado());
+                    medicinaDto.setEstado_salud(medicina.getGanado().getEstado());
                     medicinaDto.setCreado(medicina.getCreado());
                     medicinaDto.setModificado(medicina.getModificado());
                     medicinasDto.add(medicinaDto);
@@ -152,6 +154,7 @@ public class MedicinaServicioImpl implements MedicinaServicio {
             medicinaDto.setEstado(medicina.getEstado());
             medicinaDto.setCodigoGanado(medicina.getGanado().getCodigo());
             medicinaDto.setNombreGanado(medicina.getGanado().getNombre_ganado());
+            medicinaDto.setEstado_salud(medicina.getGanado().getEstado());
             medicinaDto.setCreado(medicina.getCreado());
             medicinaDto.setModificado(medicina.getModificado());
             return medicinaDto;
