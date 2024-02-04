@@ -1,21 +1,64 @@
-version: "3.9"
-
-networks:
-  default:
-    driver: bridge
+version: '3.9'
 
 services:
   backend:
     image: backend
+    restart: unless-stopped
+    container_name: backend-postgres
+    build:
+      context: .
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ganaderia
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=wil1992
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_JPA_SHOW_SQL=true
     ports:
-      - "8080:8080"
+      - 8080:8080
     networks:
-      - default
+      - shared-network
 
-  frontend:
-    image: frontend
-    build: .
+  db:
+    image: postgres:latest
+    container_name: postgres-ganaderia
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=wil1992
+      - POSTGRES_DB=ganaderia
     ports:
-      - "4200:4200"
+      - 5432:5432
     networks:
-      - default
+      - shared-network
+
+
+volumes:
+  postgres_data: {}
+networks:
+  shared-network:
+    driver: bridge
+
+##comandos para ejecutar
+#docker-compose up -d
+#docker-compose down
+#docker-compose logs -f
+#docker-compose ps -a
+#docker-compose exec backend bash
+#docker-compose exec db bash
+#docker-compose exec backend psql -U postgres -d ganaderia
+#docker-compose exec backend mvn clean install
+#docker-compose exec backend mvn spring-boot:run
+#docker volume ls
+#docker volume rm ganaderia_postgres_data
+#docker network ls
+#docker network rm ganaderia_shared-network
+#docker-compose down --volumes
+#docker-compose down --rmi all
+#docker stop backend-postgres
+#docker rm backend-postgres
+#docker stop postgres-ganaderia
+#docker rm postgres-ganaderia

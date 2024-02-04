@@ -57,7 +57,7 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
                 ganadoDto.setTipo(ganado.getTipo());
                 ganadoDto.setFechaNacimiento(ganado.getFechaNacimiento());
                 ganadoDto.setEstado(ganado.getEstado());
-                ganadoDto.setEdad(ganado.getEdad());
+                ganadoDto.setEdad(ganadoDto.calcularEdad(ganado.getFechaNacimiento()));
                 ganadoDto.setCreado(ganado.getCreado());
                 ganadoDto.setModificado(ganado.getModificado());
                 ganadoDtos.add(ganadoDto);

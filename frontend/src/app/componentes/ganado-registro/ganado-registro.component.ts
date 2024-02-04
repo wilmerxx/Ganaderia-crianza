@@ -92,7 +92,10 @@ export class GanadoRegistroComponent implements OnInit {
     });
   }
 
-  getGanados() {
+  getGanados(envent?: Event) {
+    if(envent){
+      envent.preventDefault();
+    }
     this.ganadoService.getGanados().subscribe((res) => {
       this.ganadoService.ganados = res;
       // console.log(this.ganadoService.ganados);
@@ -114,11 +117,14 @@ export class GanadoRegistroComponent implements OnInit {
   }
 
   // Método para determinar si la fila actual está en modo de edición
-  putGanado(form: NgForm) {
+  putGanado(form: NgForm,event: Event) {
+    event.preventDefault();
     console.log(form.value);
     this.ganadoService.putGanado(form.value).subscribe((res) => {
       console.log(res);
       this.closeModalEdit();
+      this.getGanados();
+
     });
     console.log(form.value);
   }

@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, AfterViewInit, ViewChild, ElementRef} from '@angular/core';
 import * as Chartist from 'chartist';
 import { GanadoService } from '../../service/ganado.service';
 import {Ganado} from "../../models/ganado";
 import {Chart, ChartDataset, ChartOptions, ChartType, Color, Colors, plugins} from "chart.js";
+import * as Highcharts from 'highcharts/highstock';
+import * as ngBootstrap from '@ng-bootstrap/ng-bootstrap';
 
 import {ServicioService} from "../../service/servicio.service";
-
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
 export class InicioComponent implements OnInit {
+  Highcharts: typeof Highcharts = Highcharts;
+  chartOptions!: Highcharts.Options;
   //graficar los ganados por tipo
   private ganados: Ganado[] = [];
   public vacas: Ganado[] = [];
@@ -25,17 +28,29 @@ export class InicioComponent implements OnInit {
   public barChartDatasets: ChartDataset[] = [];
   public totalMachos: number = 0;
   public totalHembras: number = 0;
+  chart!: Highcharts.Options;
+  datosMacho: any[] = [];
+  datosHembra: any[] = [];
+
+
 
   constructor(private ganadoService: GanadoService, private servicioService: ServicioService) {
 
   }
+
+  @ViewChild('lineChart') private lineChart!: ElementRef;
   ngOnInit(): void {
     this.ganadoService.getGanadoTipo('Toro');
     this.ganadoService.getGanadoTipo('Ternero');
     this.ganadoService.getGanadoTipo('Vaca');
     this.datosDoughnut();
     this.barChartDatos();
+    this.renderLineChart();
+    this.graficaBarPorSexoGanado();
+
   }
+
+
 
 
   //datos de grafica de pastel
@@ -131,13 +146,6 @@ export class InicioComponent implements OnInit {
   public barChartLegend = true;
   public barChartPlugins = [];
 
-
-  //graficar los cantidad de padres por tipo
-  public barChartData: ChartDataset[] = [
-    { data: [this.totalVacas, this.totalToros, this.totalTerneros], label: 'Cantidad por tipo' }
-  ];
-
-
   //grafica de pastel
   public doughnutChartLabels:string[] = ['Vacas', 'Toros', 'Terneros'];
   public doughnutChartType:ChartType = 'doughnut';
@@ -155,9 +163,6 @@ export class InicioComponent implements OnInit {
 
   // options
   gradient: boolean = true;
-  showLegend: boolean = true;
-  showLabels: boolean = true;
-  isDoughnut: boolean = false;
 
 
   get single() {
@@ -181,4 +186,120 @@ export class InicioComponent implements OnInit {
   }
 
 
+  //grafica de barras con highcharts
+  graficaBarPorSexoGanado(event?: Event) {
+    event?.preventDefault();
+    let totalVacas:  number = 0;
+    let totalToros:  number = 0;
+    let totalTerneros:  number = 0;
+    let totalTerneras:  number = 0;
+    let totalVaquillas:  number = 0;
+    let totalTorillos:  number = 0;
+    this.ganadoService.getGanados().subscribe((res) => {
+      res.forEach((ganado) => {
+       if(ganado.tipo == 'Vaca'){
+         totalVacas++;
+        }else if(ganado.tipo == 'Toro'){
+         totalToros++;
+       }else if(ganado.tipo == 'Ternero'){
+         totalTerneros++;
+       }else if(ganado.tipo == 'Ternera'){
+         totalTerneras++;
+       }else if(ganado.tipo == 'Vaquilla'){
+         totalVaquillas++;
+       }else if(ganado.tipo == 'Torillo'){
+         totalTorillos++;
+       }
+
+      });
+
+      this.chart = {
+        chart: {
+          type: 'bar'
+        },
+        title: {
+          text: 'Ganado por sexo'
+        },
+        xAxis: {
+          categories: ['Adultos', 'Jovenes','Crias']
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de ganado por sexo'
+          }
+        },
+        series: [{
+          type: 'bar',
+          name: 'Machos',
+          data: [totalToros, totalTorillos, totalTerneros],
+          color: '#66e135'
+        }, {
+          type: 'bar',
+          name: 'Hembras',
+          data: [totalVacas, totalVaquillas, totalTerneras],
+          color: '#c378dc'
+        }]
+      };
+      Highcharts.chart('barChart', this.chart);
+    });
+  }
+
+
+
+  //graficar el peso del animal por fecha seleccionan el tipo de animal
+  renderLineChart() {
+    this.ganadoService.getGanados().subscribe((res) => {
+      res.forEach((ganado) => {
+        //ordenar por fecha
+        for (let i = 0; i < res.length; i++) {
+          for (let j = 0; j < res.length - 1; j++) {
+            if (res[j].fechaNacimiento > res[j + 1].fechaNacimiento) {
+              let temp = res[j];
+              res[j] = res[j + 1];
+              res[j + 1] = temp;
+            }
+          }
+        }
+        if (ganado.sexo == 'Macho') {
+          this.datosMacho.push([new Date(ganado.fechaNacimiento).getTime(), ganado.edad]);
+        } else {
+          this.datosHembra.push([new Date(ganado.fechaNacimiento).getTime(), ganado.edad]);
+        }
+      });
+
+      const options: Highcharts.Options = {
+        chart: {
+          type: 'line'
+        },
+        title: {
+          text: 'Alimentación por fechas y Sexo'
+        },
+        xAxis: {
+          type: 'datetime',
+          title: {
+            text: 'Fecha'
+          }
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de alimentación'
+          }
+        },
+        series: [{
+          type: 'line',
+          name: 'Macho',
+          data: this.datosMacho,
+          color: '#0000FF'
+        }, {
+          type: 'line',
+          name: 'Hembra',
+          data: this.datosHembra,
+          color: '#FF0000'
+        }]
+      }
+      Highcharts.chart('lineChart', options);
+    });
+  }
+
 }
+
