@@ -48,16 +48,22 @@ export class EnfermedadesComponent implements OnInit {
       this.enfermedadesService.postEnfermedad(formData)
         .subscribe(
           (res) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Control de enfermedad guardado con éxito',
+              showConfirmButton: false,
+              timer: 1500
+            });
             console.log('Respuesta del servidor:', res);
             this.closeModal();
             this.form.reset();
             this.getEnfermedad();
           },
           (error) => {
-            console.error('Error al guardar enfermedad:', error);
+            console.error('Error al guardar el control de enfermedad:', error);
           }
         );
-
     } else {
       console.log('Formulario no válido');
     }
@@ -88,24 +94,36 @@ export class EnfermedadesComponent implements OnInit {
         console.log('Ganados obtenidos:', this.ganadoService.ganados);
       });
   }
-
-  deleteEnfermedades(enfermedades: Enfermedad | undefined) {
-    if (enfermedades && enfermedades.control_id) {
-      this.enfermedadesService.deleteEnfermedades(enfermedades.control_id)
-          .pipe(
-              catchError((error) => {
-                console.error('Error al eliminar la enfermedad:', error);
-                throw error;
-              })
-          )
-          .subscribe(() => {
-            this.getEnfermedad();
-          });
+  deleteEnfermedades(control_id: number | undefined) {
+    if (control_id) {Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.enfermedadesService.deleteEnfermedades(control_id).subscribe(() => {
+          Swal.fire(
+            '¡Eliminado!',
+            'La alimentación ha sido eliminada.',
+            'success'
+          );
+          // Manually remove the deleted item from the local array
+          this.enfermedadesService.enfermedades = this.enfermedadesService.enfermedades.filter(item => item.control_id !== control_id);
+        });
+      }
+    });
     } else {
-      console.error('Error: medicina o medicina.medicinaId es undefined');
+      console.error('No se puede eliminar el alimento');
     }
   }
 
+  getCurrentDate() {
+    return new Date().toISOString().split('T')[0];
+  }
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;

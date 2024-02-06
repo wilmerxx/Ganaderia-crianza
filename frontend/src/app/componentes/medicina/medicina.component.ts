@@ -6,6 +6,7 @@ import { FormControl, FormBuilder, FormGroup, NgForm, Validators } from "@angula
 import { Ganado } from "../../models/ganado";
 import { Observable } from "rxjs";
 import { catchError } from 'rxjs/operators';
+import Swal from "sweetalert2";
 
 @Component({
     selector: 'app-medicina',
@@ -50,15 +51,22 @@ export class MedicinaComponent implements OnInit {
             const formData = this.form.value;
                 this.medicinaService.postMedicina(formData)
                     .subscribe(
-                        (res) => {
-                            console.log('Respuesta del servidor:', res);
-                            this.closeModal();
-                            this.form.reset();
-                            this.getMedicinas();
-                        },
-                        (error) => {
-                            console.error('Error al guardar medicina:', error);
-                        }
+                      (res) => {
+                        Swal.fire({
+                          position: 'center',
+                          icon: 'success',
+                          title: 'Medicina guardado con éxito',
+                          showConfirmButton: false,
+                          timer: 1500
+                        });
+                        console.log('Respuesta del servidor:', res);
+                        this.closeModal();
+                        this.form.reset();
+                        this.getMedicinas();
+                      },
+                      (error) => {
+                        console.error('Error al guardar medicina:', error);
+                      }
                     );
 
         } else {
@@ -122,25 +130,31 @@ export class MedicinaComponent implements OnInit {
             console.error('Error: formulario no válido');
         }
     }
-
-
-    deleteMedicina(medicina: Medicina | undefined) {
-        if (medicina && medicina.medicina_id) {
-            this.medicinaService.deleteMedicina(medicina.medicina_id)
-                .pipe(
-                    catchError((error) => {
-                        console.error('Error al eliminar la medicina:', error);
-                        throw error;
-                    })
-                )
-                .subscribe(() => {
-                    this.getMedicinas();
-                });
-        } else {
-            console.error('Error: medicina o medicina.medicinaId es undefined');
-        }
+  deleteMedicina(medicina_id: number | undefined) {
+    if (medicina_id) {Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.medicinaService.deleteMedicina(medicina_id).subscribe(() => {
+          Swal.fire(
+            '¡Eliminado!',
+            'La alimentación ha sido medicina.',
+            'success'
+          );
+          this.medicinaService.medicinas = this.medicinaService.medicinas.filter(item => item.medicina_id !== medicina_id);
+        });
+      }
+    });
+    } else {
+      console.error('No se puede eliminar el medicina');
     }
-
+  }
 
     @ViewChild('exampleModal') exampleModal!: ElementRef;
     openModal() {

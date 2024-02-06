@@ -47,17 +47,24 @@ export class ReproduccionComponent implements OnInit {
     if (this.form.valid) {
       const formData = this.form.value;
       this.reproduccionService.postReproduccion(formData)
-          .subscribe(
-              (res) => {
-                console.log('Respuesta del servidor:', res);
-                this.closeModal();
-                this.form.reset();
-                this.getReproduccion();
-              },
-              (error) => {
-                console.error('Error al guardar medicina:', error);
-              }
-          );
+        .subscribe(
+          (res) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Reproducción guardado con éxito',
+              showConfirmButton: false,
+              timer: 1500
+            });
+            console.log('Respuesta del servidor:', res);
+            this.closeModal();
+            this.form.reset();
+            this.getReproduccion();
+          },
+          (error) => {
+            console.error('Error al guardar la reproduccion:', error);
+          }
+        );
 
     } else {
       console.log('Formulario no válido');
@@ -119,24 +126,31 @@ export class ReproduccionComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
-
-  deleteReproduccion(reproduccion: Reproduccion | undefined) {
-    console.log('Reproducción antes de eliminar:', reproduccion);
-    if (reproduccion && reproduccion.reproduccion_id) {
-      this.reproduccionService.deleteReproduccion(reproduccion.reproduccion_id)
-          .pipe(
-              catchError((error) => {
-                console.error('Error al eliminar la  reproduccion:', error);
-                throw error;
-              })
-          )
-          .subscribe(() => {
-            this.getReproduccion();
-          });
+  deleteReproduccion(reproduccion_id: number | undefined) {
+    if (reproduccion_id) {Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminarlo'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.reproduccionService.deleteReproduccion(reproduccion_id).subscribe(() => {
+          Swal.fire(
+            '¡Eliminado!',
+            'La alimentación ha sido eliminada.',
+            'success'
+          );
+          // Manually remove the deleted item from the local array
+          this.reproduccionService.reproducciones = this.reproduccionService.reproducciones.filter(item => item.reproduccion_id !== reproduccion_id);
+        });
+      }
+    });
     } else {
-      console.error('Error: reproduccion o reproduccion.reproduccion_id es undefined');
+      console.error('No se puede eliminar el alimento');
     }
   }
-
 
 }

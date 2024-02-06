@@ -40,7 +40,7 @@ export class ReproduccionService {
     return throwError('Algo salió mal');
   }
 
-  deleteReproduccion(reproduccion_id: string): Observable<any> {
+  deleteReproduccion(reproduccion_id: number | undefined): Observable<any> {
     return this.http.delete(`${this.URL_API}/${reproduccion_id}`);
   }
 }

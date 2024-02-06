@@ -40,7 +40,7 @@
     <td>{{ medicina.estado }}</td>
     <td>
       <button class="btn btn-primary btn-sm" (click)="openModalEdit(medicina)">Editar</button>
-      <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina)">Eliminar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteMedicina(medicina.medicina_id)">Eliminar</button>
     </td>
   </tr>
   </tbody>

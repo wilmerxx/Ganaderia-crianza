@@ -1,14 +1,20 @@
 export class Alimentacion {
-  constructor(alimentacion_id='',nombre_suplemento='',cantidad_suplemento='' ,fecha_alimentacion='',ganado_id=''){
-    this.alimentacion_id = alimentacion_id;
-    this.nombre_suplemento = nombre_suplemento;
-    this.cantidad_suplemento = cantidad_suplemento;
-    this.fecha_alimentacion = fecha_alimentacion;
-    this.ganado_id = ganado_id;
-  }
-  alimentacion_id: string;
-  nombre_suplemento: string;
-  cantidad_suplemento: string;
-  fecha_alimentacion: string;
-  ganado_id: string;
+
+  alimentacion_id?: number;
+  ganado_id: number;
+  nombre_suplemento?: string;
+  cantidad_suplemento?: number;
+  fecha_alimentacion?: string;
+  codigo?: string;
+  nombre_ganado?: string;
+  creado?:string;
+  modificado?:string;
+
+    constructor() {
+      this.alimentacion_id = 0;
+      this.nombre_suplemento = "";
+      this.cantidad_suplemento = 0;
+      this.fecha_alimentacion = "";
+      this.ganado_id = 0;
+    }
 }

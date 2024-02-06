@@ -10,8 +10,9 @@
     </div>
   </div>
   <div class=" text-end col-lg-5 mb-2 ">
-    <button type="button" class="btn btn-success" data-mdb-ripple-init >+ Añadir</button>
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
   </div>
+</div>
   <table class="table">
     <thead class="table-dark">
     <tr>
@@ -25,21 +26,67 @@
     </tr>
     </thead>
     <tbody>
-    <!--<tr let i = index">
-       <th scope="row">{{ i + 1 }}</th>
-      <td>{{ areas.codigoGanado}}</td>
-      <td>{{ areas.nombreGanado}}</td>
-      <td>{{ areas.nombreArea  }}</td>
-      <td>{{ areas.tipoArea  }}</td>
-      <td>{{ areas.tipoPasto  }}</td>
-      <td>{{ areas.superficie }}</td>
-      <td>{{ areas.ganado_id }}</td>
+    <tr *ngFor="let producto of productoMongoService.productos; let i = index">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ producto.nombreproducto }}</td>
+      <td>{{ producto.unidad_medida }}</td>
+      <td>{{ producto.marca }}</td>
+      <td>{{ producto.tipo_producto }}</td>
+      <td>{{ producto.fecha_vencimiento }}</td>
       <td>
-        <button class="btn btn-primary btn-sm" >Editar</button>
-        <button class="btn btn-danger btn-sm" >Eliminar</button>
+        <button class="btn btn-primary btn-sm" (click)="openModalEdit(producto)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteProductos(producto.id)">Eliminar</button>
       </td>
-    </tr>-->
+    </tr>
     </tbody>
   </table>
-</div>
+
+  <!-- Modal -->
+  <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Añadir Alimento</h5>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
+            <div class="form-group">
+              <label for="nombreproducto">Nombre</label>
+              <input type="text" class="form-control" id="nombreproducto" formControlName="nombreproducto" required>
+
+            </div>
+            <div class="form-group">
+              <label for="unidad_medida">Seleciona la unidad</label>
+              <select class="form-control" id="unidad_medida" formControlName="unidad_medida">
+                <option>Litros</option>
+                <option>Kg</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="marca">Marca</label>
+              <input type="text" class="form-control" id="marca" formControlName="marca" required>
+            </div>
+            <div class="form-group">
+              <label for="tipo_producto">Tipo de producto</label>
+              <select class="form-control" id="tipo_producto" formControlName="tipo_producto">
+                <option>Tipo 1</option>
+                <option>Tipo 2</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="fecha_vencimiento">Fecha Vencimiento</label>
+              <input type="date" class="form-control" id="fecha_vencimiento" formControlName="fecha_vencimiento" format="dd/mm/yyyy" name="fecha_vencimiento" [max]="getCurrentDate()">
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 

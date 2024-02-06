@@ -37,17 +37,12 @@ export class MedicinaService {
         catchError(this.handleError)
     );
   }
-
-  private getGanadoID(ganadoId: string): Observable<Ganado> {
-    return this.http.get<Ganado>(this.URL_GANADO_API + '/' + ganadoId);
-  }
-
   private handleError(error: HttpErrorResponse) {
     console.log(error);
     return throwError('Algo salió mal');
   }
 
-  deleteMedicina(medicina_id: string): Observable<any> {
+  deleteMedicina(medicina_id: number | undefined): Observable<any> {
     return this.http.delete(`${this.URL_API}/${medicina_id}`);
   }
 }

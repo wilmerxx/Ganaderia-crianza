@@ -61,7 +61,7 @@ export class GanadoRegistroComponent implements OnInit {
                 Swal.fire({
                   position: 'center',
                   icon: 'success',
-                  title: 'Ganado guardado con exito',
+                  title: 'Ganado guardado con éxito',
                   showConfirmButton: false,
                   timer: 1500
                 });
@@ -186,7 +186,7 @@ export class GanadoRegistroComponent implements OnInit {
         }
       });
     } else {
-      console.error('No se puede eliminar el area');
+      console.error('No se puede eliminar el ganado');
     }
   }
 }

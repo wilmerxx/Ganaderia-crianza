@@ -41,4 +41,5 @@ export class AreaService {
   deleteArea(areaId: number | undefined): Observable<any> {
     return this.http.delete(`${this.URL_API}/${areaId}`);
   }
+
 }

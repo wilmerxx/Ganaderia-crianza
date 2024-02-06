@@ -129,6 +129,7 @@
           <div class="form-group">
             <label for="ganado_madre_id">Madre</label>
             <select class="form-control" id="ganado_madre_id" formControlName="ganado_madre_id" name="ganado_madre_id">
+              <option value="" disabled selected>Seleccionar</option>
               <option *ngFor="let ganado of ganadoService.ganadosVaca" value="{{ganado.ganado_id}}">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
@@ -136,6 +137,7 @@
           <div class="form-group">
             <label for="ganado_padre_id">Padre</label>
             <select class="form-control" formControlName="ganado_padre_id" name="ganado_padre_id" id="ganado_padre_id">
+              <option value="" disabled selected>Seleccionar</option>
               <option *ngFor="let ganado of ganadoService.ganadosToro"  [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
           </div>
