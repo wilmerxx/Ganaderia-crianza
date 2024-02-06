@@ -19,7 +19,8 @@ import { NgChartsModule} from 'ng2-charts';
 import { NgxChartsModule} from "@swimlane/ngx-charts";
 import { BodegaComponent } from './componentes/producto/bodega.component';
 import { ConsumoComponent } from './componentes/inventario/consumo.component';
-
+import {HighchartsChartModule} from "highcharts-angular";
+import {NgbAccordionModule,NgbAccordionDirective,NgbAccordionItem,NgbAccordionHeader, NgbAccordionToggle, NgbAccordionCollapse, NgbAccordionBody, NgbAccordionButton,} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,16 @@ import { ConsumoComponent } from './componentes/inventario/consumo.component';
         GanadoRoutingModule,
         NgChartsModule,
         NgxChartsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        HighchartsChartModule,
+        NgbAccordionModule,
+        NgbAccordionDirective,
+        NgbAccordionItem,
+        NgbAccordionHeader,
+        NgbAccordionToggle,
+        NgbAccordionCollapse,
+        NgbAccordionBody,
+
     ],
   providers: [],
   bootstrap: [AppComponent]

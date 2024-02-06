@@ -12,6 +12,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class MensajeExito {
     private Date fecha;
-    private String mensaje;
+    private String message;
     private HttpStatus estado;
 }

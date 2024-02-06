@@ -9,7 +9,7 @@ export class Ganado {
   sexo?: string;
   edad?: number;
   tipo?: string;
-  fechaNacimiento?: string;
+  fechaNacimiento: string;
   ganado_madre_id?: string ;
   ganado_padre_id?: string;
   estado?: string;

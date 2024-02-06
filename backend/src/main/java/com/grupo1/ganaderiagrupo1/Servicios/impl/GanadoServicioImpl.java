@@ -57,7 +57,7 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
                 ganadoDto.setTipo(ganado.getTipo());
                 ganadoDto.setFechaNacimiento(ganado.getFechaNacimiento());
                 ganadoDto.setEstado(ganado.getEstado());
-                ganadoDto.setEdad(ganado.getEdad());
+                ganadoDto.setEdad(ganadoDto.calcularEdad(ganado.getFechaNacimiento()));
                 ganadoDto.setCreado(ganado.getCreado());
                 ganadoDto.setModificado(ganado.getModificado());
                 ganadoDtos.add(ganadoDto);
@@ -69,6 +69,12 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
 
     @Override
     public void guardar(GanadoNuevoDto ganadoNuevoDto) {
+        List<Ganado> ganados = ganadoRepositorio.findAll();
+        for(Ganado ganado : ganados){
+            if(ganado.getCodigo().equals(ganadoNuevoDto.getCodigo())){
+                throw new ResourceNotFoundException("p-222","Ya existe un ganado con ese codigo", HttpStatus.NOT_FOUND);
+            }
+        }
         //convertir a modelo
         Ganado ganado = new Ganado();
         ganado.setCodigo(ganadoNuevoDto.getCodigo());

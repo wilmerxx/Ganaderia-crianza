@@ -9,6 +9,7 @@ import org.springframework.format.annotation.NumberFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
 import java.time.format.DateTimeFormatter;
 
 @Data
@@ -36,24 +37,13 @@ public class GanadoNuevoDto {
     private int ganado_padre_id;
     private String estado = "Activo";
 
-    public int calcularEdad(String fechaNacimiento){
-        //calcular edad del ganado en meses
-        int edad = 0;
+    public int calcularEdad(String fechaNacimiento) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaActual = LocalDate.now();
         LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formatter);
-        edad = fechaActual.getYear() - fechaNac.getYear();
-        if(fechaActual.getMonthValue() < fechaNac.getMonthValue()){
-            edad--;
-        }
-        if(fechaActual.getMonthValue() == fechaNac.getMonthValue()){
-            if(fechaActual.getDayOfMonth() < fechaNac.getDayOfMonth()){
-                edad--;
-            }
-        }
-        edad = edad * 12;
-        edad = edad + fechaActual.getMonthValue() - fechaNac.getMonthValue();
-        return edad;
+        LocalDate fechaActual = LocalDate.now();
+        Period period = Period.between(fechaNac, fechaActual);
+        int edadEnMeses = period.getYears() * 12 + period.getMonths();
+        return edadEnMeses;
     }
     public String tipoGanado(String fechaNacimiento, String sexo){
         //calcular edad del ganado en meses

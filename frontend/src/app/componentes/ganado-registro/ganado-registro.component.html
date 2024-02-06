@@ -2,16 +2,30 @@
   <div class="text-end col-lg-6 mb-1">
     <div class="row">
       <div class="col-lg-10">
-        <input class="align-self-end form-control"   type="text" [(ngModel)]="textoBuscado" (keydown)="getGanadosPaginacion(textoBuscado,0,10)"  placeholder="busqueda inteligente" name="textoBuscado">
+        <input class="align-self-end form-control"   type="text" [(ngModel)]="textoBuscado" (keydown)="getGanadosPaginacion(textoBuscado,0,20)"  placeholder="busqueda inteligente" name="textoBuscado">
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-primary" (click)="getGanadosPaginacion(textoBuscado,0,10)" >Buscar</button>
+        <button class="btn btn-primary" (click)="getGanadosPaginacion(textoBuscado,0,20)" >Buscar</button>
       </div>
     </div>
   </div>
   <div class=" text-end col-lg-5 mb-2 ">
     <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()">+ Añadir</button>
   </div>
+
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      <li class="page-item" [class.disabled]="currentPage == 1">
+        <a class="page-link" href="#" (click)="getGanadosPaginacion2(textoBuscado, currentPage - 1, 20)">Anterior</a>
+      </li>
+      <li class="page-item" *ngFor="let page of pagesArray" [class.active]="page == currentPage">
+        <a class="page-link" href="#" (click)="getGanadosPaginacion2(textoBuscado, page, 20)">{{page}}</a>
+      </li>
+      <li class="page-item" [class.disabled]="currentPage == totalPages">
+        <a class="page-link" href="#" (click)="getGanadosPaginacion2(textoBuscado, currentPage + 1, 20)">Siguiente</a>
+      </li>
+    </ul>
+  </nav>
 
 </div>
 
@@ -215,7 +229,7 @@
             </select>
           </div>
           <div class="modal-footer">
-            <button class="btn btn-primary" (click)="putGanado(ganaoFromEdit)">Guardar</button>
+            <button class="btn btn-primary" (click)="putGanado(ganaoFromEdit,$event)">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModalEdit()">Cerrar</button>
           </div>
         </form>

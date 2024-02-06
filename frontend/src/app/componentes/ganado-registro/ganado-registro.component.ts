@@ -22,6 +22,10 @@ export class GanadoRegistroComponent implements OnInit {
   ganados: Ganado[] = [];
   textoBuscado: string = '';
 
+  currentPage: number = 1;
+  totalPages: number = 0;
+  pagesArray: number[] = [];
+
   constructor(protected ganadoService: GanadoService,
               private formBuilder: FormBuilder
   ) {
@@ -36,6 +40,14 @@ export class GanadoRegistroComponent implements OnInit {
     this.getGanados();
   }
 
+  getGanadosPaginacion2(texto: string, page: number, size: number) {
+    this.currentPage = page;
+    this.ganadoService.getGanadosPaginacion(texto, page, size).subscribe((res) => {
+      this.ganados = res.content;
+      this.totalPages = res.totalPages;
+      this.pagesArray = Array.from({length: this.totalPages}, (v, k) => k + 1);
+    });
+  }
 
   private formularioNuevoGanado() {
     this.form = this.formBuilder.group({
@@ -71,7 +83,12 @@ export class GanadoRegistroComponent implements OnInit {
                 this.getGanados();
               },
               (error) => {
-                console.error('Error al guardar medicina:', error);
+                console.error('Error al guardar  ganado:', error);
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error al guardar',
+                  text:  error.error.message,
+                });
               }
           );
 
@@ -92,7 +109,10 @@ export class GanadoRegistroComponent implements OnInit {
     });
   }
 
-  getGanados() {
+  getGanados(envent?: Event) {
+    if(envent){
+      envent.preventDefault();
+    }
     this.ganadoService.getGanados().subscribe((res) => {
       this.ganadoService.ganados = res;
       // console.log(this.ganadoService.ganados);
@@ -114,11 +134,14 @@ export class GanadoRegistroComponent implements OnInit {
   }
 
   // Método para determinar si la fila actual está en modo de edición
-  putGanado(form: NgForm) {
+  putGanado(form: NgForm,event: Event) {
+    event.preventDefault();
     console.log(form.value);
     this.ganadoService.putGanado(form.value).subscribe((res) => {
       console.log(res);
       this.closeModalEdit();
+      this.getGanados();
+
     });
     console.log(form.value);
   }
