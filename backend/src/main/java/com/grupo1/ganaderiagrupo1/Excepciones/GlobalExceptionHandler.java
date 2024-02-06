@@ -30,7 +30,8 @@ public class GlobalExceptionHandler {
         for(FieldError error : e.getBindingResult().getFieldErrors()){
             errors.put(error.getField(), error.getDefaultMessage());
         }
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        String message = errors.get(errors.keySet().toArray()[0]);
+        return new ResponseEntity<>(new ApiError(new Date(),"p-234",message,HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IllegalStateException.class)
@@ -64,4 +65,5 @@ public class GlobalExceptionHandler {
     public ApiError handleResourceNotFoundException(RuntimeException ex) {
         return new ApiError(new Date(),"p-223", ex.getMessage(),HttpStatus.NOT_FOUND);
     }
+
 }
