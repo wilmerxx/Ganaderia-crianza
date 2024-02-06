@@ -209,7 +209,7 @@ export class GanadoRegistroComponent implements OnInit {
         }
       });
     } else {
-      console.error('No se puede eliminar el area');
+      console.error('No se puede eliminar el ganado');
     }
   }
 }

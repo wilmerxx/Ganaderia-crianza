@@ -34,7 +34,7 @@ export class EnfermedadesService {
   }
 
 
-  deleteEnfermedades(control_id: string): Observable<any> {
+  deleteEnfermedades(control_id: number | undefined): Observable<any> {
     return this.http.delete(`${this.URL_API}/${control_id}`);
   }
 }

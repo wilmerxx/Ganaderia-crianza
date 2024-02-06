@@ -1,5 +1,5 @@
 export class Enfermedad {
-  control_id?: string;
+  control_id?: number;
   ganado_id: number;
   nombreGanado?: string;
   nombre_ganado?: string;
@@ -13,7 +13,7 @@ export class Enfermedad {
   modificado:string;
 
   constructor() {
-    this.control_id = "";
+    this.control_id = 0;
     this.ganado_id = 0;
     this.nombre_ganado = "";
     this.codigoGanado= "";

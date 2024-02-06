@@ -49,14 +49,21 @@ export class AreaComponent implements OnInit {
       this.areaService.postArea(formData)
         .subscribe(
           (res) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Área guardado con éxito',
+              showConfirmButton: false,
+              timer: 1500
+            });
             console.log('Respuesta del servidor:', res);
             this.closeModal();
             this.form.reset();
             this.getAreas();
           },
-          (error) => {
-            console.error('Error al guardar area:', error);
-          }
+            (error) => {
+              console.error('Error al guardar area:', error);
+            }
         );
 
     } else {
@@ -78,20 +85,27 @@ export class AreaComponent implements OnInit {
   }
   deleteArea(areaId:number | undefined) {
     if (areaId!=0) {
-      this.areaService.deleteArea(areaId)
-          .pipe(
-              catchError((error) => {
-                console.error('Error al eliminar la area:', error);
-                throw error;
-              })
-          )
-          .subscribe(() => {
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: "¡No podrás revertir esto!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sí, eliminarlo'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.areaService.deleteArea(areaId).subscribe((res) => {
+            console.log(res);
             this.getAreas();
           });
+        }
+      });
     } else {
       console.error('No se puede eliminar el area');
     }
   }
+
 
   closeModal() {
     if (this.exampleModal) {
@@ -110,16 +124,6 @@ export class AreaComponent implements OnInit {
       modalElement.style.display = 'block';
     }
   }
-
-
-
-
-
-
-
-
-
-
 
 
 }

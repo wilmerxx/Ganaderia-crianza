@@ -39,7 +39,7 @@
     <td>{{ reproducciones.numero_crias  }}</td>
     <td>
       <button class="btn btn-primary btn-sm">Editar</button>
-      <button class="btn btn-danger btn-sm" (click)="deleteReproduccion(reproducciones)">Eliminar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteReproduccion(reproducciones.reproduccion_id)">Eliminar</button>
     </td>
 
   </tr>
@@ -75,7 +75,7 @@
 
           <div class="form-group">
             <label for="fecha_parto">Fecha parto</label>
-            <input type="date" class="form-control" id="fecha_parto" formControlName="fecha_parto">
+            <input type="date" class="form-control" id="fecha_parto" formControlName="fecha_parto" [max]="getCurrentDate()">
           </div>
           <div class="form-group">
             <label for="estado_parto">Estado Parto</label>

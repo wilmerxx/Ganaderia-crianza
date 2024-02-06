@@ -17,20 +17,26 @@ export class AlimentacionService {
   }
 
   readonly URL_API = environment.baseUrl + '/alimentacion';
+  readonly URL_GANADO_API = environment.baseUrl + '/ganados';
+
 
   getAlimentacion(): Observable<Alimentacion[]> {
-    return this.http.get<Alimentacion[]>(this.URL_API);
+    return this.http.get<Alimentacion[]>(this.URL_API + '/estado/Activo');
   }
 
   postAlimentacion(alimentacion: Alimentacion): Observable<any> {
-    return this.http.post(this.URL_API, alimentacion);
+    return this.http.post<Alimentacion>(this.URL_API, alimentacion);
   }
 
   putAlimentacion(alimentacion: Alimentacion): Observable<any> {
-    return this.http.put(this.URL_API + `/${alimentacion.alimentacion_id}`, alimentacion);
+    return this.http.put<Alimentacion>(this.URL_API, alimentacion);
   }
 
-  deleteAlimentacion(alimentacion_id: string): Observable<any> {
-    return this.http.delete(this.URL_API + `/${alimentacion_id}`);
+  getAlimentacionID(id: string): Observable<Alimentacion> {
+    return this.http.get<Alimentacion>(`${this.URL_API}/${id}`);
+  }
+
+  deleteAlimentacion(alimentacion_id: number | undefined): Observable<any> {
+    return this.http.delete(`${this.URL_API}/${alimentacion_id}`);
   }
 }

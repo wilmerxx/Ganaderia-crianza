@@ -40,7 +40,7 @@
     <td>{{ enfermedades.estado}}</td>
     <td>
       <button class="btn btn-primary btn-sm">Editar</button>
-      <button class="btn btn-danger btn-sm" (click)="deleteEnfermedades(enfermedades)" >Eliminar</button>
+      <button class="btn btn-danger btn-sm" (click)="deleteEnfermedades(enfermedades.control_id)" >Eliminar</button>
     </td>
   </tr>
   </tbody>
@@ -83,7 +83,7 @@
 
           <div class="form-group">
             <label for="fechaControl">Fecha control</label>
-            <input type="date" class="form-control" id="fechaControl" formControlName="fechaControl">
+            <input type="date" class="form-control" id="fechaControl" formControlName="fechaControl" [max]="getCurrentDate()">
           </div>
 
           <div class="form-group">
