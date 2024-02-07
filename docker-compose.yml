@@ -6,20 +6,21 @@ services:
     restart: unless-stopped
     container_name: backend-postgres
     build:
-      context: .
+      context: ..
     links:
       - db:db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ganaderia
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=wil1992
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_SHOW_SQL=true
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ganaderia
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: wil1992
+
     ports:
       - 8080:8080
+    depends_on:
+      - db
 
   db:
-    image: postgres:latest
+    image: postgres:12
     container_name: postgres-ganaderia
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
