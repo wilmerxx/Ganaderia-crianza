@@ -1,9 +1,9 @@
 export class Alimentacion {
 
-  alimentacion_id?: number;
+  alimentacion_id?: number | undefined;
   ganado_id: number;
   nombre_suplemento?: string;
-  cantidad_suplemento?: number;
+  cantidad_suplemento: number;
   fecha_alimentacion?: string;
   codigo?: string;
   nombre_ganado?: string;

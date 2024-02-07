@@ -7,8 +7,8 @@ services:
     container_name: backend-postgres
     build:
       context: .
-    depends_on:
-      - db
+    links:
+      - db:db
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ganaderia
       - SPRING_DATASOURCE_USERNAME=postgres
@@ -17,8 +17,6 @@ services:
       - SPRING_JPA_SHOW_SQL=true
     ports:
       - 8080:8080
-    networks:
-      - shared-network
 
   db:
     image: postgres:latest
@@ -32,15 +30,9 @@ services:
       - POSTGRES_DB=ganaderia
     ports:
       - 5432:5432
-    networks:
-      - shared-network
-
 
 volumes:
   postgres_data: {}
-networks:
-  shared-network:
-    driver: bridge
 
 ##comandos para ejecutar
 #docker-compose up -d

@@ -48,6 +48,10 @@ public class GanadoServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.
                 }else{
                     ganadoDto.setNombre_padre("No tiene padre");
                 }
+                //validar el nombre que no sea repetido
+                if(ganado.getNombre_ganado().equals(ganadoDto.getNombre_ganado())){
+                    throw new ResourceNotFoundException("p-222","El nombre del ganado ya existe", HttpStatus.NOT_FOUND);
+                }
                 ganadoDto.setGanado_id(ganado.getGanado_id());
                 ganadoDto.setCodigo(ganado.getCodigo());
                 ganadoDto.setNombre_ganado(ganado.getNombre_ganado());

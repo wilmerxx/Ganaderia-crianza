@@ -7,6 +7,7 @@ import * as Highcharts from 'highcharts/highstock';
 import * as ngBootstrap from '@ng-bootstrap/ng-bootstrap';
 
 import {ServicioService} from "../../service/servicio.service";
+import {AlimentacionService} from "../../service/alimentacion.service";
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
@@ -15,13 +16,6 @@ import {ServicioService} from "../../service/servicio.service";
 export class InicioComponent implements OnInit {
   Highcharts: typeof Highcharts = Highcharts;
   chartOptions!: Highcharts.Options;
-  //graficar los ganados por tipo
-  private ganados: Ganado[] = [];
-  public vacas: Ganado[] = [];
-  public toros: Ganado[] = [];
-  public terneros: Ganado[] = [];
-  public totalVacas: number = 0;
-  public totalToros: number = 0;
   public totalTerneros: number = 0;
   public totalGanado: number = 0;
   public doughnutChartData:ChartDataset[] = [];
@@ -31,57 +25,23 @@ export class InicioComponent implements OnInit {
   chart!: Highcharts.Options;
   datosMacho: any[] = [];
   datosHembra: any[] = [];
+  chatpie!: Highcharts.Options;
 
 
-
-  constructor(private ganadoService: GanadoService, private servicioService: ServicioService) {
+  constructor(private ganadoService: GanadoService, private AlimentacionService: AlimentacionService) {
 
   }
 
   @ViewChild('lineChart') private lineChart!: ElementRef;
   ngOnInit(): void {
-    this.ganadoService.getGanadoTipo('Toro');
-    this.ganadoService.getGanadoTipo('Ternero');
-    this.ganadoService.getGanadoTipo('Vaca');
-    this.datosDoughnut();
     this.barChartDatos();
     this.renderLineChart();
     this.graficaBarPorSexoGanado();
+    this.graficaPastelGanado();
 
   }
 
 
-
-
-  //datos de grafica de pastel
-  datosDoughnut(){
-    this.ganadoService.getGanados().subscribe((res) =>{
-      this.ganados = res as Ganado[];
-      this.ganadoService.ganados = this.ganados;
-      this.vacas = this.ganadoService.ganadosVaca;
-      this.toros = this.ganadoService.ganadosToro;
-      this.terneros = this.ganadoService.ganadosTernero;
-      this.totalVacas = this.vacas.length;
-      this.totalToros = this.toros.length;
-      this.totalTerneros = this.terneros.length;
-      this.totalGanado = this.totalVacas + this.totalToros + this.totalTerneros;
-      this.doughnutChartData = [
-        {
-          label: 'Cantidad por tipo', data: [this.totalVacas,this.totalToros, this.totalTerneros],
-          backgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56'
-          ],
-          hoverBackgroundColor: [
-            '#FF6384',
-            '#36A2EB',
-            '#FFCE56'
-          ]
-        }
-      ];
-    });
-  }
 
   barChartDatos(){
     this.ganadoService.getGanados().forEach((res) =>{
@@ -144,7 +104,6 @@ export class InicioComponent implements OnInit {
   public barChartLabels: string[] = ['Machos', 'Hembras'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  public barChartPlugins = [];
 
   //grafica de pastel
   public doughnutChartLabels:string[] = ['Vacas', 'Toros', 'Terneros'];
@@ -158,33 +117,6 @@ export class InicioComponent implements OnInit {
   public chartHovered(e:any):void {
     //console.log(e);
   }
-
-
-
-  // options
-  gradient: boolean = true;
-
-
-  get single() {
-    return this.servicioService.countryData;
-  }
-
-  onRandomData() {
-    this.servicioService.randomData();
-  }
-
-  onSelect(data: any): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(data)));
-  }
-
-  onActivate(data: any): void {
-    console.log('Activate', JSON.parse(JSON.stringify(data)));
-  }
-
-  onDeactivate(data: any): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(data)));
-  }
-
 
   //grafica de barras con highcharts
   graficaBarPorSexoGanado(event?: Event) {
@@ -244,7 +176,54 @@ export class InicioComponent implements OnInit {
     });
   }
 
+  graficaPastelGanado(event?: Event) {
+    event?.preventDefault();
+    let totalVacas:  number = 0;
+    let totalToros:  number = 0;
+    let totalTerneros:  number = 0;
+    let totalTerneras:  number = 0;
+    let totalVaquillas:  number = 0;
+    let totalTorillos:  number = 0;
+    this.ganadoService.getGanados().subscribe((res) => {
+      res.forEach((ganado) => {
+        if(ganado.tipo == 'Vaca'){
+          totalVacas++;
+        }else if(ganado.tipo == 'Toro'){
+          totalToros++;
+        }else if(ganado.tipo == 'Ternero'){
+          totalTerneros++;
+        }else if(ganado.tipo == 'Ternera'){
+          totalTerneras++;
+        }else if(ganado.tipo == 'Vaquilla'){
+          totalVaquillas++;
+        }else if(ganado.tipo == 'Torillo'){
+          totalTorillos++;
+        }
+      });
 
+      this.chatpie = {
+        chart: {
+          type: 'pie'
+        },
+        title: {
+          text: 'Ganado por tipo'
+        },
+        series: [{
+          type: 'pie',
+          name: 'Cantidad',
+          data: [
+            ['Vacas', totalVacas],
+            ['Toros', totalToros],
+            ['Terneros', totalTerneros],
+            ['Terneras', totalTerneras],
+            ['Vaquillas', totalVaquillas],
+            ['Torillos', totalTorillos]
+          ]
+        }]
+      }
+      Highcharts.chart('pieChart', this.chatpie);
+    });
+  }
 
   //graficar el peso del animal por fecha seleccionan el tipo de animal
   renderLineChart() {
@@ -298,6 +277,41 @@ export class InicioComponent implements OnInit {
         }]
       }
       Highcharts.chart('lineChart', options);
+    });
+  }
+
+  //grafica para ver las cantidades de alimento por animal
+  graficaSeriesPorAlimentacionAnimal(event?: Event) {
+    event?.preventDefault();
+    let cantidadAlimento: number = 0;
+
+    this.AlimentacionService.getAlimentacion().subscribe((res) => {
+      res.forEach((alimentacion) => {
+        cantidadAlimento += alimentacion.cantidad_suplemento;
+      });
+      this.chart = {
+        chart: {
+          type: 'bar'
+        },
+        title: {
+          text: 'Cantidad de alimento por animal'
+        },
+        xAxis: {
+          categories: ['Vacas', 'Toros', 'Terneros', 'Terneras', 'Vaquillas', 'Torillos']
+        },
+        yAxis: {
+          title: {
+            text: 'Cantidad de alimento'
+          }
+        },
+        series: [{
+          type: 'bar',
+          name: 'Cantidad',
+          data: [cantidadAlimento, cantidadAlimento, cantidadAlimento, cantidadAlimento, cantidadAlimento, cantidadAlimento],
+          color: '#66e135'
+        }]
+      };
+      Highcharts.chart('barChartAlimento', this.chart);
     });
   }
 
