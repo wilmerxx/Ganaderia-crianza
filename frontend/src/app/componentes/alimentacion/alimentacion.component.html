@@ -6,7 +6,7 @@
   <tr>
     <th scope="col">#</th>
     <th scope="col">Nombre Ganado</th>
-    <th scope="col">Nombre Suplemento</th>
+    <th scope="col">Nombre producto</th>
     <th scope="col">Cantidad</th>
     <th scope="col">Fecha</th>
     <th scope="col">Acciones</th>
@@ -46,25 +46,12 @@
               <option selected >Selecciona</option>
               <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
-            <!-- Mostrar el mensaje de error para el control ganado -->
-            <div *ngIf="form.get('ganado_id')?.errors && (form.get('ganado_id')?.dirty || form.get('ganado_id')?.touched)" class="alert">
-              <div *ngIf="form.get('ganado_id')?.hasError('required')" class="text-danger">
-                <b>*</b> El ganado es requerido
-              </div>
-            </div>
           </div>
           <div class="form-group">
-            <label for="id">Seleciona el suplemento</label>
-            <select class="form-control" id="id" formControlName="id">
-              <option selected >Selecciona</option>
-              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.id">{{ producto.nombreproducto }}</option>
+            <label for="nombre_suplemento">Seleciona el producto</label>
+            <select class="form-control" id="nombre_suplemento" formControlName="nombre_suplemento">
+              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto">{{ producto.nombreproducto }}</option>
             </select>
-            <!-- Mostrar el mensaje de error para el control ganado -->
-            <div *ngIf="form.get('id')?.errors && (form.get('id')?.dirty || form.get('id')?.touched)" class="alert">
-              <div *ngIf="form.get('id')?.hasError('required')" class="text-danger">
-                <b>*</b> El ganado es requerido
-              </div>ng ser
-            </div>
           </div>
           <div class="form-group">
             <label for="cantidad_suplemento">Cantidad</label>
@@ -77,6 +64,56 @@
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal para editar-->
+<div class="modal fade" #exampleModalEdit tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelEdit" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="align-self-center">
+          <h3 class="modal-title" id="exampleModalLabelEdit">Actualizar alimentacion</h3>
+        </div>
+        <button type="button" class="close" (click)="closeModalEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #ganaoFromEdit ="ngForm">
+          <input type="hidden" class="form-control" id="ganado_idEdit" value="{{alimentacion.alimentacion_id}}" [(ngModel)]="alimentacion.alimentacion_id" name="alimentacion_id">
+          <div class="form-group">
+            <label for="nombreGanadoEdit">Nombre Ganado</label>
+            <select class="form-control" id="nombreGanadoEdit" [value]="alimentacion.nombre_ganado" (select)="alimentacion.ganado_id" [ngModel]="alimentacion.nombre_ganado" name="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="nombre_suplementoEdit">Nombre producto</label>
+            <select class="form-control" id="nombre_suplementoEdit" [value]="alimentacion.nombre_suplemento" (select)="alimentacion.nombre_suplemento" [ngModel]="alimentacion.nombre_suplemento" name="nombre_suplemento">
+              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto">{{ producto.nombreproducto }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cantidad_suplementoEdit">Cantidad Suplemento</label>
+            <input type="number" class="form-control" id="cantidad_suplementoEdit" value="{{alimentacion.cantidad_suplemento}}" [ngModel]="alimentacion.cantidad_suplemento" name="cantidad_suplemento">
+          </div>
+          <div class="form-group">
+            <label for="fecha_alimentacionEdit">Fecha Alimentacion</label>
+            <input type="date" class="form-control" id="fecha_alimentacionEdit" format="dd/mm/yyyy" value="{{alimentacion.fecha_alimentacion}}" [ngModel]="alimentacion.fecha_alimentacion"  name="fecha_alimentacion"  [max]="getCurrentDate()">
+          </div>
+          <div class="form-group">
+            <label>Creado: {{alimentacion.creado | date:'short'}}</label>
+          </div>
+          <div class="form-group">
+            <label>Actualizado: {{alimentacion.modificado | date:'short'}}</label>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="putAlimentacion(ganaoFromEdit,$event)">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModalEdit()">Cerrar</button>
           </div>
         </form>
       </div>
