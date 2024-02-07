@@ -20,7 +20,7 @@ services:
       - db
 
   db:
-    image: postgres:12
+    image: postgres:latest
     container_name: postgres-ganaderia
     volumes:
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql

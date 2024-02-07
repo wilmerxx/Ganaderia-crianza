@@ -53,9 +53,9 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="id">Seleciona el suplemento</label>
-            <select class="form-control" id="id" formControlName="nombre_suplemento">
-              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto">{{ producto.nombreproducto }}</option>
+            <label for="nombre_suplemento">Seleciona el suplemento</label>
+            <select class="form-control" id="nombre_suplemento" formControlName="nombre_suplemento" name="nombre_suplemento">
+              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto" >{{ producto.nombreproducto }}</option>
             </select>
             <!-- Mostrar el mensaje de error para el control ganado -->
             <div *ngIf="form.get('id')?.errors && (form.get('id')?.dirty || form.get('id')?.touched)" class="alert">
@@ -108,8 +108,8 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="nombre_suplemento">Seleciona el suplemento</label>
-            <select class="form-control" id="nombre_suplemento"  (select)="alimentacion.nombre_suplemento" [ngModel]="alimentacion.nombre_suplemento" name="nombre_suplemento">
+            <label for="nombre_suplemento2">Seleciona el suplemento</label>
+            <select class="form-control" id="nombre_suplemento2"  (select)="alimentacion.nombre_suplemento" [ngModel]="alimentacion.nombre_suplemento" name="nombre_suplemento">
               <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto">{{ producto.nombreproducto }}</option>
             </select>
             <!-- Mostrar el mensaje de error para el control ganado -->

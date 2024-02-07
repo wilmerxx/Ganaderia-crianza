@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   baseUrl: 'http://localhost:8080/api',
-  mongoUrl: 'http://localhost:8081'
+  mongoUrl: 'http://10.41.3.33:8081'
 };
 
 /*
