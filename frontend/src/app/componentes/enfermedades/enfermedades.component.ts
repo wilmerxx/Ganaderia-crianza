@@ -62,6 +62,11 @@ export class EnfermedadesComponent implements OnInit {
           },
           (error) => {
             console.error('Error al guardar el control de enfermedad:', error);
+            Swal.fire({
+              icon: 'error',
+              title: error.error.status,
+              text: `${error.error.message}`
+            });
           }
         );
     } else {
@@ -94,6 +99,32 @@ export class EnfermedadesComponent implements OnInit {
         console.log('Ganados obtenidos:', this.ganadoService.ganados);
       });
   }
+  putEnfermedades(form: NgForm,event: Event) {
+    event.preventDefault();
+    console.log(form.value);
+    this.enfermedadesService.putEnfermedades(form.value).subscribe((res) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Enfermedad actualizado con éxito',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          console.log(res);
+          this.closeModalEdit();
+          this.getEnfermedad();
+        },
+        (error) => {
+          console.error('Error al guardar enfermedad:', error);
+          Swal.fire({
+            icon: 'error',
+            title: error.error.status,
+            text: `${error.error.message}`
+          });
+        }
+    );
+    console.log(form.value);
+  }
   deleteEnfermedades(control_id: number | undefined) {
     if (control_id) {Swal.fire({
       title: '¿Estás seguro?',
@@ -124,6 +155,8 @@ export class EnfermedadesComponent implements OnInit {
   getCurrentDate() {
     return new Date().toISOString().split('T')[0];
   }
+  @ViewChild('exampleModal') exampleModal!: ElementRef;
+
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -131,7 +164,6 @@ export class EnfermedadesComponent implements OnInit {
       modalElement.style.display = 'none';
     }
   }
-  @ViewChild('exampleModal') exampleModal!: ElementRef;
   openModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -139,6 +171,25 @@ export class EnfermedadesComponent implements OnInit {
       modalElement.style.display = 'block';
     }
   }
-
+  @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+  closeModalEdit() {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.remove('show');
+      modalElement.style.display = 'none';
+    }
+  }
+  openModalEdit(enfermedad: any) {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      this.enfermedadesService.getEnfermedadID(enfermedad.control_id).subscribe(res => {
+        this.controlEnfermedades = res;
+        console.log("Funcion OpenModalEdit");
+        console.log(this.controlEnfermedades);
+      });
+    }
+  }
 
 }

@@ -27,10 +27,11 @@ export class AreaService {
   postArea(area: Area): Observable<Area> {
     return this.http.post<Area>(this.URL_API, area);
   }
-  putArea(areaId: string, area: Area): Observable<any> {
-    const areaUrl = `${this.URL_API}/${areaId}`;
-    return this.http.put(areaUrl, area).pipe(catchError(this.handleError)
-    );
+  putArea(area: Area): Observable<any> {
+    return this.http.put<Area>(this.URL_API ,area);
+  }
+  getAreaID(id: string): Observable<any>{
+    return this.http.get(this.URL_API + '/' + id);
   }
 
   private handleError(error: HttpErrorResponse) {

@@ -4,6 +4,7 @@ import {Observable, throwError} from "rxjs";
 import {Reproduccion} from "../models/reproduccion.model";
 import {environment} from "../../environments/environment";
 import {catchError} from "rxjs/operators";
+import {Ganado} from "../models/ganado";
 
 @Injectable({
   providedIn: 'root'
@@ -27,8 +28,8 @@ export class ReproduccionService {
     return this.http.post<Reproduccion>(this.URL_API, reproduccion);
   }
 
-  putReproduccion(reproducciones: Reproduccion){
-    return this.http.put(this.URL_API + `/${reproducciones.reproduccion_id}`, reproducciones);
+  putReproduccion(reproduccion: Reproduccion): Observable<any> {
+    return this.http.put<Reproduccion>(this.URL_API ,reproduccion);
   }
   getReproduccionesID(id: string): Observable<any> {
     return this.http.get<Reproduccion>(this.URL_API + '/' + id).pipe(

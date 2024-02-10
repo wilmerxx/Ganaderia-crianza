@@ -75,6 +75,11 @@ export class AlimentacionComponent implements OnInit {
               },
               (error) => {
                 console.error('Error al guardar medicina:', error);
+                  Swal.fire({
+                      icon: 'error',
+                      title: error.error.status,
+                      text: `${error.error.message}`
+                  });
               }
           );
 
@@ -130,7 +135,7 @@ export class AlimentacionComponent implements OnInit {
       });
   }
 
-  // Método para actualizar todos los datos de la medicina
+
   putAlimentacion(form: NgForm, event: Event) {
     event.preventDefault();
     console.log(form.value);
@@ -160,14 +165,10 @@ export class AlimentacionComponent implements OnInit {
               title: 'Error al actualizar',
               text: error.error.message,
             });
-
           }
       );
-    } else {
-      console.error('Error: formulario no válido');
-    }
+      console.log(form.value);
   }
-
 
   deleteAlimentacion(alimentacion_id: number | undefined) {
     if (alimentacion_id) {Swal.fire({

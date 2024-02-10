@@ -1,18 +1,10 @@
 <div class="row">
-  <div class="text-end col-lg-6 mb-1">
-    <div class="row">
-      <div class="col-lg-10">
-        <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" name="textoBusquedo">
-      </div>
-      <div class="col-lg-2">
-        <button class="btn btn-primary" >Buscar</button>
-      </div>
-    </div>
-  </div>
   <div class=" text-end col-lg-5 mb-2 ">
-    <button type="button" class="btn btn-success" data-mdb-ripple-init >+ Añadir</button>
+    <button type="button" class="btn btn-success" data-mdb-ripple-init (click)="openModal()" >+ Añadir</button>
   </div>
-  <table class="table">
+</div>
+
+<table class="table">
     <thead class="table-dark">
     <tr>
       <th scope="col">#</th>
@@ -24,21 +16,57 @@
     </tr>
     </thead>
     <tbody>
-    <!--<tr let i = index">
+    <tr *ngFor="let inventario of inventarioMongoService.inventario; let i = index">
        <th scope="row">{{ i + 1 }}</th>
-      <td>{{ areas.codigoGanado}}</td>
-      <td>{{ areas.nombreGanado}}</td>
-      <td>{{ areas.nombreArea  }}</td>
-      <td>{{ areas.tipoArea  }}</td>
-      <td>{{ areas.tipoPasto  }}</td>
-      <td>{{ areas.superficie }}</td>
-      <td>{{ areas.ganado_id }}</td>
+      <td>{{ inventario.nombre_producto}}</td>
+      <td>{{ inventario.fecha_inventario}}</td>
+      <td>{{ inventario.cantidad_producto  }}</td>
+      <td>{{ inventario.cantidad_disponible  }}</td>
       <td>
-        <button class="btn btn-primary btn-sm" >Editar</button>
-        <button class="btn btn-danger btn-sm" >Eliminar</button>
+        <button class="btn btn-primary btn-sm" (click)="openModalEdit(inventario)">Editar</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteInventarios(inventario.id_producto)">Eliminar</button>
       </td>
-    </tr>-->
+    </tr>
     </tbody>
   </table>
-</div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" #exampleModal tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Añadir Inventario</h5>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
+            <div class="form-group">
+              <label for="id_producto">Seleciona el suplemento</label>
+              <select class="form-control" id="id_producto" formControlName="id_producto">
+                <option *ngFor="let producto of productoMongoService.productos" [value]="producto.id">{{ producto.nombreproducto }}</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="cantidad_producto">Cantidad producto</label>
+              <input type="text" class="form-control" id="cantidad_producto" formControlName="cantidad_producto" required>
+            </div>
+            <div class="form-group">
+              <label for="fecha_inventario">Fecha Inventario</label>
+              <input type="date" class="form-control" id="fecha_inventario" formControlName="fecha_inventario" format="dd/mm/yyyy" name="fecha_inventario" [max]="getCurrentDate()">
+            </div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Guardar</button>
+              <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
 

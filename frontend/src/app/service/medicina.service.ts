@@ -28,7 +28,7 @@ export class MedicinaService {
     return this.http.post<Medicina>(this.URL_API, medicina);
   }
 
-  putMedicina(medicina: Medicina): Observable<Medicina> {
+  putMedicina(medicina: Medicina): Observable<any> {
     return this.http.put<Medicina>(this.URL_API, medicina);
   }
 

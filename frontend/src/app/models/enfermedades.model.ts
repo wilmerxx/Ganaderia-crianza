@@ -9,19 +9,16 @@ export class Enfermedad {
   fechaControl: string;
   observaciones: string;
   estado?: string;
-  creado:string;
-  modificado:string;
+  creado?:string;
+  modificado?:string;
+
 
   constructor() {
     this.control_id = 0;
-    this.ganado_id = 0;
-    this.nombre_ganado = "";
-    this.codigoGanado= "";
     this.tipo_control = "";
     this.pesoActual = 0;
     this.fechaControl = "";
     this.observaciones = "";
-    this.creado = "";
-    this.modificado = "";
+    this.ganado_id = 0;
   }
 }

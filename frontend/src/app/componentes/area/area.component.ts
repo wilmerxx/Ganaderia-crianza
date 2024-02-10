@@ -8,6 +8,8 @@ import {GanadoService} from "../../service/ganado.service";
 import {catchError} from "rxjs/operators";
 import {Medicina} from "../../models/medicina.model";
 import {Observable} from "rxjs";
+import {Ganado} from "../../models/ganado";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 
 @Component({
@@ -29,6 +31,7 @@ export class AreaComponent implements OnInit {
   ngOnInit(): void {
     this.formularioNuevaArea();
     this.getAreas();
+    this.getGanados();
   }
 
   private formularioNuevaArea() {
@@ -40,6 +43,26 @@ export class AreaComponent implements OnInit {
       ganadoId: new FormControl('', [Validators.required]),
     });
   }
+
+  putArea(form: NgForm,event: Event ){
+      event.preventDefault();
+      console.log(form.value)
+      this.areaService.putArea(form.value).subscribe((res) => {
+          console.log(res);
+          this.closeModalEdit();
+          this.getAreas();
+      },
+          (error)=>{
+                console.error('Error al actualizar area:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: error.error.status,
+                    text: `${error.error.message}`
+                });
+          }
+          );
+      console.log(form.value);
+    }
 
   guardar(event: Event) {
     event.preventDefault();
@@ -63,6 +86,11 @@ export class AreaComponent implements OnInit {
           },
             (error) => {
               console.error('Error al guardar area:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: error.error.status,
+                    text: `${error.error.message}`
+                });
             }
         );
 
@@ -70,6 +98,19 @@ export class AreaComponent implements OnInit {
       console.log('Formulario no válido');
     }
   }
+    getGanados() {
+        this.ganadoService.getGanados()
+            .pipe(
+                catchError((error) => {
+                    console.error('Error al obtener los ganados:', error);
+                    throw error;
+                })
+            )
+            .subscribe((res) => {
+                this.ganadoService.ganados = res as Ganado[];
+                console.log('Ganados obtenidos:', this.ganadoService.ganados);
+            });
+    }
   getAreas() {
     this.areaService.getAreas()
       .pipe(
@@ -107,7 +148,8 @@ export class AreaComponent implements OnInit {
   }
 
 
-  closeModal() {
+
+    closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
       modalElement.classList.remove('show');
@@ -125,5 +167,27 @@ export class AreaComponent implements OnInit {
     }
   }
 
+  @ViewChild('exampleModalEdit') exampleModalEdit!: ElementRef;
+    closeModalEdit() {
+        if (this.exampleModalEdit) {
+            const modalElement = this.exampleModalEdit.nativeElement;
+            modalElement.classList.remove('show');
+            modalElement.style.display = 'none';
+        }
+    }
+
+    openModalEdit(area: any) {
+        if (this.exampleModalEdit) {
+            const modalElement = this.exampleModalEdit.nativeElement;
+            modalElement.classList.add('show');
+            modalElement.style.display = 'block';
+            this.getGanados();
+            this.areaService.getAreaID(area.areaId).subscribe(res => {
+                this.area = res;
+                console.log("Funcion OpenModalEdit");
+                console.log(this.area);
+            });
+        }
+    }
 
 }
