@@ -6,19 +6,18 @@ services:
     restart: unless-stopped
     container_name: backend-postgres
     build:
-      context: .
-    depends_on:
-      - db
+      context: ..
+    links:
+      - db:db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/ganaderia
-      - SPRING_DATASOURCE_USERNAME=postgres
-      - SPRING_DATASOURCE_PASSWORD=wil1992
-      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
-      - SPRING_JPA_SHOW_SQL=true
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/ganaderia
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: wil1992
+
     ports:
       - 8080:8080
-    networks:
-      - shared-network
+    depends_on:
+      - db
 
   db:
     image: postgres:latest
@@ -32,15 +31,9 @@ services:
       - POSTGRES_DB=ganaderia
     ports:
       - 5432:5432
-    networks:
-      - shared-network
-
 
 volumes:
   postgres_data: {}
-networks:
-  shared-network:
-    driver: bridge
 
 ##comandos para ejecutar
 #docker-compose up -d

@@ -1,6 +1,97 @@
-<div class="container">
+<div class="container-fluid mt-2">
+  <h1 class="text-start p-2">Analisis de datos</h1>
   <div class="col-lg-12">
     <div class="row">
+      <div class="row">
+        <div class="col-lg-3 col-sm-12">
+            <div class="ct-chart-bar">
+              <!--realizar un card con los datos de la cantidad de ganado-->
+                <div class="card">
+                  <div class="card-header text-center">
+                    <h2 class="card-title">Cantidad de Ganado</h2>
+                  </div>
+                  <div class="card-body">
+                    <div class="ct-chart-bar text-center">
+                      <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-12">
+          <div class="ct-chart-bar">
+            <!--realizar un card con los datos de la cantidad de ganado-->
+            <div class="card">
+              <div class="card-header text-center">
+                <h2 class="card-title">Cantidad de Ganado</h2>
+              </div>
+              <div class="card-body">
+                <div class="ct-chart-bar text-center">
+                  <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        <div class="col-lg-3 col-sm-12">
+          <div class="ct-chart-bar">
+            <!--realizar un card con los datos de la cantidad de ganado-->
+            <div class="card">
+              <div class="card-header text-center">
+                <h2 class="card-title">Cantidad de Ganado</h2>
+              </div>
+              <div class="card-body">
+                <div class="ct-chart-bar text-center">
+                  <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-sm-12">
+          <div class="ct-chart-bar">
+            <!--realizar un card con los datos de la cantidad de ganado-->
+            <div class="card">
+              <div class="card-header text-center">
+                <h2 class="card-title">Cantidad de Ganado</h2>
+              </div>
+              <div class="card-body">
+                <div class="ct-chart-bar text-center">
+                  <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col-lg-6 col-sm-12">
+        </div>
+        <div class="col-lg-6 col-sm-12">
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-sm-12">
+
+        </div>
+        <div class="col-lg-6 col-sm-12">
+
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-6 col-sm-12">
+
+        </div>
+        <div class="col-lg-6 col-sm-12">
+
+        </div>
+
+      </div>
       <div class="col-lg-6">
         <div class="ct-chart-bar">
           <canvas baseChart
@@ -30,36 +121,6 @@
 
     </div>
     <div class="row">
-      <!--realizar un card con los datos de la cantidad de ganado-->
-      <div class="col-lg-4">
-        <div class="card">
-          <div class="card-header text-center">
-            <h2 class="card-title">Cantidad de Ganado</h2>
-          </div>
-          <div class="card-body">
-            <div class="ct-chart-bar text-center">
-              <label class="form-label "> <h2> Total de Ganado: <b> {{totalGanado}}</b></h2> </label>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-12">
-        <button class="btn btn-outline-primary" (click)="onRandomData()">
-          Random Data ewfew
-        </button>
-        <ngx-charts-advanced-pie-chart
-          scheme="cool"
-          [results]="single"
-          [gradient]="gradient"
-          (select)="onSelect($event)"
-          (activate)="onActivate($event)"
-          (deactivate)="onDeactivate($event)"
-        >
-        </ngx-charts-advanced-pie-chart>
-
-
-      </div>
       <div id="lineChart">
         <highcharts-chart
           [Highcharts]="Highcharts"
@@ -68,12 +129,26 @@
         ></highcharts-chart>
       </div>
 
-      <div>
-        <highcharts-chart [Highcharts]="Highcharts" [options]="chart"></highcharts-chart>
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="ct-chart-bar" id="chatpie">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="chatpie">
+          </highcharts-chart>
+        </div>
       </div>
-
-
+      <div class="col-lg-6">
+        <div class="ct-chart-bar" id="charBar">
+          <highcharts-chart
+            [Highcharts]="Highcharts"
+            [options]="chart">
+          </highcharts-chart>
+        </div>
+      </div>
     </div>
+  </div>
+
   </div>
 
 </div>

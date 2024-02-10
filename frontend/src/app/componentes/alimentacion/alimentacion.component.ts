@@ -18,6 +18,8 @@ export class AlimentacionComponent implements OnInit {
 
  alimentacion: Alimentacion = new Alimentacion();
  form!: FormGroup;
+ formEdit!: FormGroup;
+ ganados: Ganado = new Ganado();
   constructor(protected alimentacionService: AlimentacionService,
               protected ganadoService: GanadoService,
               protected productoMongoService: ProductoMongoService,
@@ -29,6 +31,7 @@ export class AlimentacionComponent implements OnInit {
     this.getAlimentacion();
     this.getGanados();
     this.getProductos();
+    this.formularioEditarAlimentacion();
   }
 
   private formularioNuevaAlimentacion() {
@@ -36,7 +39,17 @@ export class AlimentacionComponent implements OnInit {
       nombre_suplemento: new FormControl(''),
       cantidad_suplemento: new FormControl(''),
       fecha_alimentacion: new FormControl(''),
-      ganado_id: new FormControl(''),
+      ganado_id: new FormControl(0),
+    });
+  }
+
+  private formularioEditarAlimentacion() {
+    this.formEdit = this.formBuilder.group({
+      alimentacion_id: new FormControl(0),
+      nombre_suplemento: new FormControl(''),
+      cantidad_suplemento: new FormControl(0),
+      fecha_alimentacion: new FormControl(''),
+      ganado_id: new FormControl(0),
     });
   }
 
@@ -74,6 +87,9 @@ export class AlimentacionComponent implements OnInit {
       console.log('Formulario no válido');
     }
   }
+
+
+
   getCurrentDate() {
     return new Date().toISOString().split('T')[0];
   }
@@ -119,29 +135,36 @@ export class AlimentacionComponent implements OnInit {
       });
   }
 
-  // Método para actualizar todos los datos de la medicina
-  putAlimentacion(form: NgForm,event: Event) {
-      event.preventDefault();
-      console.log(form.value);
-      this.alimentacionService.putAlimentacion(form.value).subscribe((res) => {
-              Swal.fire({
-                  position: 'center',
-                  icon: 'success',
-                  title: 'Alimentacion actualizado con éxito',
-                  showConfirmButton: false,
-                  timer: 1500
-              })
-              console.log(res);
-              this.closeModalEdit();
-              this.getAlimentacion();
+
+  putAlimentacion(form: NgForm, event: Event) {
+    event.preventDefault();
+    console.log(form.value);
+
+    if (form.valid) {
+      const alimentacion = form.value;
+      // Envía la solicitud PUT al servicio
+      this.alimentacionService.putAlimentacion(alimentacion).subscribe(
+          response => {
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Alimentación actualizada con éxito',
+              showConfirmButton: false,
+              timer: 1500
+            });
+
+            // Manejar la respuesta según sea necesario
+            console.log('Medicina actualizada con éxito:', response);
+            this.getAlimentacion();
+            this.closeModalEdit();
           },
-          (error) => {
-              console.error('Error al guardar alimentacion:', error);
-              Swal.fire({
-                  icon: 'error',
-                  title: error.error.status,
-                  text: `${error.error.message}`
-              });
+          error => {
+            console.error('Error al actualizar la medicina:', error);
+           Swal.fire({
+              icon: 'error',
+              title: 'Error al actualizar',
+              text: error.error.message,
+            });
           }
       );
       console.log(form.value);
@@ -165,7 +188,7 @@ export class AlimentacionComponent implements OnInit {
                     'success'
                 );
                 // Manually remove the deleted item from the local array
-                this.alimentacionService.alimentacion = this.alimentacionService.alimentacion.filter(item => item.alimentacion_id !== alimentacion_id);
+                this.alimentacionService.alimentacion = this.alimentacionService.alimentacion.filter(item => alimentacion_id !== item.alimentacion_id);
             });
         }
     });
@@ -206,6 +229,11 @@ export class AlimentacionComponent implements OnInit {
       modalElement.classList.add('show');
       modalElement.style.display = 'block';
       this.getGanados();
+      this.ganadoService.getGanadoID(alimentacion.ganado_id).subscribe(res => {
+        this.ganados = res;
+        console.log("Funcion OpenModalEdit");
+        console.log(this.ganados);
+      });
       this.alimentacionService.getAlimentacionID(alimentacion.alimentacion_id).subscribe(res =>{
         this.alimentacion = res;
         console.log("Funcion OpenModalEdit");
