@@ -58,6 +58,11 @@ export class BodegaComponent implements OnInit{
           },
           (error) => {
             console.error('Error al guardar producto:', error);
+            Swal.fire({
+              icon: 'error',
+              title: error.error.status,
+              text: `${error.error.message}`
+            });
           }
         );
     } else {

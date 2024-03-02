@@ -66,6 +66,11 @@ export class MedicinaComponent implements OnInit {
                       },
                       (error) => {
                         console.error('Error al guardar medicina:', error);
+                          Swal.fire({
+                              icon: 'error',
+                              title: error.error.status,
+                              text: `${error.error.message}`
+                          });
                       }
                     );
 
@@ -107,29 +112,27 @@ export class MedicinaComponent implements OnInit {
     }
 
     // Método para actualizar todos los datos de la medicina
-    putMedicina(form: NgForm) {
+    putMedicina(form: NgForm,event: Event) {
+        event.preventDefault();
         console.log(form.value);
+        this.medicinaService.putMedicina(form.value).subscribe((res) => {
 
-        if (form.valid) {
-          const medicina = form.value;
-          medicina.ganado_id = form.controls['ganado_id'].value;
-            // Envía la solicitud PUT al servicio
-            this.medicinaService.putMedicina(medicina).subscribe(
-                response => {
-                    // Manejar la respuesta según sea necesario
-                    console.log('Medicina actualizada con éxito:', response);
-                  this.getMedicinas();
-                  this.closeModalEdit();
-                },
-                error => {
-                    console.error('Error al actualizar la medicina:', error);
-                    // Manejar el error
-                }
+            console.log(res);
+            this.closeModalEdit();
+            this.getMedicinas();
+        },
+            (error) => {
+                console.error('Error al guardar medicina:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: error.error.status,
+                    text: `${error.error.message}`
+                });
+            }
             );
-        } else {
-            console.error('Error: formulario no válido');
-        }
+        console.log(form.value);
     }
+
   deleteMedicina(medicina_id: number | undefined) {
     if (medicina_id) {Swal.fire({
       title: '¿Estás seguro?',
@@ -195,4 +198,6 @@ export class MedicinaComponent implements OnInit {
       });
     }
   }
+
+    protected readonly Medicina = Medicina;
 }

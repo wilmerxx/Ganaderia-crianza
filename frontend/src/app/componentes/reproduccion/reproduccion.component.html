@@ -2,10 +2,10 @@
   <div class="text-end col-lg-6 mb-1">
     <div class="row">
       <div class="col-lg-10">
-        <input class="align-self-end form-control"  type="text" placeholder="busqueda inteligente" name="textoBusquedo">
+        <input class="align-self-end form-control"  type="text" [(ngModel)]="textoBuscado" (keydown)="getGanadosPaginacion(textoBuscado,0,10)" placeholder="busqueda inteligente" name="textoBusquedo">
       </div>
       <div class="col-lg-2">
-        <button class="btn btn-primary" >Buscar</button>
+        <button class="btn btn-primary" (click)="getGanadosPaginacion(textoBuscado,0,10)" >Buscar</button>
       </div>
 
     </div>
@@ -38,7 +38,7 @@
     <td>{{ reproducciones.observaciones  }}</td>
     <td>{{ reproducciones.numero_crias  }}</td>
     <td>
-      <button class="btn btn-primary btn-sm">Editar</button>
+      <button  class="btn btn-primary btn-sm" (click)="openModalEdit(reproducciones)">Editar</button>
       <button class="btn btn-danger btn-sm" (click)="deleteReproduccion(reproducciones.reproduccion_id)">Eliminar</button>
     </td>
 
@@ -65,12 +65,6 @@
             <select class="form-control" id="ganado_id" formControlName="ganado_id">
               <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
             </select>
-            <!-- Mostrar el mensaje de error para el control ganado -->
-            <div *ngIf="form.get('ganado_id')?.errors && (form.get('ganado_id')?.dirty || form.get('ganado_id')?.touched)" class="alert">
-              <div *ngIf="form.get('ganado_id')?.hasError('required')" class="text-danger">
-                <b>*</b> El ganado es requerido
-              </div>
-            </div>
           </div>
 
           <div class="form-group">
@@ -94,14 +88,68 @@
             <label for="numero_crias">Numero de crías</label>
             <input type="number" class="form-control" id="numero_crias" formControlName="numero_crias">
           </div>
-
           <div class="modal-footer">
             <button type="submit" class="btn btn-primary">Guardar</button>
             <button type="button" class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
           </div>
         </form>
       </div>
+    </div>
+  </div>
+</div>
 
+<!-- Modal para editar-->
+<div class="modal fade" #exampleModalEdit tabindex="-1" role="dialog" aria-labelledby="exampleModalLabelEdit" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <div class="align-self-center">
+          <h3 class="modal-title" id="exampleModalLabelEdit">Actualizar reproduccion</h3>
+        </div>
+        <button type="button" class="close" (click)="closeModalEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form #ganaoFromEdit ="ngForm">
+          <input type="hidden" class="form-control" id="ganado_idEdit" value="{{reproduccion.reproduccion_id}}" [(ngModel)]="reproduccion.reproduccion_id" name="reproduccion_id">
+          <div class="form-group">
+            <label for="nombreGanadoEdit">Nombre Ganado</label>
+            <select class="form-control" id="nombreGanadoEdit" [value]="reproduccion.ganado_id" (select)="reproduccion.ganado_id" [ngModel]="reproduccion.nombreGanado" name="ganado_id">
+              <option *ngFor="let ganado of ganadoService.ganados" [value]="ganado.ganado_id">{{ ganado.nombre_ganado }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="fechaNacimientoEdit">Fecha Parto</label>
+            <input type="date" class="form-control" id="fechaNacimientoEdit" format="dd/mm/yyyy" value="{{reproduccion.fecha_parto}}" [ngModel]="reproduccion.fecha_parto"  name="fecha_parto"  [max]="getCurrentDate()">
+          </div>
+          <div class="form-group">
+            <label for="estadoEdit">Estado de parto</label>
+            <select class="form-control" id="estadoEdit" [ngModel]="reproduccion.estado_parto" value="{{reproduccion.estado_parto}}" name="estado_parto">
+              <option>Saludable</option>
+              <option>Enfermo</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="observacionesEdit">Observaciones</label>
+            <textarea class="form-control" id="observacionesEdit" rows="3" value="{{reproduccion.observaciones}}" [ngModel]="reproduccion.observaciones" name="observaciones"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="criasEdit">Numero de crias</label>
+            <input type="number" class="form-control" id="criasEdit" value="{{reproduccion.numero_crias}}" [ngModel]="reproduccion.numero_crias" name="numero_crias">
+          </div>
+          <div class="form-group">
+            <label>Creado: {{reproduccion.creado | date:'short'}}</label>
+          </div>
+          <div class="form-group">
+            <label>Actualizado: {{reproduccion.modificado | date:'short'}}</label>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-primary" (click)="putReproduccion(ganaoFromEdit,$event)">Guardar</button>
+            <button type="button" class="btn btn-secondary" (click)="closeModalEdit()">Cerrar</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>

@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import {Ganado} from "../models/ganado";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Observable, throwError} from "rxjs";
 import {Medicina} from "../models/medicina.model";
 import {Enfermedad  } from "../models/enfermedades.model";
 import {environment} from "../../environments/environment";
+import {Reproduccion} from "../models/reproduccion.model";
+import {catchError} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -24,13 +26,21 @@ export class EnfermedadesService {
   getEnfermedad(): Observable<Enfermedad[]> {
     return this.http.get<Enfermedad[]>(this.URL_API+'/estados/Activo');
   }
-
+  getEnfermedadID(id: string): Observable<any> {
+    return this.http.get<Enfermedad>(this.URL_API + '/' + id).pipe(
+        catchError(this.handleError)
+    );
+  }
+  private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    return throwError('Algo salió mal');
+  }
   postEnfermedad(enfermedades: Enfermedad): Observable<any> {
     return this.http.post<Enfermedad>(this.URL_API, enfermedades);
   }
 
   putEnfermedades(enfermedades: Enfermedad): Observable<any> {
-    return this.http.put(this.URL_API, enfermedades);
+    return this.http.put<Enfermedad>(this.URL_API, enfermedades);
   }
 
 

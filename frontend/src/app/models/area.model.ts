@@ -11,12 +11,10 @@ export class Area {
 
   constructor() {
     this.areaId = 0;
-    this.ganado_id = 0;
-    this.nombre_ganado = "";
-    this.codigoGanado= "";
     this.nombreArea = "";
     this.tipoArea = "";
     this.tipoPasto = "";
     this.superficie = 0;
+    this.ganado_id = 0;
   }
 }

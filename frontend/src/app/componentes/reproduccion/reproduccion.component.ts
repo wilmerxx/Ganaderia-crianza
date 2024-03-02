@@ -6,8 +6,6 @@ import Swal from 'sweetalert2';
 import {Ganado} from "../../models/ganado";
 import {GanadoService} from "../../service/ganado.service";
 import {catchError} from "rxjs/operators";
-import {Medicina} from "../../models/medicina.model";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-reproduccion',
@@ -18,7 +16,7 @@ export class ReproduccionComponent implements OnInit {
 
   reproduccion: Reproduccion = new Reproduccion();
   form!: FormGroup;
-  resultados$!: Observable<string[]>;
+  textoBuscado: string = '';
 
   constructor(
     protected reproduccionService: ReproduccionService,
@@ -56,16 +54,19 @@ export class ReproduccionComponent implements OnInit {
               showConfirmButton: false,
               timer: 1500
             });
-            console.log('Respuesta del servidor:', res);
             this.closeModal();
             this.form.reset();
             this.getReproduccion();
           },
           (error) => {
             console.error('Error al guardar la reproduccion:', error);
+            Swal.fire({
+              icon: 'error',
+              title: error.error.status,
+              text: `${error.error.message}`
+            });
           }
         );
-
     } else {
       console.log('Formulario no válido');
     }
@@ -100,6 +101,48 @@ export class ReproduccionComponent implements OnInit {
         console.log('Ganados obtenidos:', this.ganadoService.ganados);
       });
   }
+
+  putReproduccion(form: NgForm,event: Event) {
+    event.preventDefault();
+    console.log(form.value);
+    this.reproduccionService.putReproduccion(form.value).subscribe((res) => {
+          Swal.fire({
+            position: 'center',
+            icon: 'success',
+            title: 'Reproducción actualizado con éxito',
+            showConfirmButton: false,
+            timer: 1500
+          })
+          console.log(res);
+          this.closeModalEdit();
+          this.getReproduccion();
+        },
+        (error) => {
+          console.error('Error al guardar reproduccion:', error);
+          Swal.fire({
+            icon: 'error',
+            title: error.error.status,
+            text: `${error.error.message}`
+          });
+        }
+    );
+    console.log(form.value);
+  }
+
+  getGanadosPaginacion(texto:string, page:number, size:number){
+    console.log("Texto: " + texto);
+    console.log("Page: " + page);
+    console.log("Size: " + size);
+    if(texto == ''){
+      this.getGanados();
+    }else{
+      this.ganadoService.getGanadosPaginacion(texto, page, size).subscribe((res) => {
+        this.ganadoService.ganados = res;
+        console.log(this.ganadoService.ganados);
+      });
+    }
+  }
+
   closeModal() {
     if (this.exampleModal) {
       const modalElement = this.exampleModal.nativeElement;
@@ -124,6 +167,18 @@ export class ReproduccionComponent implements OnInit {
       const modalElement = this.exampleModalEdit.nativeElement;
       modalElement.classList.remove('show');
       modalElement.style.display = 'none';
+    }
+  }
+  openModalEdit(reproduccion: any) {
+    if (this.exampleModalEdit) {
+      const modalElement = this.exampleModalEdit.nativeElement;
+      modalElement.classList.add('show');
+      modalElement.style.display = 'block';
+      this.reproduccionService.getReproduccionesID(reproduccion.reproduccion_id).subscribe(res => {
+        this.reproduccion = res;
+        console.log("Funcion OpenModalEdit");
+        console.log(this.reproduccion);
+      });
     }
   }
   deleteReproduccion(reproduccion_id: number | undefined) {

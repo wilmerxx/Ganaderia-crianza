@@ -75,6 +75,11 @@ export class AlimentacionComponent implements OnInit {
               },
               (error) => {
                 console.error('Error al guardar medicina:', error);
+                  Swal.fire({
+                      icon: 'error',
+                      title: error.error.status,
+                      text: `${error.error.message}`
+                  });
               }
           );
 
@@ -131,43 +136,32 @@ export class AlimentacionComponent implements OnInit {
   }
 
   // Método para actualizar todos los datos de la medicina
-  putAlimentacion(form: NgForm, event: Event) {
-    event.preventDefault();
-    console.log(form.value);
-
-    if (form.valid) {
-      const alimentacion = form.value;
-      // Envía la solicitud PUT al servicio
-      this.alimentacionService.putAlimentacion(alimentacion).subscribe(
-          response => {
-            Swal.fire({
-              position: 'center',
-              icon: 'success',
-              title: 'Alimentación actualizada con éxito',
-              showConfirmButton: false,
-              timer: 1500
-            });
-
-            // Manejar la respuesta según sea necesario
-            console.log('Medicina actualizada con éxito:', response);
-            this.getAlimentacion();
-            this.closeModalEdit();
+  putAlimentacion(form: NgForm,event: Event) {
+      event.preventDefault();
+      console.log(form.value);
+      this.alimentacionService.putAlimentacion(form.value).subscribe((res) => {
+              Swal.fire({
+                  position: 'center',
+                  icon: 'success',
+                  title: 'Alimentacion actualizado con éxito',
+                  showConfirmButton: false,
+                  timer: 1500
+              })
+              console.log(res);
+              this.closeModalEdit();
+              this.getAlimentacion();
           },
-          error => {
-            console.error('Error al actualizar la medicina:', error);
-           Swal.fire({
-              icon: 'error',
-              title: 'Error al actualizar',
-              text: error.error.message,
-            });
-
+          (error) => {
+              console.error('Error al guardar alimentacion:', error);
+              Swal.fire({
+                  icon: 'error',
+                  title: error.error.status,
+                  text: `${error.error.message}`
+              });
           }
       );
-    } else {
-      console.error('Error: formulario no válido');
-    }
+      console.log(form.value);
   }
-
 
   deleteAlimentacion(alimentacion_id: number | undefined) {
     if (alimentacion_id) {Swal.fire({

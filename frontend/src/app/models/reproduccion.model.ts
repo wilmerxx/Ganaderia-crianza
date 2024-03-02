@@ -8,13 +8,15 @@ export class Reproduccion {
   estado_parto?: string;
   observaciones?: string;
   numero_crias?: number;
+  creado?:string;
+  modificado?:string;
 
   constructor() {
     this.reproduccion_id = 0;
-    this.ganado_id=0;
     this.fecha_parto= "";
     this.estado_parto= "";
     this.observaciones= "";
     this.numero_crias= 0;
+    this.ganado_id=0;
   }
 }
