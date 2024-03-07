@@ -11,7 +11,6 @@ export class Alimentacion {
   modificado?:string;
 
     constructor() {
-      this.alimentacion_id = 0;
       this.nombre_suplemento = "";
       this.cantidad_suplemento = 0;
       this.fecha_alimentacion = "";

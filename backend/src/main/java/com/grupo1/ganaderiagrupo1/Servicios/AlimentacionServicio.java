@@ -22,4 +22,6 @@ public interface AlimentacionServicio {
     public void actualizarEstadoAlimentacion(int id, String estado);
 
     public List<AlimentacionTotalConsumoDto> listaAlimentacionTotalCantidad();
+
+    public List<AlimentacionDto> listaAlimentacionRabbitmq();
 }

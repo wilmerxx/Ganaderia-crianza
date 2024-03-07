@@ -19,7 +19,7 @@ inventario: Inventario[]= [];
     this.selectedInventario = new Inventario();
   }
 
-  readonly URL_API = environment.mongoUrl + '/inventario';
+    readonly URL_API = environment.mongoUrl + '/inventario';
 
   getInventario(): Observable<Inventario[]>{
     return this.http.get<Inventario[]>(this.URL_API);

@@ -45,7 +45,7 @@
           <form [formGroup]="form" (ngSubmit)="guardar($event)" novalidate>
             <div class="form-group">
               <label for="id_producto">Seleciona el suplemento</label>
-              <select class="form-control" id="id_producto" formControlName="id_producto">
+              <select class="form-control" id="id_producto" formControlName="id_producto" name ="id_producto" >
                 <option *ngFor="let producto of productoMongoService.productos" [value]="producto.id">{{ producto.nombreproducto }}</option>
               </select>
             </div>

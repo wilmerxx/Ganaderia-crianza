@@ -4,11 +4,18 @@ import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionExisteDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionNuevoDto;
 import com.grupo1.ganaderiagrupo1.Dto.Alimentacion.AlimentacionTotalConsumoDto;
+import com.grupo1.ganaderiagrupo1.Excepciones.ResourceNotFoundException;
 import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import com.grupo1.ganaderiagrupo1.Repositorios.AlimentacionRepositorio;
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.core.AmqpTemplate;
+import org.springframework.amqp.core.DirectExchange;
+import org.springframework.amqp.core.FanoutExchange;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +25,19 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
+@Slf4j
 @Transactional
 public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Servicios.AlimentacionServicio {
     @Autowired
     private GanadoRepositorio ganadoRepositorio;
     @Autowired
     private AlimentacionRepositorio alimentacionRepositorio;
+
+    @Autowired
+    private AmqpTemplate amqpTemplate;
+
+    @Autowired
+    private DirectExchange directExchange;
 
 
     @Override
@@ -72,7 +86,7 @@ public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Serv
             throw new RuntimeException("No hay alimentacion");
         }
         List<AlimentacionDto> alimentacionDto = new ArrayList<>();
-        List<Ganado> ganado = ganadoRepositorio.findAll();
+        List<Ganado> ganado = ganadoRepositorio.findAll().stream().filter(ganado1 -> ganado1.getEstado().equals("Activo")).toList();
         for (Alimentacion alimentacion : alimentacionRepositorio.todosAlimentacion()) {
            for (Ganado ganado1 : ganado) {
                if (alimentacion.getGanado().getGanado_id() == ganado1.getGanado_id()) {
@@ -177,5 +191,24 @@ public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Serv
             alimentacionTotalConsumoDtos.add(alimentacionTotalConsumoDto);
         }
         return alimentacionTotalConsumoDtos;
+    }
+
+    @Autowired
+    FanoutExchange fanoutExchangeInventario;
+
+    @RabbitListener(queues = "queue.ALIMENTACION_GANADO")
+    public void recibirMensaje(String mensaje) {
+        log.info("Mensaje recibido: " + mensaje);
+        if(mensaje.equals("GET")){
+
+            amqpTemplate.convertAndSend(fanoutExchangeInventario.getName(), "", listaAlimentacion());
+
+        }
+    }
+
+
+    @Override
+    public List<AlimentacionDto> listaAlimentacionRabbitmq() {
+        return null;
     }
 }
