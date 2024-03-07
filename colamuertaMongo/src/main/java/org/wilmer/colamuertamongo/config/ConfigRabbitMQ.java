@@ -1,4 +1,4 @@
-package com.grupo1.ganaderiagrupo1.config;
+package org.wilmer.colamuertamongo.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.amqp.core.*;
