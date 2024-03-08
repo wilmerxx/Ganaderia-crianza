@@ -10,9 +10,12 @@ import {MedicinaComponent} from "./componentes/medicina/medicina.component";
 import {NavegacionComponent} from "./navegacion/navegacion.component";
 import {BodegaComponent} from "./componentes/producto/bodega.component";
 import {ConsumoComponent} from "./componentes/inventario/consumo.component";
+import {LoginComponent} from "./componentes/login/login.component";
 
 const routes: Routes = [
-  {path: '', component: NavegacionComponent, children: [
+  {path: '', component: LoginComponent},
+  {path: 'navegacion', component: NavegacionComponent, children: [
+      {path: 'inicio', redirectTo: 'inicio', pathMatch: 'full'},
       {path: 'inicio', component: InicioComponent},
       {path: 'ganado', component: GanadoRegistroComponent},
       {path: 'reproduccion', component: ReproduccionComponent},
@@ -20,9 +23,8 @@ const routes: Routes = [
       {path: 'area', component: AreaComponent},
       {path: 'enfermedades', component: EnfermedadesComponent},
       {path: 'medicina', component: MedicinaComponent},
-          {path: 'bodega', component: BodegaComponent},
-          {path: 'consumo', component: ConsumoComponent},
-          {path: '', redirectTo: '/inicio', pathMatch: 'full' }
+      {path: 'bodega', component: BodegaComponent},
+      {path: 'consumo', component: ConsumoComponent},
     ]},
 ];
 

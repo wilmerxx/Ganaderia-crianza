@@ -38,6 +38,7 @@ export class InicioComponent implements OnInit {
     this.renderLineChart();
     this.graficaBarPorSexoGanado();
     this.graficaPastelGanado();
+    console.log(localStorage.getItem('password'));
 
   }
 

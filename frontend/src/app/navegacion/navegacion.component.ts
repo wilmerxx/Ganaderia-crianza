@@ -16,6 +16,7 @@ export class NavegacionComponent implements OnInit {
 
   ngOnInit(): void {
     this.sidebarCollapsed = false;
+
   }
   // Método para cambiar el enlace activo
   cambiarEnlaceActivo(enlace: string) {

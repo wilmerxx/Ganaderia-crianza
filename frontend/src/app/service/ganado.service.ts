@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ganado } from '../models/ganado';
 import {Area} from "../models/area.model";
@@ -15,18 +15,24 @@ export class GanadoService {
   ganadosToro: Ganado[] = [];
   ganadosTernero: Ganado[] = [];
   totalVacas: number = 0;
+  headers: HttpHeaders;
   constructor(private http: HttpClient) {
     this.selectedGanado = new Ganado();
+    this.headers = new HttpHeaders({
+      'Authorization': `Bearer ${localStorage.getItem('token')}`
+    });
   }
+
+
 
   readonly URL_API = environment.baseUrl + '/ganados';
 
   getGanados(): Observable<Ganado[]> {
-    return this.http.get<Ganado[]>(this.URL_API);
+    return this.http.get<Ganado[]>(this.URL_API, { headers: this.headers });
   }
 
   getGanadosPaginacion(texto:string,page:number,size:number): Observable<any> {
-    return this.http.get<Ganado[]>(`${this.URL_API}/nombre/${texto}/${page}/${size}`);
+    return this.http.get<Ganado[]>(`${this.URL_API}/nombre/${texto}/${page}/${size}`, { headers: this.headers });
   }
 
   postGanado(ganado: Ganado): Observable<Ganado> {
