@@ -9,16 +9,21 @@ import com.grupo1.ganaderiagrupo1.Modelos.Alimentacion;
 import com.grupo1.ganaderiagrupo1.Modelos.Ganado;
 import com.grupo1.ganaderiagrupo1.Repositorios.AlimentacionRepositorio;
 import com.grupo1.ganaderiagrupo1.Repositorios.GanadoRepositorio;
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.AmqpRejectAndDontRequeueException;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
+import org.springframework.amqp.support.AmqpHeaders;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -197,14 +202,21 @@ public class AlimentacionServicioImpl implements com.grupo1.ganaderiagrupo1.Serv
     FanoutExchange fanoutExchangeInventario;
 
     @RabbitListener(queues = "queue.ALIMENTACION_GANADO")
-    public void recibirMensaje(String mensaje) {
+    public void recibirMensaje(String mensaje) throws ResourceNotFoundException {
         log.info("Mensaje recibido: " + mensaje);
-        if(mensaje.equals("GET")){
-
-            amqpTemplate.convertAndSend(fanoutExchangeInventario.getName(), "", listaAlimentacion());
-
+        try {
+            if (mensaje.equals("GET")) { // Solo procesamos mensajes "GET"
+                amqpTemplate.convertAndSend(fanoutExchangeInventario.getName(), "", listaAlimentacion());
+            } else {
+                // Mensaje no es "GET", reencolamos para otro proceso
+               throw new ResourceNotFoundException("pcs","Mensaje no válido", HttpStatus.BAD_REQUEST);
+            }
+        }catch (ResourceNotFoundException e) {
+            log.error("Error al procesar mensaje: " + mensaje, e);
+            throw new ResourceNotFoundException(e.getCode(), e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
 
 
     @Override
