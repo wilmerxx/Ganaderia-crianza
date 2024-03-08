@@ -15,6 +15,7 @@ import com.grupo1.ganaderiagrupo1.Servicios.impl.AlimentacionServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
@@ -30,6 +31,7 @@ public class AlimentacionControlador {
     AlimentacionServicioImpl alimentacionServicio;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAlimentacion(){
        try{
            return ResponseEntity.ok(alimentacionServicio.listaAlimentacion());
@@ -41,6 +43,7 @@ public class AlimentacionControlador {
 
     // traer por estado la alimentacion
     @GetMapping("/estado/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAlimentacionPorEstados(@PathVariable String estado){
        try{
            return ResponseEntity.ok(alimentacionServicio.listaAlimentacionPorEstado(estado));
@@ -52,6 +55,7 @@ public class AlimentacionControlador {
 
     // traer por id la alimentacion
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAlimentacionPorId(@PathVariable int id){
        try{
               return ResponseEntity.ok(alimentacionServicio.buscarAlimentacionPorId(id));
@@ -62,6 +66,7 @@ public class AlimentacionControlador {
 
     // lista de total de cantidad de suplemento
     @GetMapping("/total")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAlimentacionTotalCantidad(){
        try{
               return ResponseEntity.ok(alimentacionServicio.listaAlimentacionTotalCantidad());
@@ -72,6 +77,7 @@ public class AlimentacionControlador {
 
     //actualizar estado
     @PutMapping("/{id}/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAlimentacionPorEstado(@PathVariable int id, @PathVariable String estado){
        try{
            alimentacionServicio.actualizarEstadoAlimentacion(id,estado);
@@ -83,6 +89,7 @@ public class AlimentacionControlador {
 
     //guardar
     @PostMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> postAlimentacion(@RequestBody AlimentacionNuevoDto alimentacion){
 
        try{
@@ -95,6 +102,7 @@ public class AlimentacionControlador {
 
     //actualizar
     @PutMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putAlimentacion(@RequestBody AlimentacionExisteDto alimentacion){
         try{
             alimentacionServicio.actualizarAlimentacion(alimentacion);
@@ -106,6 +114,7 @@ public class AlimentacionControlador {
 
     //eliminar
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteAlimentacion(@PathVariable int id){
         try{
             alimentacionServicio.eliminarAlimentacion(id);

@@ -16,6 +16,7 @@ import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class AreaController {
     private AreaServicio areaService;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAllAreas() {
        try {
          return ResponseEntity.ok(areaService.getAllAreas());
@@ -35,6 +37,7 @@ public class AreaController {
         }
     }
     @GetMapping("/estados/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAreasByEstado(@PathVariable String estado) {
         try {
             return ResponseEntity.ok(areaService.getAreasByEstado(estado));
@@ -43,6 +46,7 @@ public class AreaController {
         }
     }
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAreaById(@PathVariable int id) {
         try {
             return ResponseEntity.ok(areaService.getAreaById(id));
@@ -52,6 +56,7 @@ public class AreaController {
     }
 
    @PutMapping("/{id}/{estado}")
+   @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getAreaByEstado(@PathVariable int id, @PathVariable String estado) {
         try {
             areaService.acutualizarEstadoArea(id,estado);
@@ -63,6 +68,7 @@ public class AreaController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> addArea(@RequestBody AreaNuevoDto area) {
         try {
             areaService.addArea(area);
@@ -73,6 +79,7 @@ public class AreaController {
     }
 
     @PutMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> updateArea(@RequestBody AreaExisteDto updatedArea) {
         try {
             areaService.updateArea(updatedArea);
@@ -83,6 +90,7 @@ public class AreaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteArea(@PathVariable int id) {
        try {
             areaService.deleteArea(id);

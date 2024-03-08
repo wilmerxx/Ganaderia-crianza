@@ -11,6 +11,7 @@ import com.grupo1.ganaderiagrupo1.Servicios.impl.ReproduccionServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -24,6 +25,7 @@ public class ReproduccionController {
     ReproduccionServicio reproduccionService;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> listarTodos() {
         try {
             return ResponseEntity.ok(reproduccionService.buscarTodos());
@@ -32,6 +34,7 @@ public class ReproduccionController {
         }
     }
     @GetMapping("/estados/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> buscarPorEstado(@PathVariable String estado) {
         try {
             return ResponseEntity.ok(reproduccionService.buscarPorEstado(estado));
@@ -41,6 +44,7 @@ public class ReproduccionController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> buscarPorId(@PathVariable int id) {
         try {
             return ResponseEntity.ok(reproduccionService.buscarPorId(id));
@@ -50,6 +54,7 @@ public class ReproduccionController {
     }
 
     @PutMapping("/{id}/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> cambiarEstado(@PathVariable int id, @PathVariable String estado) {
         try {
             reproduccionService.actualizarEstado(id, estado);
@@ -60,6 +65,7 @@ public class ReproduccionController {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> agregarReproduccion(@RequestBody ReproduccionNuevoDto reproduccion) {
         try {
             reproduccionService.agregarReproduccion(reproduccion);
@@ -70,6 +76,7 @@ public class ReproduccionController {
     }
 
     @PutMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> actualizarReproduccion(@RequestBody ReproduccionExisteDto reproduccion) {
         try {
             reproduccionService.actualizarReproduccion(reproduccion);
@@ -80,6 +87,7 @@ public class ReproduccionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> eliminarReproduccion(@PathVariable int id) {
         try {
             reproduccionService.eliminarReproduccion(id);

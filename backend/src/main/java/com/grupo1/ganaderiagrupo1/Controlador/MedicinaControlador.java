@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import com.grupo1.ganaderiagrupo1.Servicios.impl.GanadoServicioImpl;
 
@@ -26,6 +27,7 @@ public class MedicinaControlador {
     MedicinaServicio medicinaServicio;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getMedicinas(){
         try{
             return ResponseEntity.ok(medicinaServicio.listaMedicina());
@@ -35,6 +37,7 @@ public class MedicinaControlador {
     }
 
     @GetMapping("/estados/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getMedicinaPorEstado(@PathVariable String estado){
         try{
             return ResponseEntity.ok(medicinaServicio.listaMedicinaPorEstado(estado));
@@ -45,6 +48,7 @@ public class MedicinaControlador {
 
     // traer por id la medicina
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getMedicinaPorId(@PathVariable int id){
         try{
             return ResponseEntity.ok(medicinaServicio.buscarMedicinaPorId(id));
@@ -54,6 +58,7 @@ public class MedicinaControlador {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> postMedicina(@RequestBody @Valid MedicinaNuevoDto medicina){
         try{
             medicinaServicio.guardarMedicina(medicina);
@@ -65,6 +70,7 @@ public class MedicinaControlador {
 
     //actualizar estado medicina
     @PutMapping("/{id}/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putMedicinaEstado(@PathVariable int id, @PathVariable String estado){
         try{
             medicinaServicio.actualizarEstadoMedicina(id, estado);
@@ -76,6 +82,7 @@ public class MedicinaControlador {
 
     //actualizar medicina OJO
     @PutMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putMedicina(@RequestBody @Valid MedicinaExisteDto medicina){
         try{
             medicinaServicio.actualizarMedicina(medicina);
@@ -86,6 +93,7 @@ public class MedicinaControlador {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteMedicina(@PathVariable int id){
         try{
             medicinaServicio.elimnarMedicina(id);

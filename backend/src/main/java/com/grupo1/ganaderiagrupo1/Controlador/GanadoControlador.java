@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import java.time.format.DateTimeParseException;
 import java.util.*;
@@ -25,6 +26,7 @@ public class GanadoControlador {
       |---------------------------|
     */
     @GetMapping("/ganados")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getGanado(){
         try {
             return ResponseEntity.ok(ganadoServicio.buscarTodos());
@@ -35,6 +37,7 @@ public class GanadoControlador {
     }
     //ganados por estado asc
     @GetMapping("/ganados/estados/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getGanadoPorEstadoAsc(@PathVariable String estado){
         try {
             return ResponseEntity.ok(ganadoServicio.gandosPorEstadosAsc(estado));
@@ -45,6 +48,7 @@ public class GanadoControlador {
     }
 
     @GetMapping("/ganados/nombre/{nombre}/{page}/{size}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getGanadoPorNombre(@PathVariable String nombre,@PathVariable int page, @PathVariable int size){
         try {
             return ResponseEntity.ok(ganadoServicio.buscarPorNombre(nombre,page,size));
@@ -57,6 +61,7 @@ public class GanadoControlador {
 
     //filtrar por tipo de vaca
     @GetMapping("/ganados/tipo/{tipo}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getGanadoPorTipo(@PathVariable String tipo){
         List<GanadoDto> ganado = ganadoServicio.buscarPorTipo(tipo);
         if(Objects.isNull(ganado)){
@@ -67,6 +72,7 @@ public class GanadoControlador {
     }
     // traer por id el ganado
     @GetMapping("/ganados/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getGanadoPorId(@PathVariable int id){
         GanadoDto ganado = ganadoServicio.buscarPorId(id);
         if(Objects.isNull(ganado)){
@@ -81,6 +87,7 @@ public class GanadoControlador {
     */
 
     @PostMapping("/ganados")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> postGanado(@RequestBody @Valid GanadoNuevoDto ganado){
         try{
             ganadoServicio.guardar(ganado);
@@ -93,6 +100,7 @@ public class GanadoControlador {
     }
     //actualizar ganado
     @PutMapping("/ganados")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putGanado(@RequestBody GanadoExisteDto ganado){
         GanadoDto ganado1 = ganadoServicio.buscarPorId(ganado.getGanado_id());
         if(Objects.isNull(ganado1)){
@@ -103,6 +111,7 @@ public class GanadoControlador {
     }
 
     @DeleteMapping("/ganados/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteGanado(@PathVariable int id){
         try{
             ganadoServicio.eliminar(id);
@@ -113,6 +122,7 @@ public class GanadoControlador {
     }
 
     @PutMapping("/ganados/estado/{estado}/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteGanadoPorEstado(@PathVariable String estado,@PathVariable int id){
         try{
             ganadoServicio.actualizarEstado(estado,id);

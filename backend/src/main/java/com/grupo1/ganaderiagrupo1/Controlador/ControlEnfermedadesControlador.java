@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -21,6 +22,7 @@ public class ControlEnfermedadesControlador {
     ControlEnfermedadesServicio controlEnfermedadesServicio;
 
     @GetMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getControlEnfermedades(){
       try{
           return ResponseEntity.ok(controlEnfermedadesServicio.listaControlEnfermedades());
@@ -30,6 +32,7 @@ public class ControlEnfermedadesControlador {
     }
 
     @GetMapping("/estados/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getControlEnfermedadesPorEstado(@PathVariable String estado){
       try{
           return ResponseEntity.ok(controlEnfermedadesServicio.listaControlEnfermedadesPorEstado(estado));
@@ -39,6 +42,7 @@ public class ControlEnfermedadesControlador {
     }
 
     @PostMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> postControlEnfermedades(@RequestBody @Valid ControlNuevoDto controlEnfermedades){
         try{
             controlEnfermedadesServicio.guardarControlEnfermedades(controlEnfermedades);
@@ -50,6 +54,7 @@ public class ControlEnfermedadesControlador {
 
     // traer por id el control de enfermedades
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getControlEnfermedadesPorId(@PathVariable int id){
         try{
             return ResponseEntity.ok(controlEnfermedadesServicio.buscarControlEnfermedadesPorId(id));
@@ -61,6 +66,7 @@ public class ControlEnfermedadesControlador {
 
     //actualizar control de enfermedades
     @PutMapping()
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putControlEnfermedades(@RequestBody @Valid ControlExisteDto controlEnfermedades){
       try{
           controlEnfermedadesServicio.actualizarContolEnfermedades(controlEnfermedades);
@@ -72,6 +78,7 @@ public class ControlEnfermedadesControlador {
 
     //actualizar estado control de enfermedades
     @PutMapping("/{id}/{estado}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> putEstadoControlEnfermedades(@PathVariable int id, @PathVariable String estado){
       try{
           controlEnfermedadesServicio.actualizarEstadoControlEnfermedades(id, estado);
@@ -83,6 +90,7 @@ public class ControlEnfermedadesControlador {
 
     //eliminar control de enfermedades
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ROLE_USER') or hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> deleteControlEnfermedades(@PathVariable int id){
       try{
           controlEnfermedadesServicio.eliminarControlEnfermedades(id);
