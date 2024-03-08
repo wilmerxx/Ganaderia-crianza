@@ -21,6 +21,7 @@ import { BodegaComponent } from './componentes/producto/bodega.component';
 import { ConsumoComponent } from './componentes/inventario/consumo.component';
 import {HighchartsChartModule} from "highcharts-angular";
 import {NgbAccordionModule,NgbAccordionDirective,NgbAccordionItem,NgbAccordionHeader, NgbAccordionToggle, NgbAccordionCollapse, NgbAccordionBody, NgbAccordionButton,} from "@ng-bootstrap/ng-bootstrap";
+import { LoginComponent } from './componentes/login/login.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {NgbAccordionModule,NgbAccordionDirective,NgbAccordionItem,NgbAccordionHe
     MedicinaComponent,
     ReproduccionComponent,
     BodegaComponent,
-    ConsumoComponent
+    ConsumoComponent,
+    LoginComponent
 
     ],
     imports: [
