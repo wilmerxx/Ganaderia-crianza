@@ -27,18 +27,18 @@ export class AlimentacionService {
   }
 
   postAlimentacion(alimentacion: Alimentacion): Observable<any> {
-    return this.http.post<Alimentacion>(this.URL_API, alimentacion);
+    return this.http.post<Alimentacion>(this.URL_API, alimentacion, {headers: this.headers});
   }
 
   putAlimentacion(alimentacion: Alimentacion): Observable<any> {
-    return this.http.put<Alimentacion>(this.URL_API, alimentacion);
+    return this.http.put<Alimentacion>(this.URL_API, alimentacion, {headers: this.headers});
   }
 
   getAlimentacionID(id: string): Observable<Alimentacion> {
-    return this.http.get<Alimentacion>(`${this.URL_API}/${id}`);
+    return this.http.get<Alimentacion>(`${this.URL_API}/${id}`, {headers: this.headers});
   }
 
   deleteAlimentacion(alimentacion_id: number | undefined): Observable<any> {
-    return this.http.delete(`${this.URL_API}/${alimentacion_id}`);
+    return this.http.delete(`${this.URL_API}/${alimentacion_id}`, {headers: this.headers});
   }
 }
