@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://localhost:8080/api',
+  baseUrl: 'http://localhost:8081/api',
   mongoUrl: 'http://localhost:8081',
-  baseUrlAuth: 'http://localhost:8080'
+  baseUrlAuth: 'http://localhost:8081'
 };
 
 /*

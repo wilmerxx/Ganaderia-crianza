@@ -48,9 +48,7 @@
           </div>
           <div class="form-group">
             <label for="nombre_suplemento">Seleciona el suplemento</label>
-            <select class="form-control" id="nombre_suplemento" formControlName="nombre_suplemento" name="nombre_suplemento">
-              <option *ngFor="let producto of productoMongoService.productos" [value]="producto.nombreproducto" >{{ producto.nombreproducto }}</option>
-            </select>
+            <input type="text" class="form-control" id="nombre_suplemento" formControlName="nombre_suplemento" required>
             <!-- Mostrar el mensaje de error para el control ganado -->
             <div *ngIf="form.get('id')?.errors && (form.get('id')?.dirty || form.get('id')?.touched)" class="alert">
               <div *ngIf="form.get('id')?.hasError('required')" class="text-danger">

@@ -36,22 +36,22 @@ export class GanadoService {
   }
 
   postGanado(ganado: Ganado): Observable<Ganado> {
-    return this.http.post<Ganado>(this.URL_API, ganado);
+    return this.http.post<Ganado>(this.URL_API, ganado, { headers: this.headers });
   }
 
   putGanado(ganado: Ganado): Observable<any> {
-    return this.http.put(this.URL_API ,ganado);
+    return this.http.put(this.URL_API ,ganado, { headers: this.headers });
   }
 
 
   //obtener ganado por id
   getGanadoID(id: string): Observable<any>{
-    return this.http.get(this.URL_API + '/' + id);
+    return this.http.get(this.URL_API + '/' + id, { headers: this.headers });
   }
 
 
   getGanadosTipo(tipo: string): Observable<any> {
-    return this.http.get(this.URL_API + '/tipo/' + tipo);
+    return this.http.get(this.URL_API + '/tipo/' + tipo, { headers: this.headers });
   }
 
   //obtener ganado por

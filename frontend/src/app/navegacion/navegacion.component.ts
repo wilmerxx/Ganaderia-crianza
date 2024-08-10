@@ -39,4 +39,10 @@ export class NavegacionComponent implements OnInit {
     }
   }
 
+  salir() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    this.servicio.logout();
+  }
 }

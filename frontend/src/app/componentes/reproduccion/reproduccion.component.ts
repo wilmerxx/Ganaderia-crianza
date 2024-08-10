@@ -53,6 +53,9 @@ export class ReproduccionComponent implements OnInit {
               title: 'Reproducción guardado con éxito',
               showConfirmButton: false,
               timer: 1500
+            }).then(r => {
+                console.log(res);
+                this.getReproduccion();
             });
             this.closeModal();
             this.form.reset();

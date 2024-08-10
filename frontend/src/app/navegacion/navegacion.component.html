@@ -50,18 +50,21 @@
             <i class="fas fa-file-alt"></i> <span class="link-text">Medicina</span>
           </a>
         </li>
-        <li>
-          <a class="text-white" routerLink="./bodega" (click)="cambiarEnlaceActivo('./bodega')"
-             [class.active]="enlaceActivo === './bodega'">
-            <i class="fas fa-file-alt"></i> <span class="link-text">Producto</span>
-          </a>
-        </li>
-        <li>
-          <a class="text-white" routerLink="./consumo" (click)="cambiarEnlaceActivo('./consumo')"
-             [class.active]="enlaceActivo === './consumo'">
-            <i class="fas fa-file-alt"></i> <span class="link-text">Inventario</span>
-          </a>
-        </li>
+<!--        <li>-->
+<!--          <a class="text-white" routerLink="./bodega" (click)="cambiarEnlaceActivo('./bodega')"-->
+<!--             [class.active]="enlaceActivo === './bodega'">-->
+<!--            <i class="fas fa-file-alt"></i> <span class="link-text">Producto</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a class="text-white" routerLink="./consumo" (click)="cambiarEnlaceActivo('./consumo')"-->
+<!--             [class.active]="enlaceActivo === './consumo'">-->
+<!--            <i class="fas fa-file-alt"></i> <span class="link-text">Inventario</span>-->
+<!--          </a>-->
+<!--        </li>-->
+          <li class="text-center justify-content-around position-absolute p-5 bottom-0 start-0 end-0">
+            <input type="button" class="btn btn-danger text-center" (click)="salir()" value="Salir">
+          </li>
       </ul>
     </div>
   </aside>

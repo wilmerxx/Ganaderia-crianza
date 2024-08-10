@@ -39,6 +39,8 @@ export class InicioComponent implements OnInit {
     this.graficaBarPorSexoGanado();
     this.graficaPastelGanado();
     console.log(localStorage.getItem('password'));
+    console.log(localStorage.getItem('token'))
+    console.log(localStorage.getItem('username'))
 
   }
 

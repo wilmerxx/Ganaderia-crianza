@@ -58,4 +58,12 @@ export class ServicioService {
     ];
   }
 
+  logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
+    localStorage.removeItem('password');
+    //direccionar a login
+    document.location.href = '/login';
+
+  }
 }

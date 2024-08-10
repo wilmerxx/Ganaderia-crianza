@@ -37,8 +37,8 @@ export class LoginComponent implements OnInit{
         res => {
           console.log(res);
           const token = res.jwtToken;
-          console.log("token "+token);
-         localStorage.setItem('token', token);
+          console.log("token "+ token);
+         localStorage.setItem('token', res.jwtToken);
         },
         err => {
           console.log(err);
